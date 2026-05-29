@@ -4,13 +4,21 @@ app_name = "agriculture"
 app_title = "Agriculture"
 app_publisher = "Frappe"
 app_description = "Agriculture"
-app_icon = "octicon octicon-file-directory"
-app_color = "grey"
+app_icon = "🌱"
+app_color = "green"
 app_email = "pandikunta@frappe.io"
 app_license = "MIT"
 
-
 required_apps = ["erpnext"]
+
+add_to_apps_screen = [
+	{
+		"name": "agriculture",
+		"logo": "/assets/agriculture/images/agriculture.svg",
+		"title": "Agriculture",
+		"route": "/app/agriculture",
+	}
+]
 
 # Includes in <head>
 # ------------------
