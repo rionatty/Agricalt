@@ -126,23 +126,13 @@ after_uninstall = "agriculture.agriculture.setup.cleanup_role_and_permissions"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"agriculture.tasks.all"
-# 	],
-# 	"daily": [
-# 		"agriculture.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"agriculture.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"agriculture.tasks.weekly"
-# 	],
-# 	"monthly": [
-# 		"agriculture.tasks.monthly"
-# 	],
-# }
+scheduler_events = {
+	"daily": [
+		"agriculture.agriculture.tasks.send_demo_garden_harvest_alerts",
+		"agriculture.agriculture.tasks.alert_unreported_materials",
+		"agriculture.agriculture.tasks.alert_missing_weekly_plans",
+	],
+}
 
 # Testing
 # -------
@@ -201,16 +191,22 @@ after_uninstall = "agriculture.agriculture.setup.cleanup_role_and_permissions"
 
 global_search_doctypes = {
 	"Agriculture": [
-		{'doctype': 'Weather', 'index': 1},
-		{'doctype': 'Soil Texture', 'index': 2},
-		{'doctype': 'Water Analysis', 'index': 3},
-		{'doctype': 'Soil Analysis', 'index': 4},
-		{'doctype': 'Plant Analysis', 'index': 5},
-		{'doctype': 'Agriculture Analysis Criteria', 'index': 6},
-		{'doctype': 'Disease', 'index': 7},
-		{'doctype': 'Crop', 'index': 8},
-		{'doctype': 'Fertilizer', 'index': 9},
-		{'doctype': 'Crop Cycle', 'index': 10}
+		{"doctype": "Field Promoter", "index": 1},
+		{"doctype": "Activity Plan", "index": 2},
+		{"doctype": "Field Activity Log", "index": 3},
+		{"doctype": "Demo Garden", "index": 4},
+		{"doctype": "Demo Garden Material Request", "index": 5},
+		{"doctype": "Demo Garden Field Day", "index": 6},
+		{"doctype": "Farmer Training Event", "index": 7},
+		{"doctype": "Crop", "index": 8},
+		{"doctype": "Disease", "index": 9},
+		{"doctype": "Fertilizer", "index": 10},
+		{"doctype": "Weather", "index": 11},
+		{"doctype": "Soil Texture", "index": 12},
+		{"doctype": "Water Analysis", "index": 13},
+		{"doctype": "Soil Analysis", "index": 14},
+		{"doctype": "Plant Analysis", "index": 15},
+		{"doctype": "Agriculture Analysis Criteria", "index": 16},
 	]
 }
 

@@ -1,0 +1,176 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2026-05-30 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "sb_field_day_details",
+  "demo_garden",
+  "promoter",
+  "field_day_date",
+  "cb_1659508294672",
+  "location",
+  "number_of_attendees",
+  "status",
+  "sb_event_details",
+  "activities_conducted",
+  "topics_covered",
+  "key_outcomes",
+  "sb_attendees",
+  "attendees",
+  "sb_photos",
+  "photos",
+  "sb_remarks",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "DGFD-.####\n"
+  },
+  {
+   "fieldname": "sb_field_day_details",
+   "fieldtype": "Section Break",
+   "label": "Field Day Details"
+  },
+  {
+   "fieldname": "demo_garden",
+   "fieldtype": "Link",
+   "label": "Demo Garden",
+   "options": "Demo Garden",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "promoter",
+   "fieldtype": "Link",
+   "label": "Field Promoter",
+   "options": "Field Promoter",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "field_day_date",
+   "fieldtype": "Date",
+   "label": "Field Day Date",
+   "reqd": 1,
+   "default": "Today",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cb_1659508294672",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location"
+  },
+  {
+   "fieldname": "number_of_attendees",
+   "fieldtype": "Int",
+   "label": "Number of Attendees",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nSubmitted\nCompleted",
+   "default": "Draft",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sb_event_details",
+   "fieldtype": "Section Break",
+   "label": "Event Details"
+  },
+  {
+   "fieldname": "activities_conducted",
+   "fieldtype": "Text",
+   "label": "Activities Conducted"
+  },
+  {
+   "fieldname": "topics_covered",
+   "fieldtype": "Text",
+   "label": "Topics Covered"
+  },
+  {
+   "fieldname": "key_outcomes",
+   "fieldtype": "Text",
+   "label": "Key Outcomes"
+  },
+  {
+   "fieldname": "sb_attendees",
+   "fieldtype": "Section Break",
+   "label": "Attendees"
+  },
+  {
+   "fieldname": "attendees",
+   "fieldtype": "Table",
+   "label": "Attendees",
+   "options": "Training Event Attendee"
+  },
+  {
+   "fieldname": "sb_photos",
+   "fieldtype": "Section Break",
+   "label": "Photos"
+  },
+  {
+   "fieldname": "photos",
+   "fieldtype": "Table",
+   "label": "Photos",
+   "options": "Field Activity Photo"
+  },
+  {
+   "fieldname": "sb_remarks",
+   "fieldtype": "Section Break",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  }
+ ],
+ "istable": 0,
+ "modified": "2026-05-30 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Demo Garden Field Day",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "naming_series": "DGFD-.####"
+}

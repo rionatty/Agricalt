@@ -1,0 +1,76 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2026-05-30 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "crop",
+  "product_name",
+  "crop_maturity_duration",
+  "uom",
+  "cb_1659508294672",
+  "quantity_requested",
+  "quantity_received",
+  "quantity_planted"
+ ],
+ "fields": [
+  {
+   "fieldname": "crop",
+   "fieldtype": "Link",
+   "label": "Crop",
+   "options": "Crop",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "product_name",
+   "fieldtype": "Data",
+   "label": "Product / Variety Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "crop_maturity_duration",
+   "fieldtype": "Int",
+   "label": "Maturity Duration (Days)",
+   "in_list_view": 1,
+   "description": "Used to auto-calculate expected harvest date from planting date"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Select",
+   "label": "Unit",
+   "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cb_1659508294672",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quantity_requested",
+   "fieldtype": "Float",
+   "label": "Qty Requested"
+  },
+  {
+   "fieldname": "quantity_received",
+   "fieldtype": "Float",
+   "label": "Qty Received"
+  },
+  {
+   "fieldname": "quantity_planted",
+   "fieldtype": "Float",
+   "label": "Qty Planted"
+  }
+ ],
+ "istable": 1,
+ "modified": "2026-05-30 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Demo Garden Product",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

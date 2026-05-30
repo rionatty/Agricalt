@@ -1,0 +1,216 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2026-05-30 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "sb_garden_details",
+  "demo_garden_name",
+  "location",
+  "gps_latitude",
+  "gps_longitude",
+  "cb_1659508294672",
+  "responsible_promoter",
+  "status",
+  "sb_host_/_farmer_details",
+  "farmer_host_name",
+  "farmer_host_contact",
+  "farmer_host_category",
+  "cb_1659508294672_1",
+  "purpose",
+  "sb_products_to_demonstrate",
+  "products",
+  "sb_timeline",
+  "planting_date",
+  "expected_harvest_date",
+  "field_day_date",
+  "completion_date",
+  "cb_1659508294672_2",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "DG-.####\n"
+  },
+  {
+   "fieldname": "sb_garden_details",
+   "fieldtype": "Section Break",
+   "label": "Garden Details"
+  },
+  {
+   "fieldname": "demo_garden_name",
+   "fieldtype": "Data",
+   "label": "Demo Garden Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location / Village",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "gps_latitude",
+   "fieldtype": "Float",
+   "label": "GPS Latitude"
+  },
+  {
+   "fieldname": "gps_longitude",
+   "fieldtype": "Float",
+   "label": "GPS Longitude"
+  },
+  {
+   "fieldname": "cb_1659508294672",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "responsible_promoter",
+   "fieldtype": "Link",
+   "label": "Responsible Promoter",
+   "options": "Field Promoter",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Registered\nMaterial Requested\nMaterial Received\nPlanted\nMonitoring\nField Day Scheduled\nField Day Done\nCompleted",
+   "default": "Registered",
+   "in_list_view": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_host_/_farmer_details",
+   "fieldtype": "Section Break",
+   "label": "Host / Farmer Details"
+  },
+  {
+   "fieldname": "farmer_host_name",
+   "fieldtype": "Data",
+   "label": "Farmer / Host Name"
+  },
+  {
+   "fieldname": "farmer_host_contact",
+   "fieldtype": "Data",
+   "label": "Host Contact"
+  },
+  {
+   "fieldname": "farmer_host_category",
+   "fieldtype": "Select",
+   "label": "Host Category",
+   "options": "\nFarmer\nNGO\nOther"
+  },
+  {
+   "fieldname": "cb_1659508294672_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Small Text",
+   "label": "Purpose / Objective"
+  },
+  {
+   "fieldname": "sb_products_to_demonstrate",
+   "fieldtype": "Section Break",
+   "label": "Products to Demonstrate"
+  },
+  {
+   "fieldname": "products",
+   "fieldtype": "Table",
+   "label": "Products",
+   "options": "Demo Garden Product"
+  },
+  {
+   "fieldname": "sb_timeline",
+   "fieldtype": "Section Break",
+   "label": "Timeline"
+  },
+  {
+   "fieldname": "planting_date",
+   "fieldtype": "Date",
+   "label": "Planting Date"
+  },
+  {
+   "fieldname": "expected_harvest_date",
+   "fieldtype": "Date",
+   "label": "Expected Harvest / Field Day Date",
+   "read_only": 1,
+   "description": "Auto-calculated from Planting Date + longest Crop Maturity Duration"
+  },
+  {
+   "fieldname": "field_day_date",
+   "fieldtype": "Date",
+   "label": "Actual Field Day Date"
+  },
+  {
+   "fieldname": "completion_date",
+   "fieldtype": "Date",
+   "label": "Completion Date"
+  },
+  {
+   "fieldname": "cb_1659508294672_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  }
+ ],
+ "istable": 0,
+ "modified": "2026-05-30 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Demo Garden",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Marketing Manager",
+   "share": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "naming_series": "DG-.####"
+}

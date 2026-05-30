@@ -1,0 +1,239 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2026-05-30 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "sb_activity",
+  "activity_type",
+  "is_planned",
+  "activity_plan",
+  "cb_1659508294672",
+  "promoter",
+  "activity_date",
+  "activity_time",
+  "status",
+  "sb_location",
+  "gps_latitude",
+  "gps_longitude",
+  "gps_location_text",
+  "location_name",
+  "sb_customer_details",
+  "customer_category",
+  "customer",
+  "customer_name",
+  "cb_1659508294672_1",
+  "purpose",
+  "demo_garden",
+  "sb_orders_&_payments",
+  "orders_collected",
+  "payment_collected",
+  "sb_photos",
+  "photos",
+  "sb_remarks",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "FAL-.####\n"
+  },
+  {
+   "fieldname": "sb_activity",
+   "fieldtype": "Section Break",
+   "label": "Activity"
+  },
+  {
+   "fieldname": "activity_type",
+   "fieldtype": "Select",
+   "label": "Activity Type",
+   "options": "Farm Visit\nStockist Visit\nExhibition\nFarmer Training\nDemo Garden Visit\nPayment Collection",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "is_planned",
+   "fieldtype": "Check",
+   "label": "Planned Activity?"
+  },
+  {
+   "fieldname": "activity_plan",
+   "fieldtype": "Link",
+   "label": "Activity Plan",
+   "options": "Activity Plan"
+  },
+  {
+   "fieldname": "cb_1659508294672",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "promoter",
+   "fieldtype": "Link",
+   "label": "Field Promoter",
+   "options": "Field Promoter",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "activity_date",
+   "fieldtype": "Date",
+   "label": "Activity Date",
+   "reqd": 1,
+   "default": "Today",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "activity_time",
+   "fieldtype": "Time",
+   "label": "Activity Time"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nSubmitted",
+   "default": "Draft",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sb_location",
+   "fieldtype": "Section Break",
+   "label": "Location"
+  },
+  {
+   "fieldname": "gps_latitude",
+   "fieldtype": "Float",
+   "label": "GPS Latitude"
+  },
+  {
+   "fieldname": "gps_longitude",
+   "fieldtype": "Float",
+   "label": "GPS Longitude"
+  },
+  {
+   "fieldname": "gps_location_text",
+   "fieldtype": "Data",
+   "label": "GPS Coordinates",
+   "read_only": 1
+  },
+  {
+   "fieldname": "location_name",
+   "fieldtype": "Data",
+   "label": "Location Name"
+  },
+  {
+   "fieldname": "sb_customer_details",
+   "fieldtype": "Section Break",
+   "label": "Customer Details"
+  },
+  {
+   "fieldname": "customer_category",
+   "fieldtype": "Select",
+   "label": "Customer Category",
+   "options": "\nFarmer\nNGO\nStockist\nOther",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name (If Not Registered)"
+  },
+  {
+   "fieldname": "cb_1659508294672_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Small Text",
+   "label": "Purpose of Visit"
+  },
+  {
+   "fieldname": "demo_garden",
+   "fieldtype": "Link",
+   "label": "Demo Garden",
+   "options": "Demo Garden"
+  },
+  {
+   "fieldname": "sb_orders_&_payments",
+   "fieldtype": "Section Break",
+   "label": "Orders & Payments"
+  },
+  {
+   "fieldname": "orders_collected",
+   "fieldtype": "Currency",
+   "label": "Orders Collected (UGX)"
+  },
+  {
+   "fieldname": "payment_collected",
+   "fieldtype": "Currency",
+   "label": "Payment Collected (UGX)"
+  },
+  {
+   "fieldname": "sb_photos",
+   "fieldtype": "Section Break",
+   "label": "Photos"
+  },
+  {
+   "fieldname": "photos",
+   "fieldtype": "Table",
+   "label": "Photos",
+   "options": "Field Activity Photo"
+  },
+  {
+   "fieldname": "sb_remarks",
+   "fieldtype": "Section Break",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  }
+ ],
+ "istable": 0,
+ "modified": "2026-05-30 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Field Activity Log",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "naming_series": "FAL-.####"
+}

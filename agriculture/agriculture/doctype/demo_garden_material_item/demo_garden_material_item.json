@@ -1,0 +1,79 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2026-05-30 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "item_type",
+  "item_name",
+  "item",
+  "cb_1659508294672",
+  "uom",
+  "quantity_requested",
+  "quantity_issued",
+  "quantity_received"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_type",
+   "fieldtype": "Select",
+   "label": "Material Type",
+   "options": "Seed\nChemical\nFertilizer\nOther",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item / Product Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "Item (ERP)",
+   "options": "Item"
+  },
+  {
+   "fieldname": "cb_1659508294672",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Select",
+   "label": "Unit",
+   "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams"
+  },
+  {
+   "fieldname": "quantity_requested",
+   "fieldtype": "Float",
+   "label": "Qty Requested",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "quantity_issued",
+   "fieldtype": "Float",
+   "label": "Qty Issued",
+   "read_only": 1
+  },
+  {
+   "fieldname": "quantity_received",
+   "fieldtype": "Float",
+   "label": "Qty Received",
+   "read_only": 1
+  }
+ ],
+ "istable": 1,
+ "modified": "2026-05-30 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Demo Garden Material Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

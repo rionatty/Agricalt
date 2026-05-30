@@ -1,13 +1,38 @@
 import frappe
 from frappe import _
-from erpnext.setup.utils import insert_record
+
+
+def insert_record(records):
+	"""Local replacement for the removed erpnext.setup.utils.insert_record."""
+	for record in records:
+		doc = frappe.get_doc(record)
+		doc.flags.ignore_permissions = True
+		doc.flags.ignore_if_duplicate = True
+		try:
+			doc.insert()
+		except frappe.DuplicateEntryError:
+			pass
+
+
+ALL_ROLES = ["Agriculture Manager", "Agriculture User", "Store Manager", "Marketing Manager"]
+
 
 def setup_agriculture():
-	if frappe.get_all('Agriculture Analysis Criteria'):
-		# already setup
+	create_roles()
+	if frappe.get_all("Agriculture Analysis Criteria"):
+		# data already seeded; still ensure permissions are in place
+		add_additional_permissions()
 		return
 	create_agriculture_data()
 	add_additional_permissions()
+
+
+def create_roles():
+	"""Create all Agriculture roles if they don't exist."""
+	for role_name in ALL_ROLES:
+		if not frappe.db.exists("Role", role_name):
+			frappe.get_doc({"doctype": "Role", "role_name": role_name}).insert()
+	frappe.db.commit()
 
 def create_agriculture_data():
 	records = [
@@ -458,8 +483,21 @@ def add_additional_permissions():
 		"write": 1
 	}).insert()
 
+def add_store_manager_permissions():
+	"""Grant Store Manager read + write access to Demo Garden Material Request."""
+	if frappe.db.exists("Custom DocPerm", {"parent": "Demo Garden Material Request", "role": "Store Manager"}):
+		return
+	frappe.get_doc({
+		"doctype": "Custom DocPerm",
+		"parent": "Demo Garden Material Request",
+		"role": "Store Manager",
+		"read": 1, "write": 1, "email": 1, "print": 1,
+	}).insert()
+
+
 def cleanup_role_and_permissions():
-	for role in ["Agriculture Manager", "Agriculture User"]:
+	for role in ALL_ROLES:
 		frappe.db.delete("Custom DocPerm", {"role": role})
-		frappe.db.delete("Role", role)
+		if frappe.db.exists("Role", role):
+			frappe.db.delete("Role", role)
 	frappe.db.commit()
