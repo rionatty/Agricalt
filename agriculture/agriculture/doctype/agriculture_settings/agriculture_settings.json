@@ -1,0 +1,275 @@
+{
+ "creation": "2026-05-30 00:00:00",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "editable_grid": 0,
+ "field_order": [
+  "sec_1",
+  "harvest_alert_lead_days",
+  "unreported_material_days",
+  "col_2",
+  "unapplied_input_days",
+  "plan_vs_actual_check",
+  "sec_3",
+  "weekly_plan_deadline_day",
+  "sec_4",
+  "enable_email_notifications",
+  "col_5",
+  "enable_inapp_notifications",
+  "sec_6",
+  "default_target_farm_visits",
+  "default_target_demo_gardens",
+  "default_target_trainings",
+  "col_7",
+  "default_target_exhibitions",
+  "default_target_stockist_visits",
+  "default_target_orders_value",
+  "sec_8",
+  "sap_b1_enabled",
+  "sap_b1_base_url",
+  "sap_b1_company_db",
+  "col_9",
+  "sap_b1_username",
+  "sap_b1_password",
+  "sec_10",
+  "sap_auto_push_orders",
+  "sap_auto_push_payments",
+  "col_11",
+  "sap_default_warehouse",
+  "sap_default_customer_group"
+ ],
+ "fields": [
+  {
+   "fieldname": "sec_1",
+   "fieldtype": "Section Break",
+   "label": "Alert Thresholds",
+   "collapsible": 0,
+   "description": "Configure how many days before/after an event each alert fires. No developer needed."
+  },
+  {
+   "fieldname": "harvest_alert_lead_days",
+   "fieldtype": "Int",
+   "label": "Harvest / Field Day Alert Lead (Days)",
+   "default": "7",
+   "description": "Alert promoter & supervisor this many days before expected harvest"
+  },
+  {
+   "fieldname": "unreported_material_days",
+   "fieldtype": "Int",
+   "label": "Materials Unreported After (Days)",
+   "default": "7",
+   "description": "Alert if materials received but planting not recorded after this many days"
+  },
+  {
+   "fieldname": "col_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "unapplied_input_days",
+   "fieldtype": "Int",
+   "label": "Inputs Unapplied After (Days)",
+   "default": "10",
+   "description": "Alert if materials received but no inputs applied after this many days"
+  },
+  {
+   "fieldname": "plan_vs_actual_check",
+   "fieldtype": "Check",
+   "label": "Enable Plan-vs-Actual Reconciliation Alert",
+   "default": "1"
+  },
+  {
+   "fieldname": "sec_3",
+   "fieldtype": "Section Break",
+   "label": "Weekly Plan Deadline",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "weekly_plan_deadline_day",
+   "fieldtype": "Select",
+   "label": "Weekly Plan Due By",
+   "options": "Sunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday",
+   "default": "Sunday"
+  },
+  {
+   "fieldname": "sec_4",
+   "fieldtype": "Section Break",
+   "label": "Notification Channels",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "enable_email_notifications",
+   "fieldtype": "Check",
+   "label": "Send Email Notifications",
+   "default": "1"
+  },
+  {
+   "fieldname": "col_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "enable_inapp_notifications",
+   "fieldtype": "Check",
+   "label": "Send In-App Notifications",
+   "default": "1"
+  },
+  {
+   "fieldname": "sec_6",
+   "fieldtype": "Section Break",
+   "label": "Default Monthly KPI Targets",
+   "collapsible": 0,
+   "description": "Default targets applied to promoters that have no specific KPI Target record."
+  },
+  {
+   "fieldname": "default_target_farm_visits",
+   "fieldtype": "Int",
+   "label": "Farm Visits / Month",
+   "default": "20"
+  },
+  {
+   "fieldname": "default_target_demo_gardens",
+   "fieldtype": "Int",
+   "label": "Demo Gardens / Month",
+   "default": "2"
+  },
+  {
+   "fieldname": "default_target_trainings",
+   "fieldtype": "Int",
+   "label": "Trainings / Month",
+   "default": "4"
+  },
+  {
+   "fieldname": "col_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "default_target_exhibitions",
+   "fieldtype": "Int",
+   "label": "Exhibitions / Month",
+   "default": "1"
+  },
+  {
+   "fieldname": "default_target_stockist_visits",
+   "fieldtype": "Int",
+   "label": "Stockist Visits / Month",
+   "default": "8"
+  },
+  {
+   "fieldname": "default_target_orders_value",
+   "fieldtype": "Currency",
+   "label": "Order Value / Month (UGX)",
+   "default": "0"
+  },
+  {
+   "fieldname": "sec_8",
+   "fieldtype": "Section Break",
+   "label": "SAP Business One Integration",
+   "collapsible": 0,
+   "description": "SAP B1 remains the ERP of record. Field orders, inventory and payments are pushed to SAP B1."
+  },
+  {
+   "fieldname": "sap_b1_enabled",
+   "fieldtype": "Check",
+   "label": "Enable SAP B1 Integration"
+  },
+  {
+   "fieldname": "sap_b1_base_url",
+   "fieldtype": "Data",
+   "label": "SAP B1 Service Layer URL",
+   "description": "e.g. https://sapserver:50000/b1s/v1",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sap_b1_company_db",
+   "fieldtype": "Data",
+   "label": "Company Database",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "col_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sap_b1_username",
+   "fieldtype": "Data",
+   "label": "Username",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sap_b1_password",
+   "fieldtype": "Password",
+   "label": "Password",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sec_10",
+   "fieldtype": "Section Break",
+   "label": "",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "sap_auto_push_orders",
+   "fieldtype": "Check",
+   "label": "Auto-Push Orders on Submit",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sap_auto_push_payments",
+   "fieldtype": "Check",
+   "label": "Auto-Push Payments on Submit",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "col_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sap_default_warehouse",
+   "fieldtype": "Data",
+   "label": "Default SAP Warehouse Code",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sap_default_customer_group",
+   "fieldtype": "Data",
+   "label": "Default SAP Customer Group",
+   "depends_on": "sap_b1_enabled"
+  }
+ ],
+ "issingle": 1,
+ "istable": 0,
+ "modified": "2026-05-30 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Agriculture Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

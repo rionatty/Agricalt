@@ -1,0 +1,181 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2026-05-30 00:00:00",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "editable_grid": 0,
+ "field_order": [
+  "naming_series",
+  "sec_12",
+  "promoter",
+  "promoter_name",
+  "period_type",
+  "col_13",
+  "from_date",
+  "to_date",
+  "status",
+  "sec_14",
+  "target_farm_visits",
+  "target_demo_gardens",
+  "target_trainings",
+  "col_15",
+  "target_exhibitions",
+  "target_stockist_visits",
+  "target_orders_value",
+  "sec_16",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "KPI-.####\n"
+  },
+  {
+   "fieldname": "sec_12",
+   "fieldtype": "Section Break",
+   "label": "",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "promoter",
+   "fieldtype": "Link",
+   "label": "Field Promoter",
+   "options": "Field Promoter",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "promoter.promoter_name",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "period_type",
+   "fieldtype": "Select",
+   "label": "Period",
+   "options": "Monthly\nQuarterly\nWeekly",
+   "default": "Monthly",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "col_13",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Active\nClosed",
+   "default": "Active",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sec_14",
+   "fieldtype": "Section Break",
+   "label": "Targets",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "target_farm_visits",
+   "fieldtype": "Int",
+   "label": "Farm Visits"
+  },
+  {
+   "fieldname": "target_demo_gardens",
+   "fieldtype": "Int",
+   "label": "Demo Gardens"
+  },
+  {
+   "fieldname": "target_trainings",
+   "fieldtype": "Int",
+   "label": "Farmer Trainings"
+  },
+  {
+   "fieldname": "col_15",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "target_exhibitions",
+   "fieldtype": "Int",
+   "label": "Exhibitions"
+  },
+  {
+   "fieldname": "target_stockist_visits",
+   "fieldtype": "Int",
+   "label": "Stockist Visits"
+  },
+  {
+   "fieldname": "target_orders_value",
+   "fieldtype": "Currency",
+   "label": "Order Value (UGX)"
+  },
+  {
+   "fieldname": "sec_16",
+   "fieldtype": "Section Break",
+   "label": "Notes",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  }
+ ],
+ "issingle": 0,
+ "istable": 0,
+ "modified": "2026-05-30 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Promoter KPI Target",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "naming_series": "KPI-.####"
+}

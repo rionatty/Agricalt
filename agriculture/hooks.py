@@ -95,13 +95,35 @@ after_uninstall = "agriculture.agriculture.setup.cleanup_role_and_permissions"
 # -----------
 # Permissions evaluated in scripted ways
 
-# permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# }
-#
-# has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
-# }
+permission_query_conditions = {
+	"Field Activity Log": "agriculture.agriculture.permissions.field_activity_log_query",
+	"Activity Plan": "agriculture.agriculture.permissions.activity_plan_query",
+	"Demo Garden": "agriculture.agriculture.permissions.demo_garden_query",
+	"Demo Garden Material Request": "agriculture.agriculture.permissions.material_request_query",
+	"Demo Garden Planting Record": "agriculture.agriculture.permissions.planting_record_query",
+	"Demo Garden Input Application": "agriculture.agriculture.permissions.input_application_query",
+	"Demo Garden Monitoring Visit": "agriculture.agriculture.permissions.monitoring_visit_query",
+	"Demo Garden Field Day": "agriculture.agriculture.permissions.field_day_query",
+	"Farmer Training Event": "agriculture.agriculture.permissions.training_event_query",
+	"Order Collection": "agriculture.agriculture.permissions.order_collection_query",
+	"Promoter Stock Ledger": "agriculture.agriculture.permissions.stock_ledger_query",
+	"Promoter KPI Target": "agriculture.agriculture.permissions.kpi_target_query",
+}
+
+has_permission = {
+	"Field Activity Log": "agriculture.agriculture.permissions.field_activity_log_perm",
+	"Activity Plan": "agriculture.agriculture.permissions.activity_plan_perm",
+	"Demo Garden": "agriculture.agriculture.permissions.demo_garden_perm",
+	"Demo Garden Material Request": "agriculture.agriculture.permissions.material_request_perm",
+	"Demo Garden Planting Record": "agriculture.agriculture.permissions.planting_record_perm",
+	"Demo Garden Input Application": "agriculture.agriculture.permissions.input_application_perm",
+	"Demo Garden Monitoring Visit": "agriculture.agriculture.permissions.monitoring_visit_perm",
+	"Demo Garden Field Day": "agriculture.agriculture.permissions.field_day_perm",
+	"Farmer Training Event": "agriculture.agriculture.permissions.training_event_perm",
+	"Order Collection": "agriculture.agriculture.permissions.order_collection_perm",
+	"Promoter Stock Ledger": "agriculture.agriculture.permissions.stock_ledger_perm",
+	"Promoter KPI Target": "agriculture.agriculture.permissions.kpi_target_perm",
+}
 
 # DocType Class
 # ---------------
@@ -115,13 +137,11 @@ after_uninstall = "agriculture.agriculture.setup.cleanup_role_and_permissions"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
-# }
+doc_events = {
+	"Order Collection": {
+		"on_update": "agriculture.agriculture.sap_integration.on_order_update",
+	},
+}
 
 # Scheduled Tasks
 # ---------------
