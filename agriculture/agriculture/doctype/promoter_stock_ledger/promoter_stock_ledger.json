@@ -6,27 +6,24 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_136",
-  "sec_137",
+  "sec_89",
   "promoter",
   "transaction_date",
-  "col_138",
+  "col_90",
   "transaction_type",
   "demo_garden",
-  "sec_139",
+  "sec_91",
   "product_name",
   "item",
   "uom",
-  "col_140",
+  "col_92",
   "qty_in",
   "qty_out",
   "balance_qty",
-  "tab_141",
-  "sec_142",
+  "sec_93",
   "reference_doctype",
   "reference_name",
-  "tab_143",
-  "sec_144",
+  "sec_94",
   "remarks"
  ],
  "fields": [
@@ -37,15 +34,9 @@
    "options": "PSL-.####\n"
   },
   {
-   "fieldname": "tab_136",
-   "fieldtype": "Tab Break",
-   "label": "Ledger Entry"
-  },
-  {
-   "fieldname": "sec_137",
+   "fieldname": "sec_89",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -66,7 +57,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_138",
+   "fieldname": "col_90",
    "fieldtype": "Column Break"
   },
   {
@@ -85,10 +76,9 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "sec_139",
+   "fieldname": "sec_91",
    "fieldtype": "Section Break",
    "label": "Material",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -111,7 +101,7 @@
    "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams"
   },
   {
-   "fieldname": "col_140",
+   "fieldname": "col_92",
    "fieldtype": "Column Break"
   },
   {
@@ -135,16 +125,10 @@
    "bold": 1
   },
   {
-   "fieldname": "tab_141",
-   "fieldtype": "Tab Break",
-   "label": "Reference"
-  },
-  {
-   "fieldname": "sec_142",
+   "fieldname": "sec_93",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Source Reference",
+   "collapsible": 1
   },
   {
    "fieldname": "reference_doctype",
@@ -160,16 +144,10 @@
    "read_only": 1
   },
   {
-   "fieldname": "tab_143",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_144",
+   "fieldname": "sec_94",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",

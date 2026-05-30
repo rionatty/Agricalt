@@ -6,37 +6,32 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_120",
-  "sec_121",
+  "tab_78",
+  "sec_79",
   "promoter",
   "collection_date",
-  "col_122",
-  "status",
-  "sec_123",
+  "col_80",
   "stockist",
   "stockist_name",
-  "col_124",
   "location",
-  "tab_125",
-  "sec_126",
+  "status",
+  "sec_81",
   "items",
-  "sec_127",
+  "sec_82",
   "total_order_value",
-  "tab_128",
-  "sec_129",
+  "tab_83",
+  "sec_84",
   "payment_collected",
   "payment_amount",
-  "col_130",
+  "col_85",
   "payment_mode",
   "payment_reference",
-  "tab_131",
-  "sec_132",
+  "sec_86",
   "erp_sales_order",
   "erp_synced",
-  "sec_133",
+  "sec_87",
   "photos",
-  "tab_134",
-  "sec_135",
+  "sec_88",
   "remarks"
  ],
  "fields": [
@@ -47,15 +42,14 @@
    "options": "OC-.####\n"
   },
   {
-   "fieldname": "tab_120",
+   "fieldname": "tab_78",
    "fieldtype": "Tab Break",
-   "label": "Collection Details"
+   "label": "Order Details"
   },
   {
-   "fieldname": "sec_121",
+   "fieldname": "sec_79",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -76,8 +70,25 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_122",
+   "fieldname": "col_80",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "stockist",
+   "fieldtype": "Link",
+   "label": "Stockist",
+   "options": "Customer",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "stockist_name",
+   "fieldtype": "Data",
+   "label": "Stockist Name (If Not Registered)"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Location"
   },
   {
    "fieldname": "status",
@@ -89,43 +100,9 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_123",
+   "fieldname": "sec_81",
    "fieldtype": "Section Break",
-   "label": "Stockist Details",
-   "description": "",
-   "collapsible": 0
-  },
-  {
-   "fieldname": "stockist",
-   "fieldtype": "Link",
-   "label": "Registered Stockist",
-   "options": "Customer",
-   "in_list_view": 1
-  },
-  {
-   "fieldname": "stockist_name",
-   "fieldtype": "Data",
-   "label": "Stockist Name (If Not Registered)"
-  },
-  {
-   "fieldname": "col_124",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "location",
-   "fieldtype": "Data",
-   "label": "Stockist Location"
-  },
-  {
-   "fieldname": "tab_125",
-   "fieldtype": "Tab Break",
-   "label": "Orders Collected"
-  },
-  {
-   "fieldname": "sec_126",
-   "fieldtype": "Section Break",
-   "label": "Product Orders",
-   "description": "Record all products and quantities ordered by the stockist",
+   "label": "Items Ordered",
    "collapsible": 0
   },
   {
@@ -135,10 +112,9 @@
    "options": "Order Collection Item"
   },
   {
-   "fieldname": "sec_127",
+   "fieldname": "sec_82",
    "fieldtype": "Section Break",
-   "label": "Order Total",
-   "description": "",
+   "label": "",
    "collapsible": 0
   },
   {
@@ -149,15 +125,14 @@
    "bold": 1
   },
   {
-   "fieldname": "tab_128",
+   "fieldname": "tab_83",
    "fieldtype": "Tab Break",
-   "label": "Payment Collection"
+   "label": "Payment & Remarks"
   },
   {
-   "fieldname": "sec_129",
+   "fieldname": "sec_84",
    "fieldtype": "Section Break",
-   "label": "Payment Details",
-   "description": "",
+   "label": "Payment Collection",
    "collapsible": 0
   },
   {
@@ -172,7 +147,7 @@
    "depends_on": "payment_collected"
   },
   {
-   "fieldname": "col_130",
+   "fieldname": "col_85",
    "fieldtype": "Column Break"
   },
   {
@@ -189,16 +164,10 @@
    "depends_on": "payment_collected"
   },
   {
-   "fieldname": "tab_131",
-   "fieldtype": "Tab Break",
-   "label": "ERP Integration"
-  },
-  {
-   "fieldname": "sec_132",
+   "fieldname": "sec_86",
    "fieldtype": "Section Break",
    "label": "ERP Reference",
-   "description": "",
-   "collapsible": 0
+   "collapsible": 1
   },
   {
    "fieldname": "erp_sales_order",
@@ -213,11 +182,10 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_133",
+   "fieldname": "sec_87",
    "fieldtype": "Section Break",
    "label": "Photos",
-   "description": "",
-   "collapsible": 0
+   "collapsible": 1
   },
   {
    "fieldname": "photos",
@@ -226,21 +194,15 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "tab_134",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_135",
+   "fieldname": "sec_88",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks / Notes"
+   "label": "Remarks"
   }
  ],
  "istable": 0,

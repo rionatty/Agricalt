@@ -6,24 +6,19 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_64",
-  "sec_65",
+  "sec_46",
   "demo_garden",
   "promoter",
-  "col_66",
+  "col_47",
   "planting_date",
   "status",
-  "sec_67",
   "overall_expected_harvest_date",
-  "tab_68",
-  "sec_69",
+  "sec_48",
   "products",
-  "tab_70",
-  "sec_71",
+  "sec_49",
   "stock_validated",
   "validation_notes",
-  "tab_72",
-  "sec_73",
+  "sec_50",
   "remarks"
  ],
  "fields": [
@@ -34,15 +29,9 @@
    "options": "DGPR-.####\n"
   },
   {
-   "fieldname": "tab_64",
-   "fieldtype": "Tab Break",
-   "label": "Planting Details"
-  },
-  {
-   "fieldname": "sec_65",
+   "fieldname": "sec_46",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -63,7 +52,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_66",
+   "fieldname": "col_47",
    "fieldtype": "Column Break"
   },
   {
@@ -84,53 +73,35 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_67",
-   "fieldtype": "Section Break",
-   "label": "Expected Outcome",
-   "description": "",
-   "collapsible": 0
-  },
-  {
    "fieldname": "overall_expected_harvest_date",
    "fieldtype": "Date",
-   "label": "Expected Harvest / Field Day Date",
+   "label": "Expected Harvest Date",
    "read_only": 1,
-   "description": "Auto-calculated from planting date + longest crop maturity duration"
+   "description": "Auto-calculated from planting date + longest maturity duration"
   },
   {
-   "fieldname": "tab_68",
-   "fieldtype": "Tab Break",
-   "label": "Products Planted"
-  },
-  {
-   "fieldname": "sec_69",
+   "fieldname": "sec_48",
    "fieldtype": "Section Break",
-   "label": "Planting Record",
-   "description": "Quantities will be validated against materials received from store. You cannot plant more than you received.",
-   "collapsible": 0
+   "label": "Products Planted",
+   "collapsible": 0,
+   "description": "Quantities validated against materials received. Cannot plant more than received from store."
   },
   {
    "fieldname": "products",
    "fieldtype": "Table",
-   "label": "Products",
+   "label": "Products Planted",
    "options": "Demo Garden Planting Item"
   },
   {
-   "fieldname": "tab_70",
-   "fieldtype": "Tab Break",
-   "label": "Stock Validation"
-  },
-  {
-   "fieldname": "sec_71",
+   "fieldname": "sec_49",
    "fieldtype": "Section Break",
-   "label": "Validation Result",
-   "description": "Stock is automatically validated when you save. Submit is only allowed after successful validation.",
-   "collapsible": 0
+   "label": "Stock Validation",
+   "collapsible": 1
   },
   {
    "fieldname": "stock_validated",
    "fieldtype": "Check",
-   "label": "Stock Validated Successfully?",
+   "label": "Stock Validated?",
    "read_only": 1
   },
   {
@@ -140,21 +111,15 @@
    "read_only": 1
   },
   {
-   "fieldname": "tab_72",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_73",
+   "fieldname": "sec_50",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks / Notes"
+   "label": "Remarks"
   }
  ],
  "istable": 0,

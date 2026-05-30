@@ -9,11 +9,9 @@
   "product_name",
   "item",
   "target_crop",
-  "col_3",
   "quantity_available",
   "quantity_applied",
-  "uom",
-  "purpose"
+  "uom"
  ],
  "fields": [
   {
@@ -22,61 +20,45 @@
    "label": "Type",
    "options": "Chemical\nFertilizer\nPesticide\nHerbicide\nOther",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "product_name",
    "fieldtype": "Data",
    "label": "Product",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 3
+   "in_list_view": 1
   },
   {
    "fieldname": "item",
    "fieldtype": "Link",
    "label": "ERP Item",
-   "options": "Item",
-   "columns": 2
+   "options": "Item"
   },
   {
    "fieldname": "target_crop",
    "fieldtype": "Data",
-   "label": "Applied On",
-   "columns": 2
-  },
-  {
-   "fieldname": "col_3",
-   "fieldtype": "Column Break"
+   "label": "Applied On"
   },
   {
    "fieldname": "quantity_available",
    "fieldtype": "Float",
    "label": "Available",
    "read_only": 1,
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "quantity_applied",
    "fieldtype": "Float",
    "label": "Applied",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "uom",
    "fieldtype": "Select",
    "label": "Unit",
-   "options": "Kg\nGrams\nLitres\nMl\nBags\nSachets\nPcs",
-   "columns": 2
-  },
-  {
-   "fieldname": "purpose",
-   "fieldtype": "Small Text",
-   "label": "Purpose / Notes"
+   "options": "Kg\nGrams\nLitres\nMl\nBags\nSachets\nPcs"
   }
  ],
  "istable": 1,

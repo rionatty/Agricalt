@@ -6,29 +6,24 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_94",
-  "sec_95",
+  "sec_64",
   "demo_garden",
   "promoter",
-  "col_96",
+  "col_65",
   "field_day_date",
   "location",
   "number_of_attendees",
   "status",
-  "tab_97",
-  "sec_98",
+  "sec_66",
   "activities_conducted",
   "topics_covered",
-  "col_99",
+  "col_67",
   "key_outcomes",
-  "tab_100",
-  "sec_101",
+  "sec_68",
   "attendees",
-  "tab_102",
-  "sec_103",
+  "sec_69",
   "photos",
-  "tab_104",
-  "sec_105",
+  "sec_70",
   "remarks"
  ],
  "fields": [
@@ -39,15 +34,9 @@
    "options": "DGFD-.####\n"
   },
   {
-   "fieldname": "tab_94",
-   "fieldtype": "Tab Break",
-   "label": "Event Details"
-  },
-  {
-   "fieldname": "sec_95",
+   "fieldname": "sec_64",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -68,7 +57,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_96",
+   "fieldname": "col_65",
    "fieldtype": "Column Break"
   },
   {
@@ -87,7 +76,7 @@
   {
    "fieldname": "number_of_attendees",
    "fieldtype": "Int",
-   "label": "Number of Attendees",
+   "label": "No. of Attendees",
    "in_list_view": 1
   },
   {
@@ -100,15 +89,9 @@
    "read_only": 1
   },
   {
-   "fieldname": "tab_97",
-   "fieldtype": "Tab Break",
-   "label": "Programme & Outcomes"
-  },
-  {
-   "fieldname": "sec_98",
+   "fieldname": "sec_66",
    "fieldtype": "Section Break",
-   "label": "Activities & Topics",
-   "description": "",
+   "label": "Programme",
    "collapsible": 0
   },
   {
@@ -122,24 +105,18 @@
    "label": "Topics Covered"
   },
   {
-   "fieldname": "col_99",
+   "fieldname": "col_67",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "key_outcomes",
    "fieldtype": "Text",
-   "label": "Key Outcomes & Learnings"
+   "label": "Key Outcomes"
   },
   {
-   "fieldname": "tab_100",
-   "fieldtype": "Tab Break",
-   "label": "Attendees"
-  },
-  {
-   "fieldname": "sec_101",
+   "fieldname": "sec_68",
    "fieldtype": "Section Break",
-   "label": "Attendance Register",
-   "description": "",
+   "label": "Attendees",
    "collapsible": 0
   },
   {
@@ -149,16 +126,10 @@
    "options": "Training Event Attendee"
   },
   {
-   "fieldname": "tab_102",
-   "fieldtype": "Tab Break",
-   "label": "Photos"
-  },
-  {
-   "fieldname": "sec_103",
+   "fieldname": "sec_69",
    "fieldtype": "Section Break",
-   "label": "Field Day Photos",
-   "description": "",
-   "collapsible": 0
+   "label": "Photos",
+   "collapsible": 1
   },
   {
    "fieldname": "photos",
@@ -167,21 +138,15 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "tab_104",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_105",
+   "fieldname": "sec_70",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks / Notes"
+   "label": "Remarks"
   }
  ],
  "istable": 0,

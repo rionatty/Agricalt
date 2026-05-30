@@ -9,7 +9,6 @@
   "crop",
   "crop_maturity_duration",
   "uom",
-  "col_1",
   "quantity_requested",
   "quantity_received",
   "quantity_planted"
@@ -20,56 +19,44 @@
    "fieldtype": "Data",
    "label": "Product / Variety",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 3
+   "in_list_view": 1
   },
   {
    "fieldname": "crop",
    "fieldtype": "Link",
    "label": "Crop",
    "options": "Crop",
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "crop_maturity_duration",
    "fieldtype": "Int",
    "label": "Maturity (Days)",
-   "in_list_view": 1,
-   "columns": 2,
-   "description": "Days from planting to harvest"
+   "in_list_view": 1
   },
   {
    "fieldname": "uom",
    "fieldtype": "Select",
    "label": "Unit",
-   "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams",
-   "columns": 1
-  },
-  {
-   "fieldname": "col_1",
-   "fieldtype": "Column Break"
+   "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams"
   },
   {
    "fieldname": "quantity_requested",
    "fieldtype": "Float",
    "label": "Requested",
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "quantity_received",
    "fieldtype": "Float",
    "label": "Received",
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "quantity_planted",
    "fieldtype": "Float",
    "label": "Planted",
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   }
  ],
  "istable": 1,

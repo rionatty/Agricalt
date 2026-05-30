@@ -19,38 +19,33 @@
    "fieldtype": "Date",
    "label": "Date",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "activity_type",
    "fieldtype": "Select",
-   "label": "Activity",
+   "label": "Activity Type",
    "options": "Farm Visit\nStockist Visit\nExhibition\nFarmer Training\nDemo Garden Visit\nPayment Collection",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 3
+   "in_list_view": 1
   },
   {
    "fieldname": "customer_category",
    "fieldtype": "Select",
    "label": "Category",
    "options": "\nFarmer\nNGO\nStockist\nOther",
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "customer_name",
    "fieldtype": "Data",
    "label": "Contact Name",
-   "in_list_view": 1,
-   "columns": 3
+   "in_list_view": 1
   },
   {
    "fieldname": "location",
    "fieldtype": "Data",
-   "label": "Location",
-   "columns": 2
+   "label": "Location"
   },
   {
    "fieldname": "purpose",
@@ -59,7 +54,7 @@
   },
   {
    "fieldname": "remarks",
-   "fieldtype": "Text",
+   "fieldtype": "Small Text",
    "label": "Remarks"
   }
  ],

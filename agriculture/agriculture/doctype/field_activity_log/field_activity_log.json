@@ -6,41 +6,38 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_25",
-  "sec_26",
+  "tab_14",
+  "sec_15",
   "activity_type",
-  "status",
-  "col_27",
   "promoter",
+  "col_16",
   "activity_date",
   "activity_time",
-  "sec_28",
+  "status",
+  "sec_17",
   "is_planned",
   "activity_plan",
-  "tab_29",
-  "sec_30",
+  "sec_18",
+  "location_name",
   "gps_latitude",
+  "col_19",
   "gps_longitude",
   "gps_location_text",
-  "location_name",
-  "sec_31",
+  "sec_20",
   "customer_category",
   "customer",
-  "col_32",
+  "col_21",
   "customer_name",
-  "purpose",
   "demo_garden",
-  "tab_33",
-  "sec_34",
+  "sec_22",
+  "purpose",
   "orders_collected",
-  "col_35",
+  "col_23",
   "payment_collected",
-  "tab_36",
-  "sec_37",
-  "photos",
-  "tab_38",
-  "sec_39",
-  "remarks"
+  "remarks",
+  "tab_24",
+  "sec_25",
+  "photos"
  ],
  "fields": [
   {
@@ -50,15 +47,14 @@
    "options": "FAL-.####\n"
   },
   {
-   "fieldname": "tab_25",
+   "fieldname": "tab_14",
    "fieldtype": "Tab Break",
-   "label": "Activity"
+   "label": "Activity Details"
   },
   {
-   "fieldname": "sec_26",
+   "fieldname": "sec_15",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -71,25 +67,16 @@
    "bold": 1
   },
   {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Draft\nSubmitted",
-   "default": "Draft",
-   "in_list_view": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "col_27",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "promoter",
    "fieldtype": "Link",
    "label": "Field Promoter",
    "options": "Field Promoter",
    "reqd": 1,
    "in_list_view": 1
+  },
+  {
+   "fieldname": "col_16",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "activity_date",
@@ -105,46 +92,57 @@
    "label": "Time"
   },
   {
-   "fieldname": "sec_28",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nSubmitted",
+   "default": "Draft",
+   "in_list_view": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_17",
    "fieldtype": "Section Break",
    "label": "Plan Reference",
-   "description": "",
    "collapsible": 0
   },
   {
    "fieldname": "is_planned",
    "fieldtype": "Check",
-   "label": "This is a Planned Activity"
+   "label": "Planned Activity?"
   },
   {
    "fieldname": "activity_plan",
    "fieldtype": "Link",
    "label": "Activity Plan",
    "options": "Activity Plan",
-   "depends_on": "is_planned",
-   "description": "Link to the approved activity plan this activity belongs to"
+   "depends_on": "is_planned"
   },
   {
-   "fieldname": "tab_29",
-   "fieldtype": "Tab Break",
-   "label": "Location & Customer"
-  },
-  {
-   "fieldname": "sec_30",
+   "fieldname": "sec_18",
    "fieldtype": "Section Break",
-   "label": "GPS Location",
-   "description": "Coordinates are auto-captured by the mobile app at the time of logging",
+   "label": "Location",
    "collapsible": 0
+  },
+  {
+   "fieldname": "location_name",
+   "fieldtype": "Data",
+   "label": "Location / Village",
+   "in_list_view": 1
   },
   {
    "fieldname": "gps_latitude",
    "fieldtype": "Float",
-   "label": "Latitude"
+   "label": "GPS Latitude"
+  },
+  {
+   "fieldname": "col_19",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "gps_longitude",
    "fieldtype": "Float",
-   "label": "Longitude"
+   "label": "GPS Longitude"
   },
   {
    "fieldname": "gps_location_text",
@@ -153,15 +151,9 @@
    "read_only": 1
   },
   {
-   "fieldname": "location_name",
-   "fieldtype": "Data",
-   "label": "Location / Village Name"
-  },
-  {
-   "fieldname": "sec_31",
+   "fieldname": "sec_20",
    "fieldtype": "Section Break",
-   "label": "Customer / Contact Details",
-   "description": "",
+   "label": "Customer Details",
    "collapsible": 0
   },
   {
@@ -178,13 +170,25 @@
    "options": "Customer"
   },
   {
-   "fieldname": "col_32",
+   "fieldname": "col_21",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "customer_name",
    "fieldtype": "Data",
-   "label": "Name (If Not Registered)"
+   "label": "Contact Name (If Not Registered)"
+  },
+  {
+   "fieldname": "demo_garden",
+   "fieldtype": "Link",
+   "label": "Demo Garden",
+   "options": "Demo Garden"
+  },
+  {
+   "fieldname": "sec_22",
+   "fieldtype": "Section Break",
+   "label": "Purpose & Outcomes",
+   "collapsible": 0
   },
   {
    "fieldname": "purpose",
@@ -192,30 +196,12 @@
    "label": "Purpose of Visit"
   },
   {
-   "fieldname": "demo_garden",
-   "fieldtype": "Link",
-   "label": "Demo Garden (If Applicable)",
-   "options": "Demo Garden"
-  },
-  {
-   "fieldname": "tab_33",
-   "fieldtype": "Tab Break",
-   "label": "Orders & Payments"
-  },
-  {
-   "fieldname": "sec_34",
-   "fieldtype": "Section Break",
-   "label": "Orders Collected",
-   "description": "Complete for Stockist Visit activities",
-   "collapsible": 0
-  },
-  {
    "fieldname": "orders_collected",
    "fieldtype": "Currency",
    "label": "Orders Collected (UGX)"
   },
   {
-   "fieldname": "col_35",
+   "fieldname": "col_23",
    "fieldtype": "Column Break"
   },
   {
@@ -224,39 +210,27 @@
    "label": "Payment Collected (UGX)"
   },
   {
-   "fieldname": "tab_36",
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "tab_24",
    "fieldtype": "Tab Break",
    "label": "Photos"
   },
   {
-   "fieldname": "sec_37",
+   "fieldname": "sec_25",
    "fieldtype": "Section Break",
    "label": "Photo Evidence",
-   "description": "Photos must be taken live from camera — GPS coordinates are auto-embedded",
-   "collapsible": 0
+   "collapsible": 0,
+   "description": "Photos must be taken live from camera. GPS is auto-embedded at time of capture."
   },
   {
    "fieldname": "photos",
    "fieldtype": "Table",
    "label": "Photos",
    "options": "Field Activity Photo"
-  },
-  {
-   "fieldname": "tab_38",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_39",
-   "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
-  },
-  {
-   "fieldname": "remarks",
-   "fieldtype": "Text",
-   "label": "Remarks / Observations"
   }
  ],
  "istable": 0,

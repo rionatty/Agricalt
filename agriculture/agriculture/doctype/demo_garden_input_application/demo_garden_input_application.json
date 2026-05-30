@@ -6,22 +6,18 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_74",
-  "sec_75",
+  "sec_51",
   "demo_garden",
   "promoter",
-  "col_76",
+  "col_52",
   "application_date",
   "application_stage",
   "status",
-  "tab_77",
-  "sec_78",
+  "sec_53",
   "inputs",
-  "tab_79",
-  "sec_80",
+  "sec_54",
   "photos",
-  "tab_81",
-  "sec_82",
+  "sec_55",
   "remarks"
  ],
  "fields": [
@@ -32,15 +28,9 @@
    "options": "DGIA-.####\n"
   },
   {
-   "fieldname": "tab_74",
-   "fieldtype": "Tab Break",
-   "label": "Application Details"
-  },
-  {
-   "fieldname": "sec_75",
+   "fieldname": "sec_51",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -61,7 +51,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_76",
+   "fieldname": "col_52",
    "fieldtype": "Column Break"
   },
   {
@@ -75,7 +65,7 @@
   {
    "fieldname": "application_stage",
    "fieldtype": "Select",
-   "label": "Growth Stage at Application",
+   "label": "Growth Stage",
    "options": "Pre-Planting\nAt Planting\nPost-Planting\nMonitoring\nPre-Harvest",
    "reqd": 1,
    "in_list_view": 1
@@ -90,16 +80,11 @@
    "read_only": 1
   },
   {
-   "fieldname": "tab_77",
-   "fieldtype": "Tab Break",
-   "label": "Inputs Applied"
-  },
-  {
-   "fieldname": "sec_78",
+   "fieldname": "sec_53",
    "fieldtype": "Section Break",
-   "label": "Chemicals, Fertilizers & Pesticides",
-   "description": "Quantities are validated against materials received. Applied quantities are deducted from your stock balance.",
-   "collapsible": 0
+   "label": "Inputs Applied",
+   "collapsible": 0,
+   "description": "Quantities deducted from promoter stock balance upon submission."
   },
   {
    "fieldname": "inputs",
@@ -108,16 +93,10 @@
    "options": "Demo Garden Input Item"
   },
   {
-   "fieldname": "tab_79",
-   "fieldtype": "Tab Break",
-   "label": "Photos"
-  },
-  {
-   "fieldname": "sec_80",
+   "fieldname": "sec_54",
    "fieldtype": "Section Break",
-   "label": "Photo Evidence",
-   "description": "",
-   "collapsible": 0
+   "label": "Photos",
+   "collapsible": 1
   },
   {
    "fieldname": "photos",
@@ -126,21 +105,15 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "tab_81",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_82",
+   "fieldname": "sec_55",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks / Notes"
+   "label": "Remarks"
   }
  ],
  "istable": 0,

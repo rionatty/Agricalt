@@ -6,26 +6,23 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_6",
-  "sec_7",
+  "sec_1",
   "promoter_name",
-  "col_8",
+  "mobile_number",
+  "col_2",
   "status",
   "joining_date",
-  "sec_9",
-  "mobile_number",
-  "email_id",
-  "col_10",
-  "employee",
-  "user",
-  "tab_11",
-  "sec_12",
+  "sec_3",
   "region",
   "territory",
-  "col_13",
+  "col_4",
   "supervisor",
-  "tab_14",
-  "sec_15",
+  "sec_5",
+  "email_id",
+  "employee",
+  "col_6",
+  "user",
+  "sec_7",
   "remarks"
  ],
  "fields": [
@@ -36,15 +33,9 @@
    "options": "FP-.####\n"
   },
   {
-   "fieldname": "tab_6",
-   "fieldtype": "Tab Break",
-   "label": "Profile"
-  },
-  {
-   "fieldname": "sec_7",
+   "fieldname": "sec_1",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -56,7 +47,14 @@
    "bold": 1
   },
   {
-   "fieldname": "col_8",
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number",
+   "options": "Phone",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "col_2",
    "fieldtype": "Column Break"
   },
   {
@@ -65,8 +63,7 @@
    "label": "Status",
    "options": "Active\nInactive",
    "default": "Active",
-   "in_list_view": 1,
-   "bold": 1
+   "in_list_view": 1
   },
   {
    "fieldname": "joining_date",
@@ -74,34 +71,54 @@
    "label": "Joining Date"
   },
   {
-   "fieldname": "sec_9",
+   "fieldname": "sec_3",
    "fieldtype": "Section Break",
-   "label": "Contact Information",
-   "description": "",
+   "label": "Assignment",
    "collapsible": 0
   },
   {
-   "fieldname": "mobile_number",
-   "fieldtype": "Data",
-   "label": "Mobile Number",
-   "options": "Phone",
+   "fieldname": "region",
+   "fieldtype": "Select",
+   "label": "Region",
+   "options": "\nCentral\nEastern\nWestern\nNorthern\nSouth-Western\nOther",
    "in_list_view": 1
+  },
+  {
+   "fieldname": "territory",
+   "fieldtype": "Data",
+   "label": "Territory / Area"
+  },
+  {
+   "fieldname": "col_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "supervisor",
+   "fieldtype": "Link",
+   "label": "Supervisor",
+   "options": "Field Promoter"
+  },
+  {
+   "fieldname": "sec_5",
+   "fieldtype": "Section Break",
+   "label": "System Access",
+   "collapsible": 1
   },
   {
    "fieldname": "email_id",
    "fieldtype": "Data",
-   "label": "Email Address",
+   "label": "Email",
    "options": "Email"
-  },
-  {
-   "fieldname": "col_10",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "employee",
    "fieldtype": "Link",
-   "label": "Employee Record",
+   "label": "Employee",
    "options": "Employee"
+  },
+  {
+   "fieldname": "col_6",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "user",
@@ -110,57 +127,15 @@
    "options": "User"
   },
   {
-   "fieldname": "tab_11",
-   "fieldtype": "Tab Break",
-   "label": "Territory & Supervisor"
-  },
-  {
-   "fieldname": "sec_12",
+   "fieldname": "sec_7",
    "fieldtype": "Section Break",
-   "label": "Coverage Area",
-   "description": "",
-   "collapsible": 0
-  },
-  {
-   "fieldname": "region",
-   "fieldtype": "Select",
-   "label": "Region",
-   "options": "\nCentral\nEastern\nWestern\nNorthern\nSouth-Western\nOther",
-   "reqd": 1,
-   "in_list_view": 1
-  },
-  {
-   "fieldname": "territory",
-   "fieldtype": "Data",
-   "label": "Territory / Area",
-   "description": "Specific districts, counties or zones covered"
-  },
-  {
-   "fieldname": "col_13",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "supervisor",
-   "fieldtype": "Link",
-   "label": "Reports To (Supervisor)",
-   "options": "Field Promoter"
-  },
-  {
-   "fieldname": "tab_14",
-   "fieldtype": "Tab Break",
-   "label": "Notes"
-  },
-  {
-   "fieldname": "sec_15",
-   "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Internal Notes"
+   "label": "Remarks"
   }
  ],
  "istable": 0,

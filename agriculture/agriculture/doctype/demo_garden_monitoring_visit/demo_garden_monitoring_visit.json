@@ -6,31 +6,28 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_83",
-  "sec_84",
+  "sec_56",
   "demo_garden",
   "promoter",
-  "col_85",
+  "col_57",
   "visit_date",
   "crop_growth_stage",
   "status",
-  "tab_86",
-  "sec_87",
+  "sec_58",
   "general_condition",
   "observations",
-  "col_88",
+  "col_59",
   "disease_observed",
   "disease_details",
   "inputs_needed",
   "inputs_description",
-  "sec_89",
+  "sec_60",
   "next_action",
+  "col_61",
   "next_visit_date",
-  "tab_90",
-  "sec_91",
+  "sec_62",
   "photos",
-  "tab_92",
-  "sec_93",
+  "sec_63",
   "remarks"
  ],
  "fields": [
@@ -41,15 +38,9 @@
    "options": "DGMV-.####\n"
   },
   {
-   "fieldname": "tab_83",
-   "fieldtype": "Tab Break",
-   "label": "Visit Details"
-  },
-  {
-   "fieldname": "sec_84",
+   "fieldname": "sec_56",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -70,7 +61,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_85",
+   "fieldname": "col_57",
    "fieldtype": "Column Break"
   },
   {
@@ -84,7 +75,7 @@
   {
    "fieldname": "crop_growth_stage",
    "fieldtype": "Select",
-   "label": "Crop Growth Stage",
+   "label": "Growth Stage",
    "options": "Germination\nSeedling\nVegetative\nFlowering\nFruiting\nMaturity\nOther",
    "in_list_view": 1
   },
@@ -98,15 +89,9 @@
    "read_only": 1
   },
   {
-   "fieldname": "tab_86",
-   "fieldtype": "Tab Break",
-   "label": "Field Observations"
-  },
-  {
-   "fieldname": "sec_87",
+   "fieldname": "sec_58",
    "fieldtype": "Section Break",
-   "label": "Crop Condition",
-   "description": "",
+   "label": "Observations",
    "collapsible": 0
   },
   {
@@ -119,10 +104,10 @@
   {
    "fieldname": "observations",
    "fieldtype": "Text",
-   "label": "Detailed Observations"
+   "label": "Observations"
   },
   {
-   "fieldname": "col_88",
+   "fieldname": "col_59",
    "fieldtype": "Column Break"
   },
   {
@@ -148,33 +133,30 @@
    "depends_on": "inputs_needed"
   },
   {
-   "fieldname": "sec_89",
+   "fieldname": "sec_60",
    "fieldtype": "Section Break",
-   "label": "Action Plan",
-   "description": "",
+   "label": "Next Steps",
    "collapsible": 0
   },
   {
    "fieldname": "next_action",
    "fieldtype": "Small Text",
-   "label": "Recommended Next Action"
+   "label": "Recommended Action"
+  },
+  {
+   "fieldname": "col_61",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "next_visit_date",
    "fieldtype": "Date",
-   "label": "Planned Next Visit Date"
+   "label": "Next Visit Date"
   },
   {
-   "fieldname": "tab_90",
-   "fieldtype": "Tab Break",
-   "label": "Photos"
-  },
-  {
-   "fieldname": "sec_91",
+   "fieldname": "sec_62",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Photos",
+   "collapsible": 1
   },
   {
    "fieldname": "photos",
@@ -183,21 +165,15 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "tab_92",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_93",
+   "fieldname": "sec_63",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks / Notes"
+   "label": "Remarks"
   }
  ],
  "istable": 0,

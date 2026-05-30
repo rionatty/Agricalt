@@ -10,10 +10,8 @@
   "quantity_available",
   "quantity_planted",
   "uom",
-  "col_4",
   "crop_maturity_duration",
-  "expected_harvest_date",
-  "remarks"
+  "expected_harvest_date"
  ],
  "fields": [
   {
@@ -21,62 +19,46 @@
    "fieldtype": "Data",
    "label": "Product / Variety",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 3
+   "in_list_view": 1
   },
   {
    "fieldname": "crop",
    "fieldtype": "Link",
    "label": "Crop",
-   "options": "Crop",
-   "columns": 2
+   "options": "Crop"
   },
   {
    "fieldname": "quantity_available",
    "fieldtype": "Float",
-   "label": "Qty Available",
+   "label": "Qty Available (Received)",
    "read_only": 1,
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "quantity_planted",
    "fieldtype": "Float",
    "label": "Qty Planted",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "uom",
    "fieldtype": "Select",
    "label": "Unit",
-   "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams",
-   "columns": 1
-  },
-  {
-   "fieldname": "col_4",
-   "fieldtype": "Column Break"
+   "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams"
   },
   {
    "fieldname": "crop_maturity_duration",
    "fieldtype": "Int",
    "label": "Maturity (Days)",
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "expected_harvest_date",
    "fieldtype": "Date",
-   "label": "Exp. Harvest Date",
+   "label": "Exp. Harvest",
    "read_only": 1,
-   "in_list_view": 1,
-   "columns": 2
-  },
-  {
-   "fieldname": "remarks",
-   "fieldtype": "Small Text",
-   "label": "Remarks"
+   "in_list_view": 1
   }
  ],
  "istable": 1,

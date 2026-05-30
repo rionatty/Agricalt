@@ -6,24 +6,21 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_16",
-  "sec_17",
+  "sec_8",
   "promoter",
   "plan_type",
-  "col_18",
+  "col_9",
   "from_date",
   "to_date",
-  "sec_19",
   "status",
-  "col_20",
+  "sec_10",
+  "activities",
+  "sec_11",
   "approved_by",
   "approval_date",
+  "col_12",
   "rejection_reason",
-  "tab_21",
-  "sec_22",
-  "activities",
-  "tab_23",
-  "sec_24",
+  "sec_13",
   "remarks"
  ],
  "fields": [
@@ -34,15 +31,9 @@
    "options": "AP-.####\n"
   },
   {
-   "fieldname": "tab_16",
-   "fieldtype": "Tab Break",
-   "label": "Plan Details"
-  },
-  {
-   "fieldname": "sec_17",
+   "fieldname": "sec_8",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -63,7 +54,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_18",
+   "fieldname": "col_9",
    "fieldtype": "Column Break"
   },
   {
@@ -80,24 +71,31 @@
    "reqd": 1
   },
   {
-   "fieldname": "sec_19",
-   "fieldtype": "Section Break",
-   "label": "Status",
-   "description": "",
-   "collapsible": 0
-  },
-  {
    "fieldname": "status",
    "fieldtype": "Select",
-   "label": "Approval Status",
+   "label": "Status",
    "options": "Draft\nSubmitted\nApproved\nRejected",
    "default": "Draft",
    "in_list_view": 1,
    "read_only": 1
   },
   {
-   "fieldname": "col_20",
-   "fieldtype": "Column Break"
+   "fieldname": "sec_10",
+   "fieldtype": "Section Break",
+   "label": "Planned Activities",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "activities",
+   "fieldtype": "Table",
+   "label": "Activities",
+   "options": "Activity Plan Item"
+  },
+  {
+   "fieldname": "sec_11",
+   "fieldtype": "Section Break",
+   "label": "Approval",
+   "collapsible": 1
   },
   {
    "fieldname": "approved_by",
@@ -113,45 +111,25 @@
    "read_only": 1
   },
   {
+   "fieldname": "col_12",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "rejection_reason",
    "fieldtype": "Small Text",
    "label": "Rejection Reason",
    "read_only": 1
   },
   {
-   "fieldname": "tab_21",
-   "fieldtype": "Tab Break",
-   "label": "Planned Activities"
-  },
-  {
-   "fieldname": "sec_22",
+   "fieldname": "sec_13",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
-  },
-  {
-   "fieldname": "activities",
-   "fieldtype": "Table",
-   "label": "Activities",
-   "options": "Activity Plan Item"
-  },
-  {
-   "fieldname": "tab_23",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_24",
-   "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks / Notes"
+   "label": "Remarks"
   }
  ],
  "istable": 0,

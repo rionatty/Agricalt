@@ -6,30 +6,26 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_52",
-  "sec_53",
+  "sec_38",
   "demo_garden",
   "promoter",
-  "col_54",
+  "col_39",
   "request_date",
   "status",
-  "tab_55",
-  "sec_56",
+  "sec_40",
   "items",
-  "tab_57",
-  "sec_58",
+  "sec_41",
   "approved_by",
   "approval_date",
-  "col_59",
+  "col_42",
   "rejection_reason",
-  "sec_60",
+  "sec_43",
   "issued_by",
   "issue_date",
-  "sec_61",
+  "sec_44",
   "promoter_receipt_confirmed",
   "promoter_receipt_date",
-  "tab_62",
-  "sec_63",
+  "sec_45",
   "remarks"
  ],
  "fields": [
@@ -40,15 +36,9 @@
    "options": "DGMR-.####\n"
   },
   {
-   "fieldname": "tab_52",
-   "fieldtype": "Tab Break",
-   "label": "Request Details"
-  },
-  {
-   "fieldname": "sec_53",
+   "fieldname": "sec_38",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -69,7 +59,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_54",
+   "fieldname": "col_39",
    "fieldtype": "Column Break"
   },
   {
@@ -86,19 +76,12 @@
    "options": "Draft\nSubmitted\nApproved\nIssued\nReceived\nRejected",
    "default": "Draft",
    "in_list_view": 1,
-   "read_only": 1,
-   "bold": 1
+   "read_only": 1
   },
   {
-   "fieldname": "tab_55",
-   "fieldtype": "Tab Break",
-   "label": "Requested Materials"
-  },
-  {
-   "fieldname": "sec_56",
+   "fieldname": "sec_40",
    "fieldtype": "Section Break",
-   "label": "Materials List",
-   "description": "List all seeds, chemicals and fertilisers needed for the demo garden",
+   "label": "Requested Materials",
    "collapsible": 0
   },
   {
@@ -108,16 +91,10 @@
    "options": "Demo Garden Material Item"
   },
   {
-   "fieldname": "tab_57",
-   "fieldtype": "Tab Break",
-   "label": "Approval & Dispatch"
-  },
-  {
-   "fieldname": "sec_58",
+   "fieldname": "sec_41",
    "fieldtype": "Section Break",
-   "label": "Supervisor Approval",
-   "description": "",
-   "collapsible": 0
+   "label": "Approval",
+   "collapsible": 1
   },
   {
    "fieldname": "approved_by",
@@ -133,7 +110,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "col_59",
+   "fieldname": "col_42",
    "fieldtype": "Column Break"
   },
   {
@@ -143,11 +120,10 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_60",
+   "fieldname": "sec_43",
    "fieldtype": "Section Break",
    "label": "Store Dispatch",
-   "description": "",
-   "collapsible": 0
+   "collapsible": 1
   },
   {
    "fieldname": "issued_by",
@@ -163,11 +139,10 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_61",
+   "fieldname": "sec_44",
    "fieldtype": "Section Break",
-   "label": "Promoter Receipt Confirmation",
-   "description": "",
-   "collapsible": 0
+   "label": "Promoter Receipt",
+   "collapsible": 1
   },
   {
    "fieldname": "promoter_receipt_confirmed",
@@ -180,21 +155,15 @@
    "label": "Confirmed On"
   },
   {
-   "fieldname": "tab_62",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_63",
+   "fieldname": "sec_45",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks / Notes"
+   "label": "Remarks"
   }
  ],
  "istable": 0,

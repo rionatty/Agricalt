@@ -9,7 +9,6 @@
   "gps_latitude",
   "gps_longitude",
   "gps_location_text",
-  "captured_at",
   "caption"
  ],
  "fields": [
@@ -36,12 +35,6 @@
    "label": "GPS Coordinates",
    "read_only": 1,
    "in_list_view": 1
-  },
-  {
-   "fieldname": "captured_at",
-   "fieldtype": "Datetime",
-   "label": "Captured At",
-   "read_only": 1
   },
   {
    "fieldname": "caption",

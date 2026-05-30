@@ -6,31 +6,24 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_106",
-  "sec_107",
+  "sec_71",
   "event_type",
-  "status",
-  "col_108",
   "promoter",
+  "col_72",
   "event_date",
-  "sec_109",
   "location",
   "sector",
-  "col_110",
   "number_of_attendees",
-  "tab_111",
-  "sec_112",
+  "status",
+  "sec_73",
   "topics_covered",
-  "col_113",
+  "col_74",
   "outcomes",
-  "tab_114",
-  "sec_115",
+  "sec_75",
   "attendees",
-  "tab_116",
-  "sec_117",
+  "sec_76",
   "photos",
-  "tab_118",
-  "sec_119",
+  "sec_77",
   "remarks"
  ],
  "fields": [
@@ -41,15 +34,9 @@
    "options": "FTE-.####\n"
   },
   {
-   "fieldname": "tab_106",
-   "fieldtype": "Tab Break",
-   "label": "Event Details"
-  },
-  {
-   "fieldname": "sec_107",
+   "fieldname": "sec_71",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -62,19 +49,6 @@
    "bold": 1
   },
   {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Planned\nCompleted",
-   "default": "Planned",
-   "in_list_view": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "col_108",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "promoter",
    "fieldtype": "Link",
    "label": "Organising Promoter",
@@ -83,19 +57,16 @@
    "in_list_view": 1
   },
   {
+   "fieldname": "col_72",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "event_date",
    "fieldtype": "Date",
    "label": "Event Date",
    "reqd": 1,
    "default": "Today",
    "in_list_view": 1
-  },
-  {
-   "fieldname": "sec_109",
-   "fieldtype": "Section Break",
-   "label": "Venue",
-   "description": "",
-   "collapsible": 0
   },
   {
    "fieldname": "location",
@@ -110,25 +81,24 @@
    "label": "Sector / Sub-county"
   },
   {
-   "fieldname": "col_110",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "number_of_attendees",
    "fieldtype": "Int",
    "label": "No. of Attendees",
    "in_list_view": 1
   },
   {
-   "fieldname": "tab_111",
-   "fieldtype": "Tab Break",
-   "label": "Content & Outcomes"
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Planned\nCompleted",
+   "default": "Planned",
+   "in_list_view": 1,
+   "read_only": 1
   },
   {
-   "fieldname": "sec_112",
+   "fieldname": "sec_73",
    "fieldtype": "Section Break",
-   "label": "Topics Covered",
-   "description": "",
+   "label": "Content & Outcomes",
    "collapsible": 0
   },
   {
@@ -137,24 +107,18 @@
    "label": "Topics Covered"
   },
   {
-   "fieldname": "col_113",
+   "fieldname": "col_74",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "outcomes",
    "fieldtype": "Text",
-   "label": "Key Outcomes & Impact"
+   "label": "Key Outcomes"
   },
   {
-   "fieldname": "tab_114",
-   "fieldtype": "Tab Break",
-   "label": "Attendees"
-  },
-  {
-   "fieldname": "sec_115",
+   "fieldname": "sec_75",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
+   "label": "Attendees",
    "collapsible": 0
   },
   {
@@ -164,16 +128,10 @@
    "options": "Training Event Attendee"
   },
   {
-   "fieldname": "tab_116",
-   "fieldtype": "Tab Break",
-   "label": "Photos"
-  },
-  {
-   "fieldname": "sec_117",
+   "fieldname": "sec_76",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Photos",
+   "collapsible": 1
   },
   {
    "fieldname": "photos",
@@ -182,21 +140,15 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "tab_118",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_119",
+   "fieldname": "sec_77",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks / Notes"
+   "label": "Remarks"
   }
  ],
  "istable": 0,

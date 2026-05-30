@@ -6,33 +6,33 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "tab_40",
-  "sec_41",
+  "tab_26",
+  "sec_27",
   "demo_garden_name",
-  "status",
-  "sec_42",
   "location",
-  "gps_latitude",
-  "gps_longitude",
-  "col_43",
+  "col_28",
   "responsible_promoter",
-  "purpose",
-  "sec_44",
+  "status",
+  "sec_29",
   "farmer_host_name",
   "farmer_host_contact",
+  "col_30",
   "farmer_host_category",
-  "tab_45",
-  "sec_46",
+  "purpose",
+  "sec_31",
+  "gps_latitude",
+  "col_32",
+  "gps_longitude",
+  "tab_33",
+  "sec_34",
   "products",
-  "tab_47",
-  "sec_48",
+  "sec_35",
   "planting_date",
   "expected_harvest_date",
-  "col_49",
+  "col_36",
   "field_day_date",
   "completion_date",
-  "tab_50",
-  "sec_51",
+  "sec_37",
   "remarks"
  ],
  "fields": [
@@ -43,15 +43,14 @@
    "options": "DG-.####\n"
   },
   {
-   "fieldname": "tab_40",
+   "fieldname": "tab_26",
    "fieldtype": "Tab Break",
-   "label": "Overview"
+   "label": "Garden Details"
   },
   {
-   "fieldname": "sec_41",
+   "fieldname": "sec_27",
    "fieldtype": "Section Break",
    "label": "",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -63,23 +62,6 @@
    "bold": 1
   },
   {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Registered\nMaterial Requested\nMaterial Received\nPlanted\nMonitoring\nField Day Scheduled\nField Day Done\nCompleted",
-   "default": "Registered",
-   "in_list_view": 1,
-   "read_only": 1,
-   "bold": 1
-  },
-  {
-   "fieldname": "sec_42",
-   "fieldtype": "Section Break",
-   "label": "Location",
-   "description": "",
-   "collapsible": 0
-  },
-  {
    "fieldname": "location",
    "fieldtype": "Data",
    "label": "Village / Location",
@@ -87,17 +69,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "gps_latitude",
-   "fieldtype": "Float",
-   "label": "GPS Latitude"
-  },
-  {
-   "fieldname": "gps_longitude",
-   "fieldtype": "Float",
-   "label": "GPS Longitude"
-  },
-  {
-   "fieldname": "col_43",
+   "fieldname": "col_28",
    "fieldtype": "Column Break"
   },
   {
@@ -109,15 +81,18 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "purpose",
-   "fieldtype": "Small Text",
-   "label": "Objective / Purpose"
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Registered\nMaterial Requested\nMaterial Received\nPlanted\nMonitoring\nField Day Scheduled\nField Day Done\nCompleted",
+   "default": "Registered",
+   "in_list_view": 1,
+   "read_only": 1
   },
   {
-   "fieldname": "sec_44",
+   "fieldname": "sec_29",
    "fieldtype": "Section Break",
-   "label": "Host / Farmer Details",
-   "description": "",
+   "label": "Host / Farmer",
    "collapsible": 0
   },
   {
@@ -131,21 +106,49 @@
    "label": "Host Phone"
   },
   {
+   "fieldname": "col_30",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "farmer_host_category",
    "fieldtype": "Select",
    "label": "Host Type",
    "options": "\nFarmer\nNGO\nOther"
   },
   {
-   "fieldname": "tab_45",
-   "fieldtype": "Tab Break",
-   "label": "Products to Demonstrate"
+   "fieldname": "purpose",
+   "fieldtype": "Small Text",
+   "label": "Objective"
   },
   {
-   "fieldname": "sec_46",
+   "fieldname": "sec_31",
    "fieldtype": "Section Break",
-   "label": "Crop / Seed Varieties",
-   "description": "Add all products to be demonstrated. Maturity duration is used to auto-calculate the expected harvest date.",
+   "label": "GPS Location",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "gps_latitude",
+   "fieldtype": "Float",
+   "label": "GPS Latitude"
+  },
+  {
+   "fieldname": "col_32",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gps_longitude",
+   "fieldtype": "Float",
+   "label": "GPS Longitude"
+  },
+  {
+   "fieldname": "tab_33",
+   "fieldtype": "Tab Break",
+   "label": "Products & Timeline"
+  },
+  {
+   "fieldname": "sec_34",
+   "fieldtype": "Section Break",
+   "label": "Products to Demonstrate",
    "collapsible": 0
   },
   {
@@ -155,15 +158,9 @@
    "options": "Demo Garden Product"
   },
   {
-   "fieldname": "tab_47",
-   "fieldtype": "Tab Break",
-   "label": "Timeline"
-  },
-  {
-   "fieldname": "sec_48",
+   "fieldname": "sec_35",
    "fieldtype": "Section Break",
    "label": "Key Dates",
-   "description": "",
    "collapsible": 0
   },
   {
@@ -176,10 +173,10 @@
    "fieldtype": "Date",
    "label": "Expected Harvest / Field Day Date",
    "read_only": 1,
-   "description": "Auto-calculated: Planting Date + longest crop maturity duration"
+   "description": "Auto-calculated from planting date + longest crop maturity duration"
   },
   {
-   "fieldname": "col_49",
+   "fieldname": "col_36",
    "fieldtype": "Column Break"
   },
   {
@@ -193,21 +190,15 @@
    "label": "Completion Date"
   },
   {
-   "fieldname": "tab_50",
-   "fieldtype": "Tab Break",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "sec_51",
+   "fieldname": "sec_37",
    "fieldtype": "Section Break",
-   "label": "",
-   "description": "",
-   "collapsible": 0
+   "label": "Remarks",
+   "collapsible": 1
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks / Notes"
+   "label": "Remarks"
   }
  ],
  "istable": 0,

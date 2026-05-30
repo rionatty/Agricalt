@@ -9,7 +9,6 @@
   "item_name",
   "item",
   "uom",
-  "col_2",
   "quantity_requested",
   "quantity_issued",
   "quantity_received"
@@ -21,58 +20,47 @@
    "label": "Type",
    "options": "Seed\nChemical\nFertilizer\nOther",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "item_name",
    "fieldtype": "Data",
    "label": "Item / Product",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 3
+   "in_list_view": 1
   },
   {
    "fieldname": "item",
    "fieldtype": "Link",
    "label": "ERP Item",
-   "options": "Item",
-   "columns": 2
+   "options": "Item"
   },
   {
    "fieldname": "uom",
    "fieldtype": "Select",
    "label": "Unit",
-   "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams\nMl\nGrams",
-   "columns": 1
-  },
-  {
-   "fieldname": "col_2",
-   "fieldtype": "Column Break"
+   "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams\nMl\nGrams"
   },
   {
    "fieldname": "quantity_requested",
    "fieldtype": "Float",
    "label": "Requested",
    "reqd": 1,
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "quantity_issued",
    "fieldtype": "Float",
    "label": "Issued",
    "read_only": 1,
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   },
   {
    "fieldname": "quantity_received",
    "fieldtype": "Float",
    "label": "Received",
    "read_only": 1,
-   "in_list_view": 1,
-   "columns": 2
+   "in_list_view": 1
   }
  ],
  "istable": 1,
