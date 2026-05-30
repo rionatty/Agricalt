@@ -1,0 +1,227 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2026-05-30 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "sb_collection_details",
+  "promoter",
+  "collection_date",
+  "stockist",
+  "cb_6",
+  "stockist_name",
+  "location",
+  "status",
+  "sb_orders_collected",
+  "items",
+  "sb_totals",
+  "total_order_value",
+  "sb_payment_collection",
+  "payment_collected",
+  "payment_amount",
+  "payment_mode",
+  "payment_reference",
+  "sb_erp_integration",
+  "erp_sales_order",
+  "erp_synced",
+  "sb_photos",
+  "photos",
+  "sb_remarks",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "OC-.####\n"
+  },
+  {
+   "fieldname": "sb_collection_details",
+   "fieldtype": "Section Break",
+   "label": "Collection Details"
+  },
+  {
+   "fieldname": "promoter",
+   "fieldtype": "Link",
+   "label": "Field Promoter",
+   "options": "Field Promoter",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "collection_date",
+   "fieldtype": "Date",
+   "label": "Collection Date",
+   "reqd": 1,
+   "default": "Today",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "stockist",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer",
+   "in_list_view": 1,
+   "description": "Select the registered stockist"
+  },
+  {
+   "fieldname": "cb_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "stockist_name",
+   "fieldtype": "Data",
+   "label": "Stockist Name (If Not Registered)"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Stockist Location"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nSubmitted\nProcessed in ERP",
+   "default": "Draft",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sb_orders_collected",
+   "fieldtype": "Section Break",
+   "label": "Orders Collected"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Order Items",
+   "options": "Order Collection Item"
+  },
+  {
+   "fieldname": "sb_totals",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "fieldname": "total_order_value",
+   "fieldtype": "Currency",
+   "label": "Total Order Value (UGX)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_payment_collection",
+   "fieldtype": "Section Break",
+   "label": "Payment Collection"
+  },
+  {
+   "fieldname": "payment_collected",
+   "fieldtype": "Check",
+   "label": "Payment Collected?"
+  },
+  {
+   "fieldname": "payment_amount",
+   "fieldtype": "Currency",
+   "label": "Payment Amount (UGX)"
+  },
+  {
+   "fieldname": "payment_mode",
+   "fieldtype": "Select",
+   "label": "Payment Mode",
+   "options": "\nCash\nMobile Money\nBank Transfer\nCheque"
+  },
+  {
+   "fieldname": "payment_reference",
+   "fieldtype": "Data",
+   "label": "Payment Reference / Receipt No."
+  },
+  {
+   "fieldname": "sb_erp_integration",
+   "fieldtype": "Section Break",
+   "label": "ERP Integration"
+  },
+  {
+   "fieldname": "erp_sales_order",
+   "fieldtype": "Data",
+   "label": "ERP Sales Order Reference",
+   "read_only": 1
+  },
+  {
+   "fieldname": "erp_synced",
+   "fieldtype": "Check",
+   "label": "Synced to ERP?",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_photos",
+   "fieldtype": "Section Break",
+   "label": "Photos"
+  },
+  {
+   "fieldname": "photos",
+   "fieldtype": "Table",
+   "label": "Photos",
+   "options": "Field Activity Photo"
+  },
+  {
+   "fieldname": "sb_remarks",
+   "fieldtype": "Section Break",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  }
+ ],
+ "istable": 0,
+ "modified": "2026-05-30 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Order Collection",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Marketing Manager",
+   "share": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "naming_series": "OC-.####"
+}

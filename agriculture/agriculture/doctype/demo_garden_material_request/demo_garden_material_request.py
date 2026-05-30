@@ -64,7 +64,32 @@ class DemoGardenMaterialRequest(Document):
 		})
 		frappe.db.set_value("Demo Garden", self.demo_garden, "status", "Material Received")
 		frappe.db.commit()
+		self._post_receipt_to_ledger()
 		return "Received"
+
+	def _post_receipt_to_ledger(self):
+		"""Post each received material to the Promoter Stock Ledger."""
+		from agriculture.agriculture.doctype.demo_garden_planting_record.demo_garden_planting_record import (
+			_post_ledger_entry,
+		)
+		receipt_date = frappe.db.get_value(
+			"Demo Garden Material Request", self.name, "promoter_receipt_date"
+		) or today()
+		for item in self.items:
+			qty = item.quantity_received or item.quantity_issued or item.quantity_requested or 0
+			if not qty:
+				continue
+			_post_ledger_entry(
+				promoter=self.promoter,
+				demo_garden=self.demo_garden,
+				transaction_type="Receipt",
+				transaction_date=receipt_date,
+				product_name=item.item_name,
+				uom=item.uom,
+				qty_in=qty,
+				reference_doctype="Demo Garden Material Request",
+				reference_name=self.name,
+			)
 
 	def _notify_supervisor(self):
 		promoter = frappe.get_doc("Field Promoter", self.promoter)

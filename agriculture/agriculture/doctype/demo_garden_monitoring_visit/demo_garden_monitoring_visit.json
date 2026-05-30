@@ -1,0 +1,196 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2026-05-30 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "sb_visit_details",
+  "demo_garden",
+  "promoter",
+  "visit_date",
+  "cb_4",
+  "crop_growth_stage",
+  "status",
+  "sb_observations",
+  "general_condition",
+  "disease_observed",
+  "disease_details",
+  "inputs_needed",
+  "inputs_description",
+  "observations",
+  "cb_5",
+  "next_action",
+  "next_visit_date",
+  "sb_photos",
+  "photos",
+  "sb_remarks",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "DGMV-.####\n"
+  },
+  {
+   "fieldname": "sb_visit_details",
+   "fieldtype": "Section Break",
+   "label": "Visit Details"
+  },
+  {
+   "fieldname": "demo_garden",
+   "fieldtype": "Link",
+   "label": "Demo Garden",
+   "options": "Demo Garden",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "promoter",
+   "fieldtype": "Link",
+   "label": "Field Promoter",
+   "options": "Field Promoter",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "visit_date",
+   "fieldtype": "Date",
+   "label": "Visit Date",
+   "reqd": 1,
+   "default": "Today",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "cb_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "crop_growth_stage",
+   "fieldtype": "Select",
+   "label": "Crop Growth Stage",
+   "options": "Germination\nSeedling\nVegetative\nFlowering\nFruiting\nMaturity\nOther",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nSubmitted",
+   "default": "Draft",
+   "in_list_view": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sb_observations",
+   "fieldtype": "Section Break",
+   "label": "Observations"
+  },
+  {
+   "fieldname": "general_condition",
+   "fieldtype": "Select",
+   "label": "General Crop Condition",
+   "options": "Excellent\nGood\nFair\nPoor",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "disease_observed",
+   "fieldtype": "Check",
+   "label": "Disease / Pest Observed?"
+  },
+  {
+   "fieldname": "disease_details",
+   "fieldtype": "Small Text",
+   "label": "Disease / Pest Details"
+  },
+  {
+   "fieldname": "inputs_needed",
+   "fieldtype": "Check",
+   "label": "Additional Inputs Needed?"
+  },
+  {
+   "fieldname": "inputs_description",
+   "fieldtype": "Small Text",
+   "label": "Inputs Description"
+  },
+  {
+   "fieldname": "observations",
+   "fieldtype": "Text",
+   "label": "General Observations"
+  },
+  {
+   "fieldname": "cb_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "next_action",
+   "fieldtype": "Small Text",
+   "label": "Recommended Next Action"
+  },
+  {
+   "fieldname": "next_visit_date",
+   "fieldtype": "Date",
+   "label": "Planned Next Visit"
+  },
+  {
+   "fieldname": "sb_photos",
+   "fieldtype": "Section Break",
+   "label": "Photos"
+  },
+  {
+   "fieldname": "photos",
+   "fieldtype": "Table",
+   "label": "Photos",
+   "options": "Field Activity Photo"
+  },
+  {
+   "fieldname": "sb_remarks",
+   "fieldtype": "Section Break",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  }
+ ],
+ "istable": 0,
+ "modified": "2026-05-30 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Demo Garden Monitoring Visit",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "naming_series": "DGMV-.####"
+}
