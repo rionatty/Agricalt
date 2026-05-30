@@ -4,28 +4,31 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "sec_38",
+  "sec_46",
   "demo_garden",
+  "demo_garden_name",
   "promoter",
-  "col_39",
+  "col_47",
+  "promoter_name",
   "request_date",
   "status",
-  "sec_40",
+  "sec_48",
   "items",
-  "sec_41",
+  "sec_49",
   "approved_by",
   "approval_date",
-  "col_42",
+  "col_50",
   "rejection_reason",
-  "sec_43",
+  "sec_51",
   "issued_by",
   "issue_date",
-  "sec_44",
+  "sec_52",
   "promoter_receipt_confirmed",
   "promoter_receipt_date",
-  "sec_45",
+  "sec_53",
   "remarks"
  ],
  "fields": [
@@ -36,7 +39,7 @@
    "options": "DGMR-.####\n"
   },
   {
-   "fieldname": "sec_38",
+   "fieldname": "sec_46",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -47,8 +50,15 @@
    "label": "Demo Garden",
    "options": "Demo Garden",
    "reqd": 1,
-   "in_list_view": 1,
-   "bold": 1
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "demo_garden_name",
+   "fieldtype": "Data",
+   "label": "Demo Garden Name",
+   "fetch_from": "demo_garden.demo_garden_name",
+   "read_only": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "promoter",
@@ -59,8 +69,15 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_39",
+   "fieldname": "col_47",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "promoter.promoter_name",
+   "read_only": 1
   },
   {
    "fieldname": "request_date",
@@ -79,7 +96,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_40",
+   "fieldname": "sec_48",
    "fieldtype": "Section Break",
    "label": "Requested Materials",
    "collapsible": 0
@@ -91,7 +108,7 @@
    "options": "Demo Garden Material Item"
   },
   {
-   "fieldname": "sec_41",
+   "fieldname": "sec_49",
    "fieldtype": "Section Break",
    "label": "Approval",
    "collapsible": 1
@@ -110,7 +127,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "col_42",
+   "fieldname": "col_50",
    "fieldtype": "Column Break"
   },
   {
@@ -120,7 +137,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_43",
+   "fieldname": "sec_51",
    "fieldtype": "Section Break",
    "label": "Store Dispatch",
    "collapsible": 1
@@ -139,7 +156,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_44",
+   "fieldname": "sec_52",
    "fieldtype": "Section Break",
    "label": "Promoter Receipt",
    "collapsible": 1
@@ -155,7 +172,7 @@
    "label": "Confirmed On"
   },
   {
-   "fieldname": "sec_45",
+   "fieldname": "sec_53",
    "fieldtype": "Section Break",
    "label": "Remarks",
    "collapsible": 1

@@ -4,25 +4,27 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "sec_1",
+  "sec_9",
   "promoter_name",
   "mobile_number",
-  "col_2",
+  "col_10",
   "status",
   "joining_date",
-  "sec_3",
+  "sec_11",
   "region",
   "territory",
-  "col_4",
+  "col_12",
   "supervisor",
-  "sec_5",
+  "supervisor_name",
+  "sec_13",
   "email_id",
   "employee",
-  "col_6",
+  "col_14",
   "user",
-  "sec_7",
+  "sec_15",
   "remarks"
  ],
  "fields": [
@@ -33,7 +35,7 @@
    "options": "FP-.####\n"
   },
   {
-   "fieldname": "sec_1",
+   "fieldname": "sec_9",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -54,7 +56,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_2",
+   "fieldname": "col_10",
    "fieldtype": "Column Break"
   },
   {
@@ -71,7 +73,7 @@
    "label": "Joining Date"
   },
   {
-   "fieldname": "sec_3",
+   "fieldname": "sec_11",
    "fieldtype": "Section Break",
    "label": "Assignment",
    "collapsible": 0
@@ -89,7 +91,7 @@
    "label": "Territory / Area"
   },
   {
-   "fieldname": "col_4",
+   "fieldname": "col_12",
    "fieldtype": "Column Break"
   },
   {
@@ -99,7 +101,14 @@
    "options": "Field Promoter"
   },
   {
-   "fieldname": "sec_5",
+   "fieldname": "supervisor_name",
+   "fieldtype": "Data",
+   "label": "Supervisor Name",
+   "fetch_from": "supervisor.promoter_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_13",
    "fieldtype": "Section Break",
    "label": "System Access",
    "collapsible": 1
@@ -117,7 +126,7 @@
    "options": "Employee"
   },
   {
-   "fieldname": "col_6",
+   "fieldname": "col_14",
    "fieldtype": "Column Break"
   },
   {
@@ -127,7 +136,7 @@
    "options": "User"
   },
   {
-   "fieldname": "sec_7",
+   "fieldname": "sec_15",
    "fieldtype": "Section Break",
    "label": "Remarks",
    "collapsible": 1
@@ -185,5 +194,7 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1,
- "naming_series": "FP-.####"
+ "naming_series": "FP-.####",
+ "title_field": "promoter_name",
+ "show_title_field_in_link": 1
 }

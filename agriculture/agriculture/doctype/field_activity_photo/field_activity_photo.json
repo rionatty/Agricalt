@@ -4,6 +4,7 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 1,
  "field_order": [
   "photo",
   "gps_latitude",
@@ -52,6 +53,5 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "track_changes": 1,
- "editable_grid": 1
+ "track_changes": 1
 }

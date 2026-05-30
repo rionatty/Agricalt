@@ -4,26 +4,28 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "sec_64",
+  "sec_72",
   "demo_garden",
+  "demo_garden_name",
   "promoter",
-  "col_65",
+  "col_73",
+  "promoter_name",
   "field_day_date",
-  "location",
   "number_of_attendees",
   "status",
-  "sec_66",
+  "sec_74",
   "activities_conducted",
   "topics_covered",
-  "col_67",
+  "col_75",
   "key_outcomes",
-  "sec_68",
+  "sec_76",
   "attendees",
-  "sec_69",
+  "sec_77",
   "photos",
-  "sec_70",
+  "sec_78",
   "remarks"
  ],
  "fields": [
@@ -34,7 +36,7 @@
    "options": "DGFD-.####\n"
   },
   {
-   "fieldname": "sec_64",
+   "fieldname": "sec_72",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -45,8 +47,15 @@
    "label": "Demo Garden",
    "options": "Demo Garden",
    "reqd": 1,
-   "in_list_view": 1,
-   "bold": 1
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "demo_garden_name",
+   "fieldtype": "Data",
+   "label": "Demo Garden Name",
+   "fetch_from": "demo_garden.demo_garden_name",
+   "read_only": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "promoter",
@@ -57,8 +66,15 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_65",
+   "fieldname": "col_73",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "promoter.promoter_name",
+   "read_only": 1
   },
   {
    "fieldname": "field_day_date",
@@ -67,11 +83,6 @@
    "reqd": 1,
    "default": "Today",
    "in_list_view": 1
-  },
-  {
-   "fieldname": "location",
-   "fieldtype": "Data",
-   "label": "Event Location"
   },
   {
    "fieldname": "number_of_attendees",
@@ -89,7 +100,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_66",
+   "fieldname": "sec_74",
    "fieldtype": "Section Break",
    "label": "Programme",
    "collapsible": 0
@@ -105,7 +116,7 @@
    "label": "Topics Covered"
   },
   {
-   "fieldname": "col_67",
+   "fieldname": "col_75",
    "fieldtype": "Column Break"
   },
   {
@@ -114,7 +125,7 @@
    "label": "Key Outcomes"
   },
   {
-   "fieldname": "sec_68",
+   "fieldname": "sec_76",
    "fieldtype": "Section Break",
    "label": "Attendees",
    "collapsible": 0
@@ -126,7 +137,7 @@
    "options": "Training Event Attendee"
   },
   {
-   "fieldname": "sec_69",
+   "fieldname": "sec_77",
    "fieldtype": "Section Break",
    "label": "Photos",
    "collapsible": 1
@@ -138,7 +149,7 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "sec_70",
+   "fieldname": "sec_78",
    "fieldtype": "Section Break",
    "label": "Remarks",
    "collapsible": 1

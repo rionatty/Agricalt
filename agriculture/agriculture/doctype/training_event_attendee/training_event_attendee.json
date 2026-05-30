@@ -4,19 +4,29 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 1,
  "field_order": [
+  "farmer",
   "attendee_name",
   "contact_category",
-  "phone",
-  "customer"
+  "phone"
  ],
  "fields": [
+  {
+   "fieldname": "farmer",
+   "fieldtype": "Link",
+   "label": "Farmer / Contact",
+   "options": "Farmer",
+   "in_list_view": 1
+  },
   {
    "fieldname": "attendee_name",
    "fieldtype": "Data",
    "label": "Name",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "fetch_from": "farmer.farmer_name",
+   "description": "Auto-filled from Farmer; or type for walk-in attendees"
   },
   {
    "fieldname": "contact_category",
@@ -29,13 +39,8 @@
    "fieldname": "phone",
    "fieldtype": "Data",
    "label": "Phone",
-   "in_list_view": 1
-  },
-  {
-   "fieldname": "customer",
-   "fieldtype": "Link",
-   "label": "Registered Contact",
-   "options": "Customer"
+   "in_list_view": 1,
+   "fetch_from": "farmer.phone"
   }
  ],
  "istable": 1,
@@ -47,6 +52,5 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "track_changes": 1,
- "editable_grid": 1
+ "track_changes": 1
 }

@@ -4,10 +4,12 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 1,
  "field_order": [
   "item_type",
-  "item_name",
   "item",
+  "item_name",
+  "crop",
   "uom",
   "quantity_requested",
   "quantity_issued",
@@ -23,17 +25,26 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "item_name",
-   "fieldtype": "Data",
-   "label": "Item / Product",
-   "reqd": 1,
-   "in_list_view": 1
-  },
-  {
    "fieldname": "item",
    "fieldtype": "Link",
    "label": "ERP Item",
-   "options": "Item"
+   "options": "Item",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item / Product Name",
+   "reqd": 1,
+   "in_list_view": 1,
+   "fetch_from": "item.item_name",
+   "description": "Auto-filled from ERP Item; or type a custom name"
+  },
+  {
+   "fieldname": "crop",
+   "fieldtype": "Link",
+   "label": "Related Crop",
+   "options": "Crop"
   },
   {
    "fieldname": "uom",
@@ -72,6 +83,5 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "track_changes": 1,
- "editable_grid": 1
+ "track_changes": 1
 }

@@ -4,39 +4,44 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "tab_14",
-  "sec_15",
+  "tab_22",
+  "sec_23",
   "activity_type",
   "promoter",
-  "col_16",
+  "promoter_name",
+  "col_24",
   "activity_date",
   "activity_time",
   "status",
-  "sec_17",
+  "sec_25",
   "is_planned",
   "activity_plan",
-  "sec_18",
+  "sec_26",
+  "customer_category",
+  "farmer",
+  "farmer_name",
+  "col_27",
+  "stockist",
+  "stockist_name",
+  "demo_garden",
+  "demo_garden_name",
+  "sec_28",
   "location_name",
   "gps_latitude",
-  "col_19",
+  "col_29",
   "gps_longitude",
   "gps_location_text",
-  "sec_20",
-  "customer_category",
-  "customer",
-  "col_21",
-  "customer_name",
-  "demo_garden",
-  "sec_22",
+  "sec_30",
   "purpose",
   "orders_collected",
-  "col_23",
+  "col_31",
   "payment_collected",
   "remarks",
-  "tab_24",
-  "sec_25",
+  "tab_32",
+  "sec_33",
   "photos"
  ],
  "fields": [
@@ -47,12 +52,12 @@
    "options": "FAL-.####\n"
   },
   {
-   "fieldname": "tab_14",
+   "fieldname": "tab_22",
    "fieldtype": "Tab Break",
    "label": "Activity Details"
   },
   {
-   "fieldname": "sec_15",
+   "fieldname": "sec_23",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -75,7 +80,15 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_16",
+   "fieldname": "promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "promoter.promoter_name",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "col_24",
    "fieldtype": "Column Break"
   },
   {
@@ -101,7 +114,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_17",
+   "fieldname": "sec_25",
    "fieldtype": "Section Break",
    "label": "Plan Reference",
    "collapsible": 0
@@ -119,7 +132,65 @@
    "depends_on": "is_planned"
   },
   {
-   "fieldname": "sec_18",
+   "fieldname": "sec_26",
+   "fieldtype": "Section Break",
+   "label": "Contact Visited",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "customer_category",
+   "fieldtype": "Select",
+   "label": "Contact Type",
+   "options": "\nFarmer\nNGO\nStockist\nOther",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "farmer",
+   "fieldtype": "Link",
+   "label": "Farmer / Contact",
+   "options": "Farmer",
+   "depends_on": "eval:doc.customer_category && doc.customer_category!='Stockist'"
+  },
+  {
+   "fieldname": "farmer_name",
+   "fieldtype": "Data",
+   "label": "Farmer Name",
+   "fetch_from": "farmer.farmer_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_27",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "stockist",
+   "fieldtype": "Link",
+   "label": "Stockist",
+   "options": "Customer",
+   "depends_on": "eval:doc.customer_category=='Stockist'"
+  },
+  {
+   "fieldname": "stockist_name",
+   "fieldtype": "Data",
+   "label": "Stockist Name",
+   "fetch_from": "stockist.customer_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "demo_garden",
+   "fieldtype": "Link",
+   "label": "Demo Garden",
+   "options": "Demo Garden"
+  },
+  {
+   "fieldname": "demo_garden_name",
+   "fieldtype": "Data",
+   "label": "Demo Garden Name",
+   "fetch_from": "demo_garden.demo_garden_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_28",
    "fieldtype": "Section Break",
    "label": "Location",
    "collapsible": 0
@@ -127,8 +198,7 @@
   {
    "fieldname": "location_name",
    "fieldtype": "Data",
-   "label": "Location / Village",
-   "in_list_view": 1
+   "label": "Location / Village"
   },
   {
    "fieldname": "gps_latitude",
@@ -136,7 +206,7 @@
    "label": "GPS Latitude"
   },
   {
-   "fieldname": "col_19",
+   "fieldname": "col_29",
    "fieldtype": "Column Break"
   },
   {
@@ -151,41 +221,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_20",
-   "fieldtype": "Section Break",
-   "label": "Customer Details",
-   "collapsible": 0
-  },
-  {
-   "fieldname": "customer_category",
-   "fieldtype": "Select",
-   "label": "Category",
-   "options": "\nFarmer\nNGO\nStockist\nOther",
-   "in_list_view": 1
-  },
-  {
-   "fieldname": "customer",
-   "fieldtype": "Link",
-   "label": "Registered Contact",
-   "options": "Customer"
-  },
-  {
-   "fieldname": "col_21",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "customer_name",
-   "fieldtype": "Data",
-   "label": "Contact Name (If Not Registered)"
-  },
-  {
-   "fieldname": "demo_garden",
-   "fieldtype": "Link",
-   "label": "Demo Garden",
-   "options": "Demo Garden"
-  },
-  {
-   "fieldname": "sec_22",
+   "fieldname": "sec_30",
    "fieldtype": "Section Break",
    "label": "Purpose & Outcomes",
    "collapsible": 0
@@ -201,7 +237,7 @@
    "label": "Orders Collected (UGX)"
   },
   {
-   "fieldname": "col_23",
+   "fieldname": "col_31",
    "fieldtype": "Column Break"
   },
   {
@@ -215,16 +251,16 @@
    "label": "Remarks"
   },
   {
-   "fieldname": "tab_24",
+   "fieldname": "tab_32",
    "fieldtype": "Tab Break",
    "label": "Photos"
   },
   {
-   "fieldname": "sec_25",
+   "fieldname": "sec_33",
    "fieldtype": "Section Break",
    "label": "Photo Evidence",
    "collapsible": 0,
-   "description": "Photos must be taken live from camera. GPS is auto-embedded at time of capture."
+   "description": "Photos must be taken live from camera. GPS is auto-embedded at capture."
   },
   {
    "fieldname": "photos",

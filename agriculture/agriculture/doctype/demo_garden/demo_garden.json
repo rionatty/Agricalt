@@ -4,35 +4,37 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "tab_26",
-  "sec_27",
+  "tab_34",
+  "sec_35",
   "demo_garden_name",
   "location",
-  "col_28",
+  "col_36",
   "responsible_promoter",
+  "responsible_promoter_name",
   "status",
-  "sec_29",
+  "sec_37",
+  "farmer_host",
   "farmer_host_name",
   "farmer_host_contact",
-  "col_30",
-  "farmer_host_category",
+  "col_38",
   "purpose",
-  "sec_31",
+  "sec_39",
   "gps_latitude",
-  "col_32",
+  "col_40",
   "gps_longitude",
-  "tab_33",
-  "sec_34",
+  "tab_41",
+  "sec_42",
   "products",
-  "sec_35",
+  "sec_43",
   "planting_date",
   "expected_harvest_date",
-  "col_36",
+  "col_44",
   "field_day_date",
   "completion_date",
-  "sec_37",
+  "sec_45",
   "remarks"
  ],
  "fields": [
@@ -43,12 +45,12 @@
    "options": "DG-.####\n"
   },
   {
-   "fieldname": "tab_26",
+   "fieldname": "tab_34",
    "fieldtype": "Tab Break",
    "label": "Garden Details"
   },
   {
-   "fieldname": "sec_27",
+   "fieldname": "sec_35",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -69,7 +71,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_28",
+   "fieldname": "col_36",
    "fieldtype": "Column Break"
   },
   {
@@ -78,6 +80,14 @@
    "label": "Responsible Promoter",
    "options": "Field Promoter",
    "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "responsible_promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "responsible_promoter.promoter_name",
+   "read_only": 1,
    "in_list_view": 1
   },
   {
@@ -90,30 +100,34 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_29",
+   "fieldname": "sec_37",
    "fieldtype": "Section Break",
-   "label": "Host / Farmer",
+   "label": "Host Farmer",
    "collapsible": 0
+  },
+  {
+   "fieldname": "farmer_host",
+   "fieldtype": "Link",
+   "label": "Host Farmer",
+   "options": "Farmer"
   },
   {
    "fieldname": "farmer_host_name",
    "fieldtype": "Data",
-   "label": "Host Name"
+   "label": "Host Name",
+   "fetch_from": "farmer_host.farmer_name",
+   "read_only": 1
   },
   {
    "fieldname": "farmer_host_contact",
    "fieldtype": "Data",
-   "label": "Host Phone"
+   "label": "Host Phone",
+   "fetch_from": "farmer_host.phone",
+   "read_only": 1
   },
   {
-   "fieldname": "col_30",
+   "fieldname": "col_38",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "farmer_host_category",
-   "fieldtype": "Select",
-   "label": "Host Type",
-   "options": "\nFarmer\nNGO\nOther"
   },
   {
    "fieldname": "purpose",
@@ -121,7 +135,7 @@
    "label": "Objective"
   },
   {
-   "fieldname": "sec_31",
+   "fieldname": "sec_39",
    "fieldtype": "Section Break",
    "label": "GPS Location",
    "collapsible": 1
@@ -132,7 +146,7 @@
    "label": "GPS Latitude"
   },
   {
-   "fieldname": "col_32",
+   "fieldname": "col_40",
    "fieldtype": "Column Break"
   },
   {
@@ -141,15 +155,16 @@
    "label": "GPS Longitude"
   },
   {
-   "fieldname": "tab_33",
+   "fieldname": "tab_41",
    "fieldtype": "Tab Break",
    "label": "Products & Timeline"
   },
   {
-   "fieldname": "sec_34",
+   "fieldname": "sec_42",
    "fieldtype": "Section Break",
    "label": "Products to Demonstrate",
-   "collapsible": 0
+   "collapsible": 0,
+   "description": "Select crops from the Crop master — maturity duration is auto-filled."
   },
   {
    "fieldname": "products",
@@ -158,7 +173,7 @@
    "options": "Demo Garden Product"
   },
   {
-   "fieldname": "sec_35",
+   "fieldname": "sec_43",
    "fieldtype": "Section Break",
    "label": "Key Dates",
    "collapsible": 0
@@ -176,7 +191,7 @@
    "description": "Auto-calculated from planting date + longest crop maturity duration"
   },
   {
-   "fieldname": "col_36",
+   "fieldname": "col_44",
    "fieldtype": "Column Break"
   },
   {
@@ -190,7 +205,7 @@
    "label": "Completion Date"
   },
   {
-   "fieldname": "sec_37",
+   "fieldname": "sec_45",
    "fieldtype": "Section Break",
    "label": "Remarks",
    "collapsible": 1
@@ -248,5 +263,7 @@
  "sort_field": "modified",
  "sort_order": "DESC",
  "track_changes": 1,
- "naming_series": "DG-.####"
+ "naming_series": "DG-.####",
+ "title_field": "demo_garden_name",
+ "show_title_field_in_link": 1
 }

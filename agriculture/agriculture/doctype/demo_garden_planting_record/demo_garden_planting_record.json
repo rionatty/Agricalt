@@ -4,21 +4,24 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "sec_46",
+  "sec_54",
   "demo_garden",
+  "demo_garden_name",
   "promoter",
-  "col_47",
+  "col_55",
+  "promoter_name",
   "planting_date",
   "status",
   "overall_expected_harvest_date",
-  "sec_48",
+  "sec_56",
   "products",
-  "sec_49",
+  "sec_57",
   "stock_validated",
   "validation_notes",
-  "sec_50",
+  "sec_58",
   "remarks"
  ],
  "fields": [
@@ -29,7 +32,7 @@
    "options": "DGPR-.####\n"
   },
   {
-   "fieldname": "sec_46",
+   "fieldname": "sec_54",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -40,8 +43,15 @@
    "label": "Demo Garden",
    "options": "Demo Garden",
    "reqd": 1,
-   "in_list_view": 1,
-   "bold": 1
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "demo_garden_name",
+   "fieldtype": "Data",
+   "label": "Demo Garden Name",
+   "fetch_from": "demo_garden.demo_garden_name",
+   "read_only": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "promoter",
@@ -52,8 +62,15 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_47",
+   "fieldname": "col_55",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "promoter.promoter_name",
+   "read_only": 1
   },
   {
    "fieldname": "planting_date",
@@ -80,11 +97,11 @@
    "description": "Auto-calculated from planting date + longest maturity duration"
   },
   {
-   "fieldname": "sec_48",
+   "fieldname": "sec_56",
    "fieldtype": "Section Break",
    "label": "Products Planted",
    "collapsible": 0,
-   "description": "Quantities validated against materials received. Cannot plant more than received from store."
+   "description": "Select crops from master. Quantities are validated against materials received."
   },
   {
    "fieldname": "products",
@@ -93,7 +110,7 @@
    "options": "Demo Garden Planting Item"
   },
   {
-   "fieldname": "sec_49",
+   "fieldname": "sec_57",
    "fieldtype": "Section Break",
    "label": "Stock Validation",
    "collapsible": 1
@@ -111,7 +128,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_50",
+   "fieldname": "sec_58",
    "fieldtype": "Section Break",
    "label": "Remarks",
    "collapsible": 1

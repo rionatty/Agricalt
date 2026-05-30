@@ -4,9 +4,11 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 1,
  "field_order": [
-  "product_name",
   "crop",
+  "crop_name",
+  "product_name",
   "quantity_available",
   "quantity_planted",
   "uom",
@@ -15,17 +17,27 @@
  ],
  "fields": [
   {
-   "fieldname": "product_name",
-   "fieldtype": "Data",
-   "label": "Product / Variety",
+   "fieldname": "crop",
+   "fieldtype": "Link",
+   "label": "Crop",
+   "options": "Crop",
    "reqd": 1,
    "in_list_view": 1
   },
   {
-   "fieldname": "crop",
-   "fieldtype": "Link",
-   "label": "Crop",
-   "options": "Crop"
+   "fieldname": "crop_name",
+   "fieldtype": "Data",
+   "label": "Crop Name",
+   "fetch_from": "crop.crop_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "product_name",
+   "fieldtype": "Data",
+   "label": "Variety / Product",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Must match the material received (variety name)"
   },
   {
    "fieldname": "quantity_available",
@@ -51,6 +63,8 @@
    "fieldname": "crop_maturity_duration",
    "fieldtype": "Int",
    "label": "Maturity (Days)",
+   "fetch_from": "crop.period",
+   "read_only": 0,
    "in_list_view": 1
   },
   {
@@ -70,6 +84,5 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "track_changes": 1,
- "editable_grid": 1
+ "track_changes": 1
 }

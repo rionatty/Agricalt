@@ -4,30 +4,34 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "sec_56",
+  "sec_64",
   "demo_garden",
+  "demo_garden_name",
   "promoter",
-  "col_57",
+  "col_65",
+  "promoter_name",
   "visit_date",
   "crop_growth_stage",
   "status",
-  "sec_58",
+  "sec_66",
   "general_condition",
   "observations",
-  "col_59",
+  "col_67",
   "disease_observed",
+  "disease",
   "disease_details",
   "inputs_needed",
   "inputs_description",
-  "sec_60",
+  "sec_68",
   "next_action",
-  "col_61",
+  "col_69",
   "next_visit_date",
-  "sec_62",
+  "sec_70",
   "photos",
-  "sec_63",
+  "sec_71",
   "remarks"
  ],
  "fields": [
@@ -38,7 +42,7 @@
    "options": "DGMV-.####\n"
   },
   {
-   "fieldname": "sec_56",
+   "fieldname": "sec_64",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -49,8 +53,15 @@
    "label": "Demo Garden",
    "options": "Demo Garden",
    "reqd": 1,
-   "in_list_view": 1,
-   "bold": 1
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "demo_garden_name",
+   "fieldtype": "Data",
+   "label": "Demo Garden Name",
+   "fetch_from": "demo_garden.demo_garden_name",
+   "read_only": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "promoter",
@@ -61,8 +72,15 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_57",
+   "fieldname": "col_65",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "promoter.promoter_name",
+   "read_only": 1
   },
   {
    "fieldname": "visit_date",
@@ -89,7 +107,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_58",
+   "fieldname": "sec_66",
    "fieldtype": "Section Break",
    "label": "Observations",
    "collapsible": 0
@@ -107,13 +125,20 @@
    "label": "Observations"
   },
   {
-   "fieldname": "col_59",
+   "fieldname": "col_67",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "disease_observed",
    "fieldtype": "Check",
    "label": "Disease / Pest Observed?"
+  },
+  {
+   "fieldname": "disease",
+   "fieldtype": "Link",
+   "label": "Disease",
+   "options": "Disease",
+   "depends_on": "disease_observed"
   },
   {
    "fieldname": "disease_details",
@@ -133,7 +158,7 @@
    "depends_on": "inputs_needed"
   },
   {
-   "fieldname": "sec_60",
+   "fieldname": "sec_68",
    "fieldtype": "Section Break",
    "label": "Next Steps",
    "collapsible": 0
@@ -144,7 +169,7 @@
    "label": "Recommended Action"
   },
   {
-   "fieldname": "col_61",
+   "fieldname": "col_69",
    "fieldtype": "Column Break"
   },
   {
@@ -153,7 +178,7 @@
    "label": "Next Visit Date"
   },
   {
-   "fieldname": "sec_62",
+   "fieldname": "sec_70",
    "fieldtype": "Section Break",
    "label": "Photos",
    "collapsible": 1
@@ -165,7 +190,7 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "sec_63",
+   "fieldname": "sec_71",
    "fieldtype": "Section Break",
    "label": "Remarks",
    "collapsible": 1

@@ -4,20 +4,23 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "sec_51",
+  "sec_59",
   "demo_garden",
+  "demo_garden_name",
   "promoter",
-  "col_52",
+  "col_60",
+  "promoter_name",
   "application_date",
   "application_stage",
   "status",
-  "sec_53",
+  "sec_61",
   "inputs",
-  "sec_54",
+  "sec_62",
   "photos",
-  "sec_55",
+  "sec_63",
   "remarks"
  ],
  "fields": [
@@ -28,7 +31,7 @@
    "options": "DGIA-.####\n"
   },
   {
-   "fieldname": "sec_51",
+   "fieldname": "sec_59",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -39,8 +42,15 @@
    "label": "Demo Garden",
    "options": "Demo Garden",
    "reqd": 1,
-   "in_list_view": 1,
-   "bold": 1
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "demo_garden_name",
+   "fieldtype": "Data",
+   "label": "Demo Garden Name",
+   "fetch_from": "demo_garden.demo_garden_name",
+   "read_only": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "promoter",
@@ -51,8 +61,15 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_52",
+   "fieldname": "col_60",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "promoter.promoter_name",
+   "read_only": 1
   },
   {
    "fieldname": "application_date",
@@ -80,7 +97,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_53",
+   "fieldname": "sec_61",
    "fieldtype": "Section Break",
    "label": "Inputs Applied",
    "collapsible": 0,
@@ -93,7 +110,7 @@
    "options": "Demo Garden Input Item"
   },
   {
-   "fieldname": "sec_54",
+   "fieldname": "sec_62",
    "fieldtype": "Section Break",
    "label": "Photos",
    "collapsible": 1
@@ -105,7 +122,7 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "sec_55",
+   "fieldname": "sec_63",
    "fieldtype": "Section Break",
    "label": "Remarks",
    "collapsible": 1

@@ -4,34 +4,36 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "tab_78",
-  "sec_79",
+  "tab_86",
+  "sec_87",
   "promoter",
+  "promoter_name",
   "collection_date",
-  "col_80",
+  "col_88",
   "stockist",
   "stockist_name",
   "location",
   "status",
-  "sec_81",
+  "sec_89",
   "items",
-  "sec_82",
+  "sec_90",
   "total_order_value",
-  "tab_83",
-  "sec_84",
+  "tab_91",
+  "sec_92",
   "payment_collected",
   "payment_amount",
-  "col_85",
+  "col_93",
   "payment_mode",
   "payment_reference",
-  "sec_86",
+  "sec_94",
   "erp_sales_order",
   "erp_synced",
-  "sec_87",
+  "sec_95",
   "photos",
-  "sec_88",
+  "sec_96",
   "remarks"
  ],
  "fields": [
@@ -42,12 +44,12 @@
    "options": "OC-.####\n"
   },
   {
-   "fieldname": "tab_78",
+   "fieldname": "tab_86",
    "fieldtype": "Tab Break",
    "label": "Order Details"
   },
   {
-   "fieldname": "sec_79",
+   "fieldname": "sec_87",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -58,8 +60,15 @@
    "label": "Field Promoter",
    "options": "Field Promoter",
    "reqd": 1,
-   "in_list_view": 1,
-   "bold": 1
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "promoter.promoter_name",
+   "read_only": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "collection_date",
@@ -70,7 +79,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_80",
+   "fieldname": "col_88",
    "fieldtype": "Column Break"
   },
   {
@@ -78,12 +87,16 @@
    "fieldtype": "Link",
    "label": "Stockist",
    "options": "Customer",
+   "reqd": 1,
    "in_list_view": 1
   },
   {
    "fieldname": "stockist_name",
    "fieldtype": "Data",
-   "label": "Stockist Name (If Not Registered)"
+   "label": "Stockist Name",
+   "fetch_from": "stockist.customer_name",
+   "read_only": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "location",
@@ -100,7 +113,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_81",
+   "fieldname": "sec_89",
    "fieldtype": "Section Break",
    "label": "Items Ordered",
    "collapsible": 0
@@ -112,7 +125,7 @@
    "options": "Order Collection Item"
   },
   {
-   "fieldname": "sec_82",
+   "fieldname": "sec_90",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -125,12 +138,12 @@
    "bold": 1
   },
   {
-   "fieldname": "tab_83",
+   "fieldname": "tab_91",
    "fieldtype": "Tab Break",
    "label": "Payment & Remarks"
   },
   {
-   "fieldname": "sec_84",
+   "fieldname": "sec_92",
    "fieldtype": "Section Break",
    "label": "Payment Collection",
    "collapsible": 0
@@ -147,7 +160,7 @@
    "depends_on": "payment_collected"
   },
   {
-   "fieldname": "col_85",
+   "fieldname": "col_93",
    "fieldtype": "Column Break"
   },
   {
@@ -164,15 +177,16 @@
    "depends_on": "payment_collected"
   },
   {
-   "fieldname": "sec_86",
+   "fieldname": "sec_94",
    "fieldtype": "Section Break",
    "label": "ERP Reference",
    "collapsible": 1
   },
   {
    "fieldname": "erp_sales_order",
-   "fieldtype": "Data",
-   "label": "ERP Sales Order No.",
+   "fieldtype": "Link",
+   "label": "ERP Sales Order",
+   "options": "Sales Order",
    "read_only": 1
   },
   {
@@ -182,7 +196,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_87",
+   "fieldname": "sec_95",
    "fieldtype": "Section Break",
    "label": "Photos",
    "collapsible": 1
@@ -194,7 +208,7 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "sec_88",
+   "fieldname": "sec_96",
    "fieldtype": "Section Break",
    "label": "Remarks",
    "collapsible": 1

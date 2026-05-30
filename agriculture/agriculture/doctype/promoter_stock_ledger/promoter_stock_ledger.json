@@ -4,26 +4,29 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "sec_89",
+  "sec_97",
   "promoter",
+  "promoter_name",
   "transaction_date",
-  "col_90",
+  "col_98",
   "transaction_type",
   "demo_garden",
-  "sec_91",
+  "demo_garden_name",
+  "sec_99",
   "product_name",
   "item",
   "uom",
-  "col_92",
+  "col_100",
   "qty_in",
   "qty_out",
   "balance_qty",
-  "sec_93",
+  "sec_101",
   "reference_doctype",
   "reference_name",
-  "sec_94",
+  "sec_102",
   "remarks"
  ],
  "fields": [
@@ -34,7 +37,7 @@
    "options": "PSL-.####\n"
   },
   {
-   "fieldname": "sec_89",
+   "fieldname": "sec_97",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -45,8 +48,15 @@
    "label": "Field Promoter",
    "options": "Field Promoter",
    "reqd": 1,
-   "in_list_view": 1,
-   "bold": 1
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "promoter.promoter_name",
+   "read_only": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "transaction_date",
@@ -57,7 +67,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_90",
+   "fieldname": "col_98",
    "fieldtype": "Column Break"
   },
   {
@@ -76,7 +86,14 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "sec_91",
+   "fieldname": "demo_garden_name",
+   "fieldtype": "Data",
+   "label": "Demo Garden Name",
+   "fetch_from": "demo_garden.demo_garden_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_99",
    "fieldtype": "Section Break",
    "label": "Material",
    "collapsible": 0
@@ -101,7 +118,7 @@
    "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams"
   },
   {
-   "fieldname": "col_92",
+   "fieldname": "col_100",
    "fieldtype": "Column Break"
   },
   {
@@ -125,7 +142,7 @@
    "bold": 1
   },
   {
-   "fieldname": "sec_93",
+   "fieldname": "sec_101",
    "fieldtype": "Section Break",
    "label": "Source Reference",
    "collapsible": 1
@@ -144,7 +161,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_94",
+   "fieldname": "sec_102",
    "fieldtype": "Section Break",
    "label": "Remarks",
    "collapsible": 1

@@ -4,14 +4,14 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 1,
  "field_order": [
   "planned_date",
   "activity_type",
-  "customer_category",
-  "customer_name",
+  "farmer",
+  "farmer_name",
   "location",
-  "purpose",
-  "remarks"
+  "purpose"
  ],
  "fields": [
   {
@@ -30,17 +30,18 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "customer_category",
-   "fieldtype": "Select",
-   "label": "Category",
-   "options": "\nFarmer\nNGO\nStockist\nOther",
+   "fieldname": "farmer",
+   "fieldtype": "Link",
+   "label": "Farmer / Contact",
+   "options": "Farmer",
    "in_list_view": 1
   },
   {
-   "fieldname": "customer_name",
+   "fieldname": "farmer_name",
    "fieldtype": "Data",
-   "label": "Contact Name",
-   "in_list_view": 1
+   "label": "Farmer Name",
+   "fetch_from": "farmer.farmer_name",
+   "read_only": 1
   },
   {
    "fieldname": "location",
@@ -51,11 +52,6 @@
    "fieldname": "purpose",
    "fieldtype": "Small Text",
    "label": "Purpose"
-  },
-  {
-   "fieldname": "remarks",
-   "fieldtype": "Small Text",
-   "label": "Remarks"
   }
  ],
  "istable": 1,
@@ -67,6 +63,5 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "track_changes": 1,
- "editable_grid": 1
+ "track_changes": 1
 }

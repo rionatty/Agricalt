@@ -4,9 +4,11 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 1,
  "field_order": [
-  "product_name",
   "item",
+  "product_name",
+  "crop",
   "quantity",
   "uom",
   "unit_price",
@@ -14,17 +16,25 @@
  ],
  "fields": [
   {
+   "fieldname": "item",
+   "fieldtype": "Link",
+   "label": "ERP Item",
+   "options": "Item",
+   "in_list_view": 1
+  },
+  {
    "fieldname": "product_name",
    "fieldtype": "Data",
    "label": "Product / Variety",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "fetch_from": "item.item_name"
   },
   {
-   "fieldname": "item",
+   "fieldname": "crop",
    "fieldtype": "Link",
-   "label": "ERP Item",
-   "options": "Item"
+   "label": "Related Crop",
+   "options": "Crop"
   },
   {
    "fieldname": "quantity",
@@ -62,6 +72,5 @@
  "permissions": [],
  "sort_field": "modified",
  "sort_order": "DESC",
- "track_changes": 1,
- "editable_grid": 1
+ "track_changes": 1
 }

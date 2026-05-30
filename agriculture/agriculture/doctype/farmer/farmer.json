@@ -1,0 +1,252 @@
+{
+ "autoname": "naming_series:",
+ "creation": "2026-05-30 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "editable_grid": 0,
+ "field_order": [
+  "naming_series",
+  "sec_1",
+  "farmer_name",
+  "phone",
+  "col_2",
+  "category",
+  "status",
+  "gender",
+  "sec_3",
+  "region",
+  "district",
+  "village",
+  "col_4",
+  "gps_latitude",
+  "gps_longitude",
+  "sec_5",
+  "registered_by",
+  "registered_by_name",
+  "registration_date",
+  "col_6",
+  "customer",
+  "customer_display_name",
+  "sec_7",
+  "primary_crop",
+  "primary_crop_name",
+  "sec_8",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "FM-.####\n"
+  },
+  {
+   "fieldname": "sec_1",
+   "fieldtype": "Section Break",
+   "label": "",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "farmer_name",
+   "fieldtype": "Data",
+   "label": "Farmer / Contact Name",
+   "reqd": 1,
+   "in_list_view": 1,
+   "bold": 1
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone",
+   "options": "Phone",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "col_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "label": "Category",
+   "options": "Farmer\nLead Farmer\nDemo Host\nNGO Contact\nStockist Contact\nOther",
+   "default": "Farmer",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Active\nInactive",
+   "default": "Active",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "label": "Gender",
+   "options": "\nMale\nFemale\nOther"
+  },
+  {
+   "fieldname": "sec_3",
+   "fieldtype": "Section Break",
+   "label": "Location",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "region",
+   "fieldtype": "Select",
+   "label": "Region",
+   "options": "\nCentral\nEastern\nWestern\nNorthern\nSouth-Western\nOther",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Data",
+   "label": "District"
+  },
+  {
+   "fieldname": "village",
+   "fieldtype": "Data",
+   "label": "Village / Parish"
+  },
+  {
+   "fieldname": "col_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "gps_latitude",
+   "fieldtype": "Float",
+   "label": "GPS Latitude"
+  },
+  {
+   "fieldname": "gps_longitude",
+   "fieldtype": "Float",
+   "label": "GPS Longitude"
+  },
+  {
+   "fieldname": "sec_5",
+   "fieldtype": "Section Break",
+   "label": "Registration",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "registered_by",
+   "fieldtype": "Link",
+   "label": "Registered By (Promoter)",
+   "options": "Field Promoter"
+  },
+  {
+   "fieldname": "registered_by_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "registered_by.promoter_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "registration_date",
+   "fieldtype": "Date",
+   "label": "Registration Date",
+   "default": "Today"
+  },
+  {
+   "fieldname": "col_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Linked ERP Customer",
+   "options": "Customer",
+   "description": "Optional — link to an ERPNext Customer if this contact also buys/sells"
+  },
+  {
+   "fieldname": "customer_display_name",
+   "fieldtype": "Data",
+   "label": "ERP Customer Name",
+   "fetch_from": "customer.customer_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_7",
+   "fieldtype": "Section Break",
+   "label": "Crops Grown",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "primary_crop",
+   "fieldtype": "Link",
+   "label": "Primary Crop",
+   "options": "Crop"
+  },
+  {
+   "fieldname": "primary_crop_name",
+   "fieldtype": "Data",
+   "label": "Crop Name",
+   "fetch_from": "primary_crop.crop_name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_8",
+   "fieldtype": "Section Break",
+   "label": "Notes",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Text",
+   "label": "Remarks"
+  }
+ ],
+ "istable": 0,
+ "modified": "2026-05-30 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Farmer",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Agriculture User",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 0,
+   "delete": 0,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Marketing Manager",
+   "share": 0,
+   "write": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1,
+ "naming_series": "FM-.####",
+ "title_field": "farmer_name",
+ "show_title_field_in_link": 1
+}

@@ -4,23 +4,25 @@
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
+ "editable_grid": 0,
  "field_order": [
   "naming_series",
-  "sec_8",
+  "sec_16",
   "promoter",
+  "promoter_name",
   "plan_type",
-  "col_9",
+  "col_17",
   "from_date",
   "to_date",
   "status",
-  "sec_10",
+  "sec_18",
   "activities",
-  "sec_11",
+  "sec_19",
   "approved_by",
   "approval_date",
-  "col_12",
+  "col_20",
   "rejection_reason",
-  "sec_13",
+  "sec_21",
   "remarks"
  ],
  "fields": [
@@ -31,7 +33,7 @@
    "options": "AP-.####\n"
   },
   {
-   "fieldname": "sec_8",
+   "fieldname": "sec_16",
    "fieldtype": "Section Break",
    "label": "",
    "collapsible": 0
@@ -42,8 +44,15 @@
    "label": "Field Promoter",
    "options": "Field Promoter",
    "reqd": 1,
-   "in_list_view": 1,
-   "bold": 1
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "promoter_name",
+   "fieldtype": "Data",
+   "label": "Promoter Name",
+   "fetch_from": "promoter.promoter_name",
+   "read_only": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "plan_type",
@@ -54,7 +63,7 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "col_9",
+   "fieldname": "col_17",
    "fieldtype": "Column Break"
   },
   {
@@ -80,7 +89,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_10",
+   "fieldname": "sec_18",
    "fieldtype": "Section Break",
    "label": "Planned Activities",
    "collapsible": 0
@@ -92,7 +101,7 @@
    "options": "Activity Plan Item"
   },
   {
-   "fieldname": "sec_11",
+   "fieldname": "sec_19",
    "fieldtype": "Section Break",
    "label": "Approval",
    "collapsible": 1
@@ -111,7 +120,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "col_12",
+   "fieldname": "col_20",
    "fieldtype": "Column Break"
   },
   {
@@ -121,7 +130,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "sec_13",
+   "fieldname": "sec_21",
    "fieldtype": "Section Break",
    "label": "Remarks",
    "collapsible": 1
