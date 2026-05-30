@@ -150,6 +150,8 @@ scheduler_events = {
 	"daily": [
 		"agriculture.agriculture.tasks.send_demo_garden_harvest_alerts",
 		"agriculture.agriculture.tasks.alert_unreported_materials",
+		"agriculture.agriculture.tasks.alert_unapplied_inputs",
+		"agriculture.agriculture.tasks.alert_planned_not_executed",
 		"agriculture.agriculture.tasks.alert_missing_weekly_plans",
 	],
 }
