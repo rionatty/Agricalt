@@ -1,66 +1,75 @@
 {
- "autoname": "naming_series:",
+ "autoname": "hash",
  "creation": "2026-05-30 00:00:00.000000",
  "docstatus": 0,
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "crop",
   "product_name",
+  "crop",
   "crop_maturity_duration",
   "uom",
-  "cb_1659508294672",
+  "col_1",
   "quantity_requested",
   "quantity_received",
   "quantity_planted"
  ],
  "fields": [
   {
+   "fieldname": "product_name",
+   "fieldtype": "Data",
+   "label": "Product / Variety",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 3
+  },
+  {
    "fieldname": "crop",
    "fieldtype": "Link",
    "label": "Crop",
    "options": "Crop",
-   "in_list_view": 1
-  },
-  {
-   "fieldname": "product_name",
-   "fieldtype": "Data",
-   "label": "Product / Variety Name",
-   "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "columns": 2
   },
   {
    "fieldname": "crop_maturity_duration",
    "fieldtype": "Int",
-   "label": "Maturity Duration (Days)",
+   "label": "Maturity (Days)",
    "in_list_view": 1,
-   "description": "Used to auto-calculate expected harvest date from planting date"
+   "columns": 2,
+   "description": "Days from planting to harvest"
   },
   {
    "fieldname": "uom",
    "fieldtype": "Select",
    "label": "Unit",
    "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams",
-   "in_list_view": 1
+   "columns": 1
   },
   {
-   "fieldname": "cb_1659508294672",
+   "fieldname": "col_1",
    "fieldtype": "Column Break"
   },
   {
    "fieldname": "quantity_requested",
    "fieldtype": "Float",
-   "label": "Qty Requested"
+   "label": "Requested",
+   "in_list_view": 1,
+   "columns": 2
   },
   {
    "fieldname": "quantity_received",
    "fieldtype": "Float",
-   "label": "Qty Received"
+   "label": "Received",
+   "in_list_view": 1,
+   "columns": 2
   },
   {
    "fieldname": "quantity_planted",
    "fieldtype": "Float",
-   "label": "Qty Planted"
+   "label": "Planted",
+   "in_list_view": 1,
+   "columns": 2
   }
  ],
  "istable": 1,

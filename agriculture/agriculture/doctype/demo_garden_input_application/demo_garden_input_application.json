@@ -6,18 +6,22 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb_application_details",
+  "tab_74",
+  "sec_75",
   "demo_garden",
   "promoter",
+  "col_76",
   "application_date",
-  "cb_3",
   "application_stage",
   "status",
-  "sb_inputs_applied",
+  "tab_77",
+  "sec_78",
   "inputs",
-  "sb_photos",
+  "tab_79",
+  "sec_80",
   "photos",
-  "sb_remarks",
+  "tab_81",
+  "sec_82",
   "remarks"
  ],
  "fields": [
@@ -28,9 +32,16 @@
    "options": "DGIA-.####\n"
   },
   {
-   "fieldname": "sb_application_details",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_74",
+   "fieldtype": "Tab Break",
    "label": "Application Details"
+  },
+  {
+   "fieldname": "sec_75",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "demo_garden",
@@ -38,7 +49,8 @@
    "label": "Demo Garden",
    "options": "Demo Garden",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "bold": 1
   },
   {
    "fieldname": "promoter",
@@ -49,6 +61,10 @@
    "in_list_view": 1
   },
   {
+   "fieldname": "col_76",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "application_date",
    "fieldtype": "Date",
    "label": "Application Date",
@@ -57,13 +73,9 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "cb_3",
-   "fieldtype": "Column Break"
-  },
-  {
    "fieldname": "application_stage",
    "fieldtype": "Select",
-   "label": "Application Stage",
+   "label": "Growth Stage at Application",
    "options": "Pre-Planting\nAt Planting\nPost-Planting\nMonitoring\nPre-Harvest",
    "reqd": 1,
    "in_list_view": 1
@@ -78,9 +90,16 @@
    "read_only": 1
   },
   {
-   "fieldname": "sb_inputs_applied",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_77",
+   "fieldtype": "Tab Break",
    "label": "Inputs Applied"
+  },
+  {
+   "fieldname": "sec_78",
+   "fieldtype": "Section Break",
+   "label": "Chemicals, Fertilizers & Pesticides",
+   "description": "Quantities are validated against materials received. Applied quantities are deducted from your stock balance.",
+   "collapsible": 0
   },
   {
    "fieldname": "inputs",
@@ -89,9 +108,16 @@
    "options": "Demo Garden Input Item"
   },
   {
-   "fieldname": "sb_photos",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_79",
+   "fieldtype": "Tab Break",
    "label": "Photos"
+  },
+  {
+   "fieldname": "sec_80",
+   "fieldtype": "Section Break",
+   "label": "Photo Evidence",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "photos",
@@ -100,14 +126,21 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "sb_remarks",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_81",
+   "fieldtype": "Tab Break",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "sec_82",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks"
+   "label": "Remarks / Notes"
   }
  ],
  "istable": 0,

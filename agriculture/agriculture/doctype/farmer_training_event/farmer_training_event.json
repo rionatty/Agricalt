@@ -6,24 +6,31 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb_event_details",
+  "tab_106",
+  "sec_107",
   "event_type",
+  "status",
+  "col_108",
+  "promoter",
   "event_date",
+  "sec_109",
   "location",
   "sector",
-  "cb_1659508294672",
-  "promoter",
+  "col_110",
   "number_of_attendees",
-  "status",
-  "sb_content",
+  "tab_111",
+  "sec_112",
   "topics_covered",
-  "sb_attendees",
-  "attendees",
-  "sb_post-event_report",
+  "col_113",
   "outcomes",
-  "sb_photos",
+  "tab_114",
+  "sec_115",
+  "attendees",
+  "tab_116",
+  "sec_117",
   "photos",
-  "sb_remarks",
+  "tab_118",
+  "sec_119",
   "remarks"
  ],
  "fields": [
@@ -34,15 +41,44 @@
    "options": "FTE-.####\n"
   },
   {
-   "fieldname": "sb_event_details",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_106",
+   "fieldtype": "Tab Break",
    "label": "Event Details"
+  },
+  {
+   "fieldname": "sec_107",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "event_type",
    "fieldtype": "Select",
    "label": "Event Type",
    "options": "Exhibition\nFarmer Training\nField Day",
+   "reqd": 1,
+   "in_list_view": 1,
+   "bold": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Planned\nCompleted",
+   "default": "Planned",
+   "in_list_view": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_108",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "promoter",
+   "fieldtype": "Link",
+   "label": "Organising Promoter",
+   "options": "Field Promoter",
    "reqd": 1,
    "in_list_view": 1
   },
@@ -55,9 +91,16 @@
    "in_list_view": 1
   },
   {
+   "fieldname": "sec_109",
+   "fieldtype": "Section Break",
+   "label": "Venue",
+   "description": "",
+   "collapsible": 0
+  },
+  {
    "fieldname": "location",
    "fieldtype": "Data",
-   "label": "Location",
+   "label": "Location / Venue",
    "reqd": 1,
    "in_list_view": 1
   },
@@ -67,16 +110,8 @@
    "label": "Sector / Sub-county"
   },
   {
-   "fieldname": "cb_1659508294672",
+   "fieldname": "col_110",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "promoter",
-   "fieldtype": "Link",
-   "label": "Organising Promoter",
-   "options": "Field Promoter",
-   "reqd": 1,
-   "in_list_view": 1
   },
   {
    "fieldname": "number_of_attendees",
@@ -85,17 +120,16 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Planned\nCompleted",
-   "default": "Planned",
-   "in_list_view": 1
+   "fieldname": "tab_111",
+   "fieldtype": "Tab Break",
+   "label": "Content & Outcomes"
   },
   {
-   "fieldname": "sb_content",
+   "fieldname": "sec_112",
    "fieldtype": "Section Break",
-   "label": "Content"
+   "label": "Topics Covered",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "topics_covered",
@@ -103,30 +137,43 @@
    "label": "Topics Covered"
   },
   {
-   "fieldname": "sb_attendees",
-   "fieldtype": "Section Break",
-   "label": "Attendees"
-  },
-  {
-   "fieldname": "attendees",
-   "fieldtype": "Table",
-   "label": "Attendees",
-   "options": "Training Event Attendee"
-  },
-  {
-   "fieldname": "sb_post-event_report",
-   "fieldtype": "Section Break",
-   "label": "Post-Event Report"
+   "fieldname": "col_113",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "outcomes",
    "fieldtype": "Text",
-   "label": "Key Outcomes"
+   "label": "Key Outcomes & Impact"
   },
   {
-   "fieldname": "sb_photos",
+   "fieldname": "tab_114",
+   "fieldtype": "Tab Break",
+   "label": "Attendees"
+  },
+  {
+   "fieldname": "sec_115",
    "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "attendees",
+   "fieldtype": "Table",
+   "label": "Attendance Register",
+   "options": "Training Event Attendee"
+  },
+  {
+   "fieldname": "tab_116",
+   "fieldtype": "Tab Break",
    "label": "Photos"
+  },
+  {
+   "fieldname": "sec_117",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "photos",
@@ -135,14 +182,21 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "sb_remarks",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_118",
+   "fieldtype": "Tab Break",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "sec_119",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks"
+   "label": "Remarks / Notes"
   }
  ],
  "istable": 0,

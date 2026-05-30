@@ -6,23 +6,27 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb_transaction_details",
+  "tab_136",
+  "sec_137",
   "promoter",
   "transaction_date",
+  "col_138",
   "transaction_type",
-  "cb_7",
   "demo_garden",
-  "reference_doctype",
-  "reference_name",
-  "sb_material_details",
+  "sec_139",
   "product_name",
   "item",
   "uom",
-  "cb_8",
+  "col_140",
   "qty_in",
   "qty_out",
   "balance_qty",
-  "sb_remarks",
+  "tab_141",
+  "sec_142",
+  "reference_doctype",
+  "reference_name",
+  "tab_143",
+  "sec_144",
   "remarks"
  ],
  "fields": [
@@ -33,9 +37,16 @@
    "options": "PSL-.####\n"
   },
   {
-   "fieldname": "sb_transaction_details",
+   "fieldname": "tab_136",
+   "fieldtype": "Tab Break",
+   "label": "Ledger Entry"
+  },
+  {
+   "fieldname": "sec_137",
    "fieldtype": "Section Break",
-   "label": "Transaction Details"
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "promoter",
@@ -43,7 +54,8 @@
    "label": "Field Promoter",
    "options": "Field Promoter",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "bold": 1
   },
   {
    "fieldname": "transaction_date",
@@ -54,16 +66,16 @@
    "in_list_view": 1
   },
   {
+   "fieldname": "col_138",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "transaction_type",
    "fieldtype": "Select",
    "label": "Transaction Type",
    "options": "Receipt\nPlanting Consumption\nInput Application\nReturn\nAdjustment",
    "reqd": 1,
    "in_list_view": 1
-  },
-  {
-   "fieldname": "cb_7",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "demo_garden",
@@ -73,22 +85,11 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "reference_doctype",
-   "fieldtype": "Data",
-   "label": "Reference DocType",
-   "read_only": 1
-  },
-  {
-   "fieldname": "reference_name",
-   "fieldtype": "Dynamic Link",
-   "label": "Reference Document",
-   "options": "reference_doctype",
-   "read_only": 1
-  },
-  {
-   "fieldname": "sb_material_details",
+   "fieldname": "sec_139",
    "fieldtype": "Section Break",
-   "label": "Material Details"
+   "label": "Material",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "product_name",
@@ -100,7 +101,7 @@
   {
    "fieldname": "item",
    "fieldtype": "Link",
-   "label": "Item (ERP)",
+   "label": "ERP Item",
    "options": "Item"
   },
   {
@@ -110,7 +111,7 @@
    "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams"
   },
   {
-   "fieldname": "cb_8",
+   "fieldname": "col_140",
    "fieldtype": "Column Break"
   },
   {
@@ -122,7 +123,7 @@
   {
    "fieldname": "qty_out",
    "fieldtype": "Float",
-   "label": "Qty Out (Consumed/Applied)",
+   "label": "Qty Out (Consumed)",
    "in_list_view": 1
   },
   {
@@ -130,12 +131,45 @@
    "fieldtype": "Float",
    "label": "Running Balance",
    "read_only": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "bold": 1
   },
   {
-   "fieldname": "sb_remarks",
+   "fieldname": "tab_141",
+   "fieldtype": "Tab Break",
+   "label": "Reference"
+  },
+  {
+   "fieldname": "sec_142",
    "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "reference_doctype",
+   "fieldtype": "Data",
+   "label": "Source DocType",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Source Document",
+   "options": "reference_doctype",
+   "read_only": 1
+  },
+  {
+   "fieldname": "tab_143",
+   "fieldtype": "Tab Break",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "sec_144",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "remarks",

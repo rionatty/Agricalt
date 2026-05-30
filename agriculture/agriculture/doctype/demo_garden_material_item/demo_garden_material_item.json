@@ -1,5 +1,5 @@
 {
- "autoname": "naming_series:",
+ "autoname": "hash",
  "creation": "2026-05-30 00:00:00.000000",
  "docstatus": 0,
  "doctype": "DocType",
@@ -8,8 +8,8 @@
   "item_type",
   "item_name",
   "item",
-  "cb_1659508294672",
   "uom",
+  "col_2",
   "quantity_requested",
   "quantity_issued",
   "quantity_received"
@@ -18,52 +18,61 @@
   {
    "fieldname": "item_type",
    "fieldtype": "Select",
-   "label": "Material Type",
+   "label": "Type",
    "options": "Seed\nChemical\nFertilizer\nOther",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "columns": 2
   },
   {
    "fieldname": "item_name",
    "fieldtype": "Data",
-   "label": "Item / Product Name",
+   "label": "Item / Product",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "columns": 3
   },
   {
    "fieldname": "item",
    "fieldtype": "Link",
-   "label": "Item (ERP)",
-   "options": "Item"
-  },
-  {
-   "fieldname": "cb_1659508294672",
-   "fieldtype": "Column Break"
+   "label": "ERP Item",
+   "options": "Item",
+   "columns": 2
   },
   {
    "fieldname": "uom",
    "fieldtype": "Select",
    "label": "Unit",
-   "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams"
+   "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams\nMl\nGrams",
+   "columns": 1
+  },
+  {
+   "fieldname": "col_2",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "quantity_requested",
    "fieldtype": "Float",
-   "label": "Qty Requested",
+   "label": "Requested",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "columns": 2
   },
   {
    "fieldname": "quantity_issued",
    "fieldtype": "Float",
-   "label": "Qty Issued",
-   "read_only": 1
+   "label": "Issued",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 2
   },
   {
    "fieldname": "quantity_received",
    "fieldtype": "Float",
-   "label": "Qty Received",
-   "read_only": 1
+   "label": "Received",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 2
   }
  ],
  "istable": 1,

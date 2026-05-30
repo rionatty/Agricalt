@@ -6,26 +6,31 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb_visit_details",
+  "tab_83",
+  "sec_84",
   "demo_garden",
   "promoter",
+  "col_85",
   "visit_date",
-  "cb_4",
   "crop_growth_stage",
   "status",
-  "sb_observations",
+  "tab_86",
+  "sec_87",
   "general_condition",
+  "observations",
+  "col_88",
   "disease_observed",
   "disease_details",
   "inputs_needed",
   "inputs_description",
-  "observations",
-  "cb_5",
+  "sec_89",
   "next_action",
   "next_visit_date",
-  "sb_photos",
+  "tab_90",
+  "sec_91",
   "photos",
-  "sb_remarks",
+  "tab_92",
+  "sec_93",
   "remarks"
  ],
  "fields": [
@@ -36,9 +41,16 @@
    "options": "DGMV-.####\n"
   },
   {
-   "fieldname": "sb_visit_details",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_83",
+   "fieldtype": "Tab Break",
    "label": "Visit Details"
+  },
+  {
+   "fieldname": "sec_84",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "demo_garden",
@@ -46,7 +58,8 @@
    "label": "Demo Garden",
    "options": "Demo Garden",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "bold": 1
   },
   {
    "fieldname": "promoter",
@@ -57,16 +70,16 @@
    "in_list_view": 1
   },
   {
+   "fieldname": "col_85",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "visit_date",
    "fieldtype": "Date",
    "label": "Visit Date",
    "reqd": 1,
    "default": "Today",
    "in_list_view": 1
-  },
-  {
-   "fieldname": "cb_4",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "crop_growth_stage",
@@ -85,16 +98,32 @@
    "read_only": 1
   },
   {
-   "fieldname": "sb_observations",
+   "fieldname": "tab_86",
+   "fieldtype": "Tab Break",
+   "label": "Field Observations"
+  },
+  {
+   "fieldname": "sec_87",
    "fieldtype": "Section Break",
-   "label": "Observations"
+   "label": "Crop Condition",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "general_condition",
    "fieldtype": "Select",
-   "label": "General Crop Condition",
+   "label": "Overall Crop Condition",
    "options": "Excellent\nGood\nFair\nPoor",
    "in_list_view": 1
+  },
+  {
+   "fieldname": "observations",
+   "fieldtype": "Text",
+   "label": "Detailed Observations"
+  },
+  {
+   "fieldname": "col_88",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "disease_observed",
@@ -104,7 +133,8 @@
   {
    "fieldname": "disease_details",
    "fieldtype": "Small Text",
-   "label": "Disease / Pest Details"
+   "label": "Disease / Pest Details",
+   "depends_on": "disease_observed"
   },
   {
    "fieldname": "inputs_needed",
@@ -114,16 +144,15 @@
   {
    "fieldname": "inputs_description",
    "fieldtype": "Small Text",
-   "label": "Inputs Description"
+   "label": "Inputs Required",
+   "depends_on": "inputs_needed"
   },
   {
-   "fieldname": "observations",
-   "fieldtype": "Text",
-   "label": "General Observations"
-  },
-  {
-   "fieldname": "cb_5",
-   "fieldtype": "Column Break"
+   "fieldname": "sec_89",
+   "fieldtype": "Section Break",
+   "label": "Action Plan",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "next_action",
@@ -133,12 +162,19 @@
   {
    "fieldname": "next_visit_date",
    "fieldtype": "Date",
-   "label": "Planned Next Visit"
+   "label": "Planned Next Visit Date"
   },
   {
-   "fieldname": "sb_photos",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_90",
+   "fieldtype": "Tab Break",
    "label": "Photos"
+  },
+  {
+   "fieldname": "sec_91",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "photos",
@@ -147,14 +183,21 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "sb_remarks",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_92",
+   "fieldtype": "Tab Break",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "sec_93",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks"
+   "label": "Remarks / Notes"
   }
  ],
  "istable": 0,

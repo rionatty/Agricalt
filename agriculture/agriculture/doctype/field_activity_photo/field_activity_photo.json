@@ -1,5 +1,5 @@
 {
- "autoname": "naming_series:",
+ "autoname": "hash",
  "creation": "2026-05-30 00:00:00.000000",
  "docstatus": 0,
  "doctype": "DocType",
@@ -23,18 +23,19 @@
   {
    "fieldname": "gps_latitude",
    "fieldtype": "Float",
-   "label": "GPS Latitude"
+   "label": "Latitude"
   },
   {
    "fieldname": "gps_longitude",
    "fieldtype": "Float",
-   "label": "GPS Longitude"
+   "label": "Longitude"
   },
   {
    "fieldname": "gps_location_text",
    "fieldtype": "Data",
    "label": "GPS Coordinates",
-   "read_only": 1
+   "read_only": 1,
+   "in_list_view": 1
   },
   {
    "fieldname": "captured_at",
@@ -45,7 +46,8 @@
   {
    "fieldname": "caption",
    "fieldtype": "Data",
-   "label": "Caption"
+   "label": "Caption",
+   "in_list_view": 1
   }
  ],
  "istable": 1,

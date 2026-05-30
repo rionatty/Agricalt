@@ -6,33 +6,40 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb_activity",
+  "tab_25",
+  "sec_26",
   "activity_type",
-  "is_planned",
-  "activity_plan",
-  "cb_1659508294672",
+  "status",
+  "col_27",
   "promoter",
   "activity_date",
   "activity_time",
-  "status",
-  "sb_location",
+  "sec_28",
+  "is_planned",
+  "activity_plan",
+  "tab_29",
+  "sec_30",
   "gps_latitude",
   "gps_longitude",
   "gps_location_text",
   "location_name",
-  "sb_customer_details",
+  "sec_31",
   "customer_category",
   "customer",
+  "col_32",
   "customer_name",
-  "cb_1659508294672_1",
   "purpose",
   "demo_garden",
-  "sb_orders_&_payments",
+  "tab_33",
+  "sec_34",
   "orders_collected",
+  "col_35",
   "payment_collected",
-  "sb_photos",
+  "tab_36",
+  "sec_37",
   "photos",
-  "sb_remarks",
+  "tab_38",
+  "sec_39",
   "remarks"
  ],
  "fields": [
@@ -43,9 +50,16 @@
    "options": "FAL-.####\n"
   },
   {
-   "fieldname": "sb_activity",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_25",
+   "fieldtype": "Tab Break",
    "label": "Activity"
+  },
+  {
+   "fieldname": "sec_26",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "activity_type",
@@ -53,21 +67,20 @@
    "label": "Activity Type",
    "options": "Farm Visit\nStockist Visit\nExhibition\nFarmer Training\nDemo Garden Visit\nPayment Collection",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "bold": 1
   },
   {
-   "fieldname": "is_planned",
-   "fieldtype": "Check",
-   "label": "Planned Activity?"
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nSubmitted",
+   "default": "Draft",
+   "in_list_view": 1,
+   "read_only": 1
   },
   {
-   "fieldname": "activity_plan",
-   "fieldtype": "Link",
-   "label": "Activity Plan",
-   "options": "Activity Plan"
-  },
-  {
-   "fieldname": "cb_1659508294672",
+   "fieldname": "col_27",
    "fieldtype": "Column Break"
   },
   {
@@ -81,7 +94,7 @@
   {
    "fieldname": "activity_date",
    "fieldtype": "Date",
-   "label": "Activity Date",
+   "label": "Date",
    "reqd": 1,
    "default": "Today",
    "in_list_view": 1
@@ -89,30 +102,49 @@
   {
    "fieldname": "activity_time",
    "fieldtype": "Time",
-   "label": "Activity Time"
+   "label": "Time"
   },
   {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Draft\nSubmitted",
-   "default": "Draft",
-   "in_list_view": 1
-  },
-  {
-   "fieldname": "sb_location",
+   "fieldname": "sec_28",
    "fieldtype": "Section Break",
-   "label": "Location"
+   "label": "Plan Reference",
+   "description": "",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "is_planned",
+   "fieldtype": "Check",
+   "label": "This is a Planned Activity"
+  },
+  {
+   "fieldname": "activity_plan",
+   "fieldtype": "Link",
+   "label": "Activity Plan",
+   "options": "Activity Plan",
+   "depends_on": "is_planned",
+   "description": "Link to the approved activity plan this activity belongs to"
+  },
+  {
+   "fieldname": "tab_29",
+   "fieldtype": "Tab Break",
+   "label": "Location & Customer"
+  },
+  {
+   "fieldname": "sec_30",
+   "fieldtype": "Section Break",
+   "label": "GPS Location",
+   "description": "Coordinates are auto-captured by the mobile app at the time of logging",
+   "collapsible": 0
   },
   {
    "fieldname": "gps_latitude",
    "fieldtype": "Float",
-   "label": "GPS Latitude"
+   "label": "Latitude"
   },
   {
    "fieldname": "gps_longitude",
    "fieldtype": "Float",
-   "label": "GPS Longitude"
+   "label": "Longitude"
   },
   {
    "fieldname": "gps_location_text",
@@ -123,34 +155,36 @@
   {
    "fieldname": "location_name",
    "fieldtype": "Data",
-   "label": "Location Name"
+   "label": "Location / Village Name"
   },
   {
-   "fieldname": "sb_customer_details",
+   "fieldname": "sec_31",
    "fieldtype": "Section Break",
-   "label": "Customer Details"
+   "label": "Customer / Contact Details",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "customer_category",
    "fieldtype": "Select",
-   "label": "Customer Category",
+   "label": "Category",
    "options": "\nFarmer\nNGO\nStockist\nOther",
    "in_list_view": 1
   },
   {
    "fieldname": "customer",
    "fieldtype": "Link",
-   "label": "Customer",
+   "label": "Registered Contact",
    "options": "Customer"
+  },
+  {
+   "fieldname": "col_32",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "customer_name",
    "fieldtype": "Data",
-   "label": "Customer Name (If Not Registered)"
-  },
-  {
-   "fieldname": "cb_1659508294672_1",
-   "fieldtype": "Column Break"
+   "label": "Name (If Not Registered)"
   },
   {
    "fieldname": "purpose",
@@ -160,13 +194,20 @@
   {
    "fieldname": "demo_garden",
    "fieldtype": "Link",
-   "label": "Demo Garden",
+   "label": "Demo Garden (If Applicable)",
    "options": "Demo Garden"
   },
   {
-   "fieldname": "sb_orders_&_payments",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_33",
+   "fieldtype": "Tab Break",
    "label": "Orders & Payments"
+  },
+  {
+   "fieldname": "sec_34",
+   "fieldtype": "Section Break",
+   "label": "Orders Collected",
+   "description": "Complete for Stockist Visit activities",
+   "collapsible": 0
   },
   {
    "fieldname": "orders_collected",
@@ -174,14 +215,25 @@
    "label": "Orders Collected (UGX)"
   },
   {
+   "fieldname": "col_35",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "payment_collected",
    "fieldtype": "Currency",
    "label": "Payment Collected (UGX)"
   },
   {
-   "fieldname": "sb_photos",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_36",
+   "fieldtype": "Tab Break",
    "label": "Photos"
+  },
+  {
+   "fieldname": "sec_37",
+   "fieldtype": "Section Break",
+   "label": "Photo Evidence",
+   "description": "Photos must be taken live from camera — GPS coordinates are auto-embedded",
+   "collapsible": 0
   },
   {
    "fieldname": "photos",
@@ -190,14 +242,21 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "sb_remarks",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_38",
+   "fieldtype": "Tab Break",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "sec_39",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks"
+   "label": "Remarks / Observations"
   }
  ],
  "istable": 0,

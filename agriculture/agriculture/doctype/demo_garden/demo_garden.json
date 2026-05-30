@@ -6,28 +6,33 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb_garden_details",
+  "tab_40",
+  "sec_41",
   "demo_garden_name",
+  "status",
+  "sec_42",
   "location",
   "gps_latitude",
   "gps_longitude",
-  "cb_1659508294672",
+  "col_43",
   "responsible_promoter",
-  "status",
-  "sb_host_/_farmer_details",
+  "purpose",
+  "sec_44",
   "farmer_host_name",
   "farmer_host_contact",
   "farmer_host_category",
-  "cb_1659508294672_1",
-  "purpose",
-  "sb_products_to_demonstrate",
+  "tab_45",
+  "sec_46",
   "products",
-  "sb_timeline",
+  "tab_47",
+  "sec_48",
   "planting_date",
   "expected_harvest_date",
+  "col_49",
   "field_day_date",
   "completion_date",
-  "cb_1659508294672_2",
+  "tab_50",
+  "sec_51",
   "remarks"
  ],
  "fields": [
@@ -38,21 +43,46 @@
    "options": "DG-.####\n"
   },
   {
-   "fieldname": "sb_garden_details",
+   "fieldname": "tab_40",
+   "fieldtype": "Tab Break",
+   "label": "Overview"
+  },
+  {
+   "fieldname": "sec_41",
    "fieldtype": "Section Break",
-   "label": "Garden Details"
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "demo_garden_name",
    "fieldtype": "Data",
    "label": "Demo Garden Name",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "bold": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Registered\nMaterial Requested\nMaterial Received\nPlanted\nMonitoring\nField Day Scheduled\nField Day Done\nCompleted",
+   "default": "Registered",
+   "in_list_view": 1,
+   "read_only": 1,
+   "bold": 1
+  },
+  {
+   "fieldname": "sec_42",
+   "fieldtype": "Section Break",
+   "label": "Location",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "location",
    "fieldtype": "Data",
-   "label": "Location / Village",
+   "label": "Village / Location",
    "reqd": 1,
    "in_list_view": 1
   },
@@ -67,7 +97,7 @@
    "label": "GPS Longitude"
   },
   {
-   "fieldname": "cb_1659508294672",
+   "fieldname": "col_43",
    "fieldtype": "Column Break"
   },
   {
@@ -79,48 +109,44 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "label": "Status",
-   "options": "Registered\nMaterial Requested\nMaterial Received\nPlanted\nMonitoring\nField Day Scheduled\nField Day Done\nCompleted",
-   "default": "Registered",
-   "in_list_view": 1,
-   "read_only": 1
+   "fieldname": "purpose",
+   "fieldtype": "Small Text",
+   "label": "Objective / Purpose"
   },
   {
-   "fieldname": "sb_host_/_farmer_details",
+   "fieldname": "sec_44",
    "fieldtype": "Section Break",
-   "label": "Host / Farmer Details"
+   "label": "Host / Farmer Details",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "farmer_host_name",
    "fieldtype": "Data",
-   "label": "Farmer / Host Name"
+   "label": "Host Name"
   },
   {
    "fieldname": "farmer_host_contact",
    "fieldtype": "Data",
-   "label": "Host Contact"
+   "label": "Host Phone"
   },
   {
    "fieldname": "farmer_host_category",
    "fieldtype": "Select",
-   "label": "Host Category",
+   "label": "Host Type",
    "options": "\nFarmer\nNGO\nOther"
   },
   {
-   "fieldname": "cb_1659508294672_1",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "purpose",
-   "fieldtype": "Small Text",
-   "label": "Purpose / Objective"
-  },
-  {
-   "fieldname": "sb_products_to_demonstrate",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_45",
+   "fieldtype": "Tab Break",
    "label": "Products to Demonstrate"
+  },
+  {
+   "fieldname": "sec_46",
+   "fieldtype": "Section Break",
+   "label": "Crop / Seed Varieties",
+   "description": "Add all products to be demonstrated. Maturity duration is used to auto-calculate the expected harvest date.",
+   "collapsible": 0
   },
   {
    "fieldname": "products",
@@ -129,9 +155,16 @@
    "options": "Demo Garden Product"
   },
   {
-   "fieldname": "sb_timeline",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_47",
+   "fieldtype": "Tab Break",
    "label": "Timeline"
+  },
+  {
+   "fieldname": "sec_48",
+   "fieldtype": "Section Break",
+   "label": "Key Dates",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "planting_date",
@@ -143,7 +176,11 @@
    "fieldtype": "Date",
    "label": "Expected Harvest / Field Day Date",
    "read_only": 1,
-   "description": "Auto-calculated from Planting Date + longest Crop Maturity Duration"
+   "description": "Auto-calculated: Planting Date + longest crop maturity duration"
+  },
+  {
+   "fieldname": "col_49",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "field_day_date",
@@ -156,13 +193,21 @@
    "label": "Completion Date"
   },
   {
-   "fieldname": "cb_1659508294672_2",
-   "fieldtype": "Column Break"
+   "fieldname": "tab_50",
+   "fieldtype": "Tab Break",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "sec_51",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks"
+   "label": "Remarks / Notes"
   }
  ],
  "istable": 0,

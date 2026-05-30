@@ -6,25 +6,30 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb_request_details",
+  "tab_52",
+  "sec_53",
   "demo_garden",
   "promoter",
+  "col_54",
   "request_date",
-  "cb_1659508294672",
   "status",
-  "sb_requested_materials",
+  "tab_55",
+  "sec_56",
   "items",
-  "sb_supervisor_approval",
+  "tab_57",
+  "sec_58",
   "approved_by",
   "approval_date",
+  "col_59",
   "rejection_reason",
-  "cb_1659508294672_1",
+  "sec_60",
   "issued_by",
   "issue_date",
-  "sb_promoter_receipt",
+  "sec_61",
   "promoter_receipt_confirmed",
   "promoter_receipt_date",
-  "sb_remarks",
+  "tab_62",
+  "sec_63",
   "remarks"
  ],
  "fields": [
@@ -35,9 +40,16 @@
    "options": "DGMR-.####\n"
   },
   {
-   "fieldname": "sb_request_details",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_52",
+   "fieldtype": "Tab Break",
    "label": "Request Details"
+  },
+  {
+   "fieldname": "sec_53",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "demo_garden",
@@ -45,7 +57,8 @@
    "label": "Demo Garden",
    "options": "Demo Garden",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "bold": 1
   },
   {
    "fieldname": "promoter",
@@ -56,15 +69,15 @@
    "in_list_view": 1
   },
   {
+   "fieldname": "col_54",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "request_date",
    "fieldtype": "Date",
    "label": "Request Date",
    "reqd": 1,
    "default": "Today"
-  },
-  {
-   "fieldname": "cb_1659508294672",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "status",
@@ -73,12 +86,20 @@
    "options": "Draft\nSubmitted\nApproved\nIssued\nReceived\nRejected",
    "default": "Draft",
    "in_list_view": 1,
-   "read_only": 1
+   "read_only": 1,
+   "bold": 1
   },
   {
-   "fieldname": "sb_requested_materials",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_55",
+   "fieldtype": "Tab Break",
    "label": "Requested Materials"
+  },
+  {
+   "fieldname": "sec_56",
+   "fieldtype": "Section Break",
+   "label": "Materials List",
+   "description": "List all seeds, chemicals and fertilisers needed for the demo garden",
+   "collapsible": 0
   },
   {
    "fieldname": "items",
@@ -87,9 +108,16 @@
    "options": "Demo Garden Material Item"
   },
   {
-   "fieldname": "sb_supervisor_approval",
+   "fieldname": "tab_57",
+   "fieldtype": "Tab Break",
+   "label": "Approval & Dispatch"
+  },
+  {
+   "fieldname": "sec_58",
    "fieldtype": "Section Break",
-   "label": "Supervisor Approval"
+   "label": "Supervisor Approval",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "approved_by",
@@ -101,8 +129,12 @@
   {
    "fieldname": "approval_date",
    "fieldtype": "Date",
-   "label": "Approval Date",
+   "label": "Approved On",
    "read_only": 1
+  },
+  {
+   "fieldname": "col_59",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "rejection_reason",
@@ -111,8 +143,11 @@
    "read_only": 1
   },
   {
-   "fieldname": "cb_1659508294672_1",
-   "fieldtype": "Column Break"
+   "fieldname": "sec_60",
+   "fieldtype": "Section Break",
+   "label": "Store Dispatch",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "issued_by",
@@ -124,13 +159,15 @@
   {
    "fieldname": "issue_date",
    "fieldtype": "Date",
-   "label": "Issue Date",
+   "label": "Issued On",
    "read_only": 1
   },
   {
-   "fieldname": "sb_promoter_receipt",
+   "fieldname": "sec_61",
    "fieldtype": "Section Break",
-   "label": "Promoter Receipt"
+   "label": "Promoter Receipt Confirmation",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "promoter_receipt_confirmed",
@@ -140,17 +177,24 @@
   {
    "fieldname": "promoter_receipt_date",
    "fieldtype": "Date",
-   "label": "Receipt Confirmation Date"
+   "label": "Confirmed On"
   },
   {
-   "fieldname": "sb_remarks",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_62",
+   "fieldtype": "Tab Break",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "sec_63",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks"
+   "label": "Remarks / Notes"
   }
  ],
  "istable": 0,

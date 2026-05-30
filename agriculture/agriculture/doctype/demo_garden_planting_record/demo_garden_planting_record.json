@@ -6,19 +6,24 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb_planting_details",
+  "tab_64",
+  "sec_65",
   "demo_garden",
   "promoter",
+  "col_66",
   "planting_date",
-  "cb_1",
   "status",
+  "sec_67",
   "overall_expected_harvest_date",
-  "sb_products_planted",
+  "tab_68",
+  "sec_69",
   "products",
-  "sb_stock_validation",
+  "tab_70",
+  "sec_71",
   "stock_validated",
   "validation_notes",
-  "sb_remarks",
+  "tab_72",
+  "sec_73",
   "remarks"
  ],
  "fields": [
@@ -29,9 +34,16 @@
    "options": "DGPR-.####\n"
   },
   {
-   "fieldname": "sb_planting_details",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_64",
+   "fieldtype": "Tab Break",
    "label": "Planting Details"
+  },
+  {
+   "fieldname": "sec_65",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "demo_garden",
@@ -39,7 +51,8 @@
    "label": "Demo Garden",
    "options": "Demo Garden",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "bold": 1
   },
   {
    "fieldname": "promoter",
@@ -50,16 +63,16 @@
    "in_list_view": 1
   },
   {
+   "fieldname": "col_66",
+   "fieldtype": "Column Break"
+  },
+  {
    "fieldname": "planting_date",
    "fieldtype": "Date",
    "label": "Planting Date",
    "reqd": 1,
    "default": "Today",
    "in_list_view": 1
-  },
-  {
-   "fieldname": "cb_1",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "status",
@@ -71,32 +84,53 @@
    "read_only": 1
   },
   {
-   "fieldname": "overall_expected_harvest_date",
-   "fieldtype": "Date",
-   "label": "Overall Expected Harvest Date",
-   "read_only": 1,
-   "description": "Auto-calculated from latest maturity duration"
+   "fieldname": "sec_67",
+   "fieldtype": "Section Break",
+   "label": "Expected Outcome",
+   "description": "",
+   "collapsible": 0
   },
   {
-   "fieldname": "sb_products_planted",
-   "fieldtype": "Section Break",
+   "fieldname": "overall_expected_harvest_date",
+   "fieldtype": "Date",
+   "label": "Expected Harvest / Field Day Date",
+   "read_only": 1,
+   "description": "Auto-calculated from planting date + longest crop maturity duration"
+  },
+  {
+   "fieldname": "tab_68",
+   "fieldtype": "Tab Break",
    "label": "Products Planted"
+  },
+  {
+   "fieldname": "sec_69",
+   "fieldtype": "Section Break",
+   "label": "Planting Record",
+   "description": "Quantities will be validated against materials received from store. You cannot plant more than you received.",
+   "collapsible": 0
   },
   {
    "fieldname": "products",
    "fieldtype": "Table",
-   "label": "Products Planted",
+   "label": "Products",
    "options": "Demo Garden Planting Item"
   },
   {
-   "fieldname": "sb_stock_validation",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_70",
+   "fieldtype": "Tab Break",
    "label": "Stock Validation"
+  },
+  {
+   "fieldname": "sec_71",
+   "fieldtype": "Section Break",
+   "label": "Validation Result",
+   "description": "Stock is automatically validated when you save. Submit is only allowed after successful validation.",
+   "collapsible": 0
   },
   {
    "fieldname": "stock_validated",
    "fieldtype": "Check",
-   "label": "Stock Validated?",
+   "label": "Stock Validated Successfully?",
    "read_only": 1
   },
   {
@@ -106,14 +140,21 @@
    "read_only": 1
   },
   {
-   "fieldname": "sb_remarks",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_72",
+   "fieldtype": "Tab Break",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "sec_73",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks"
+   "label": "Remarks / Notes"
   }
  ],
  "istable": 0,

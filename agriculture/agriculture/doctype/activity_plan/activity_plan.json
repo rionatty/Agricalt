@@ -6,19 +6,24 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb_plan_details",
+  "tab_16",
+  "sec_17",
   "promoter",
   "plan_type",
+  "col_18",
   "from_date",
   "to_date",
-  "cb_1659508294672",
+  "sec_19",
   "status",
+  "col_20",
   "approved_by",
   "approval_date",
   "rejection_reason",
-  "sb_planned_activities",
+  "tab_21",
+  "sec_22",
   "activities",
-  "sb_remarks",
+  "tab_23",
+  "sec_24",
   "remarks"
  ],
  "fields": [
@@ -29,9 +34,16 @@
    "options": "AP-.####\n"
   },
   {
-   "fieldname": "sb_plan_details",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_16",
+   "fieldtype": "Tab Break",
    "label": "Plan Details"
+  },
+  {
+   "fieldname": "sec_17",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "promoter",
@@ -39,7 +51,8 @@
    "label": "Field Promoter",
    "options": "Field Promoter",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "bold": 1
   },
   {
    "fieldname": "plan_type",
@@ -48,6 +61,10 @@
    "options": "Weekly\nMonthly",
    "reqd": 1,
    "in_list_view": 1
+  },
+  {
+   "fieldname": "col_18",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "from_date",
@@ -63,17 +80,24 @@
    "reqd": 1
   },
   {
-   "fieldname": "cb_1659508294672",
-   "fieldtype": "Column Break"
+   "fieldname": "sec_19",
+   "fieldtype": "Section Break",
+   "label": "Status",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "status",
    "fieldtype": "Select",
-   "label": "Status",
+   "label": "Approval Status",
    "options": "Draft\nSubmitted\nApproved\nRejected",
    "default": "Draft",
    "in_list_view": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "col_20",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "approved_by",
@@ -95,9 +119,16 @@
    "read_only": 1
   },
   {
-   "fieldname": "sb_planned_activities",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_21",
+   "fieldtype": "Tab Break",
    "label": "Planned Activities"
+  },
+  {
+   "fieldname": "sec_22",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "activities",
@@ -106,14 +137,21 @@
    "options": "Activity Plan Item"
   },
   {
-   "fieldname": "sb_remarks",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_23",
+   "fieldtype": "Tab Break",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "sec_24",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks"
+   "label": "Remarks / Notes"
   }
  ],
  "istable": 0,

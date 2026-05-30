@@ -6,29 +6,37 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
-  "sb_collection_details",
+  "tab_120",
+  "sec_121",
   "promoter",
   "collection_date",
-  "stockist",
-  "cb_6",
-  "stockist_name",
-  "location",
+  "col_122",
   "status",
-  "sb_orders_collected",
+  "sec_123",
+  "stockist",
+  "stockist_name",
+  "col_124",
+  "location",
+  "tab_125",
+  "sec_126",
   "items",
-  "sb_totals",
+  "sec_127",
   "total_order_value",
-  "sb_payment_collection",
+  "tab_128",
+  "sec_129",
   "payment_collected",
   "payment_amount",
+  "col_130",
   "payment_mode",
   "payment_reference",
-  "sb_erp_integration",
+  "tab_131",
+  "sec_132",
   "erp_sales_order",
   "erp_synced",
-  "sb_photos",
+  "sec_133",
   "photos",
-  "sb_remarks",
+  "tab_134",
+  "sec_135",
   "remarks"
  ],
  "fields": [
@@ -39,9 +47,16 @@
    "options": "OC-.####\n"
   },
   {
-   "fieldname": "sb_collection_details",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_120",
+   "fieldtype": "Tab Break",
    "label": "Collection Details"
+  },
+  {
+   "fieldname": "sec_121",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "promoter",
@@ -49,37 +64,20 @@
    "label": "Field Promoter",
    "options": "Field Promoter",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "bold": 1
   },
   {
    "fieldname": "collection_date",
    "fieldtype": "Date",
-   "label": "Collection Date",
+   "label": "Date",
    "reqd": 1,
    "default": "Today",
    "in_list_view": 1
   },
   {
-   "fieldname": "stockist",
-   "fieldtype": "Link",
-   "label": "Customer",
-   "options": "Customer",
-   "in_list_view": 1,
-   "description": "Select the registered stockist"
-  },
-  {
-   "fieldname": "cb_6",
+   "fieldname": "col_122",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "stockist_name",
-   "fieldtype": "Data",
-   "label": "Stockist Name (If Not Registered)"
-  },
-  {
-   "fieldname": "location",
-   "fieldtype": "Data",
-   "label": "Stockist Location"
   },
   {
    "fieldname": "status",
@@ -87,12 +85,48 @@
    "label": "Status",
    "options": "Draft\nSubmitted\nProcessed in ERP",
    "default": "Draft",
+   "in_list_view": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sec_123",
+   "fieldtype": "Section Break",
+   "label": "Stockist Details",
+   "description": "",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "stockist",
+   "fieldtype": "Link",
+   "label": "Registered Stockist",
+   "options": "Customer",
    "in_list_view": 1
   },
   {
-   "fieldname": "sb_orders_collected",
-   "fieldtype": "Section Break",
+   "fieldname": "stockist_name",
+   "fieldtype": "Data",
+   "label": "Stockist Name (If Not Registered)"
+  },
+  {
+   "fieldname": "col_124",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "label": "Stockist Location"
+  },
+  {
+   "fieldname": "tab_125",
+   "fieldtype": "Tab Break",
    "label": "Orders Collected"
+  },
+  {
+   "fieldname": "sec_126",
+   "fieldtype": "Section Break",
+   "label": "Product Orders",
+   "description": "Record all products and quantities ordered by the stockist",
+   "collapsible": 0
   },
   {
    "fieldname": "items",
@@ -101,20 +135,30 @@
    "options": "Order Collection Item"
   },
   {
-   "fieldname": "sb_totals",
+   "fieldname": "sec_127",
    "fieldtype": "Section Break",
-   "label": "Totals"
+   "label": "Order Total",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "total_order_value",
    "fieldtype": "Currency",
    "label": "Total Order Value (UGX)",
-   "read_only": 1
+   "read_only": 1,
+   "bold": 1
   },
   {
-   "fieldname": "sb_payment_collection",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_128",
+   "fieldtype": "Tab Break",
    "label": "Payment Collection"
+  },
+  {
+   "fieldname": "sec_129",
+   "fieldtype": "Section Break",
+   "label": "Payment Details",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "payment_collected",
@@ -124,28 +168,42 @@
   {
    "fieldname": "payment_amount",
    "fieldtype": "Currency",
-   "label": "Payment Amount (UGX)"
+   "label": "Amount Collected (UGX)",
+   "depends_on": "payment_collected"
+  },
+  {
+   "fieldname": "col_130",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "payment_mode",
    "fieldtype": "Select",
    "label": "Payment Mode",
-   "options": "\nCash\nMobile Money\nBank Transfer\nCheque"
+   "options": "\nCash\nMobile Money\nBank Transfer\nCheque",
+   "depends_on": "payment_collected"
   },
   {
    "fieldname": "payment_reference",
    "fieldtype": "Data",
-   "label": "Payment Reference / Receipt No."
+   "label": "Receipt / Reference No.",
+   "depends_on": "payment_collected"
   },
   {
-   "fieldname": "sb_erp_integration",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_131",
+   "fieldtype": "Tab Break",
    "label": "ERP Integration"
+  },
+  {
+   "fieldname": "sec_132",
+   "fieldtype": "Section Break",
+   "label": "ERP Reference",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "erp_sales_order",
    "fieldtype": "Data",
-   "label": "ERP Sales Order Reference",
+   "label": "ERP Sales Order No.",
    "read_only": 1
   },
   {
@@ -155,9 +213,11 @@
    "read_only": 1
   },
   {
-   "fieldname": "sb_photos",
+   "fieldname": "sec_133",
    "fieldtype": "Section Break",
-   "label": "Photos"
+   "label": "Photos",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "photos",
@@ -166,14 +226,21 @@
    "options": "Field Activity Photo"
   },
   {
-   "fieldname": "sb_remarks",
-   "fieldtype": "Section Break",
+   "fieldname": "tab_134",
+   "fieldtype": "Tab Break",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "sec_135",
+   "fieldtype": "Section Break",
+   "label": "",
+   "description": "",
+   "collapsible": 0
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Text",
-   "label": "Remarks"
+   "label": "Remarks / Notes"
   }
  ],
  "istable": 0,
