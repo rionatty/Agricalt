@@ -569,17 +569,33 @@ def pull_customers():
 	return count
 
 
+def _clean_phone(raw):
+	"""
+	Return a phone number Frappe will accept, or None.
+	SAP B1 sometimes stores values like '393340507/8' (range notation) or
+	multiple numbers separated by '/' or ','. We take the first entry and
+	strip any characters that are not digits, +, -, (, ), or space.
+	"""
+	import re
+	if not raw:
+		return None
+	phone = re.split(r"[/,;]", str(raw))[0].strip()
+	phone = re.sub(r"[^\d\+\-\(\) ]", "", phone).strip()
+	return phone if len(phone) >= 6 else None
+
+
 def _upsert_customer(r, customer_group, territory):
 	card_code = r.get("CardCode")
 	card_name = r.get("CardName") or card_code
 	if not card_code:
 		return
+	phone = _clean_phone(r.get("Phone1"))
 	# Match on the stored SAP CardCode (custom field) to avoid duplicates
 	existing = frappe.db.get_value("Customer", {"sap_card_code": card_code}, "name")
 	if existing:
 		doc = frappe.get_doc("Customer", existing)
 		doc.customer_name = card_name
-		doc.mobile_no = r.get("Phone1")
+		doc.mobile_no = phone
 		doc.flags.ignore_permissions = True
 		doc.save()
 	else:
@@ -589,7 +605,7 @@ def _upsert_customer(r, customer_group, territory):
 			"customer_group": customer_group,
 			"territory": territory,
 			"sap_card_code": card_code,
-			"mobile_no": r.get("Phone1"),
+			"mobile_no": phone,
 		}
 		# Inject mandatory custom fields (e.g. custom_company)
 		payload.update(_mandatory_custom_fields("Customer"))
