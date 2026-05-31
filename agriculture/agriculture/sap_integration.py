@@ -248,14 +248,28 @@ def _get_all(settings, endpoint, params=None):
 	return rows
 
 
-def _build_order_payload(order, settings):
+def _resolve_card_code(erp_customer_name):
 	"""
-	Map an ERPNext Order Collection to the SAP B1 Service Layer `Orders` object.
+	Return the SAP B1 CardCode for an ERPNext Customer.
+	Looks up the sap_card_code custom field set during customer sync.
+	Raises a clear error if the customer has not been synced from SAP B1 yet,
+	rather than letting SAP reject an overly-long ERP name.
+	"""
+	if not erp_customer_name:
+		frappe.throw(_("Order has no stockist — cannot determine SAP B1 CardCode."))
+	card_code = frappe.db.get_value("Customer", erp_customer_name, "sap_card_code")
+	if not card_code:
+		frappe.throw(
+			_("Customer '{0}' has no SAP B1 Card Code. "
+			  "Run a customer sync from SAP B1 first, or set the SAP B1 Card Code "
+			  "manually on the Customer record.").format(erp_customer_name)
+		)
+	return card_code
 
-	NOTE: CardCode mapping assumes the ERP Customer's name equals the SAP B1
-	BusinessPartner CardCode. Confirm with Syova IT during the integration phase.
-	"""
-	card_code = order.stockist or ""
+
+def _build_order_payload(order, settings):
+	"""Map an ERPNext Order Collection to the SAP B1 Service Layer `Orders` object."""
+	card_code = _resolve_card_code(order.stockist)
 	lines = []
 	for item in order.items:
 		lines.append({
@@ -269,15 +283,16 @@ def _build_order_payload(order, settings):
 		"CardCode": card_code,
 		"DocDueDate": str(getdate(order.collection_date)),
 		"Comments": f"Field order via CyveTech — {order.name} (Promoter: {order.promoter_name or order.promoter})",
-		"U_CyveTechRef": order.name,  # UDF to trace back to the field record
+		"U_CyveTechRef": order.name,
 		"DocumentLines": lines,
 	}
 
 
 def _build_payment_payload(order, settings):
 	"""Map an Order Collection payment to a SAP B1 IncomingPayments object."""
+	card_code = _resolve_card_code(order.stockist)
 	return {
-		"CardCode": order.stockist or "",
+		"CardCode": card_code,
 		"DocDate": str(getdate(order.collection_date)),
 		"CashSum": float(order.payment_amount or 0),
 		"CashAccount": getattr(settings, "sap_default_cash_account", "") or "",
