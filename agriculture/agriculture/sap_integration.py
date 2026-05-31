@@ -316,6 +316,7 @@ def _upsert_item(code, r, item_group, default_uom):
 			"is_stock_item": is_stock,
 			"is_sales_item": is_sales,
 			"description": name,
+			"sap_synced": 1,
 		}
 		# Inject any mandatory custom fields (e.g. custom_company)
 		payload.update(_mandatory_custom_fields("Item"))
