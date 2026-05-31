@@ -493,6 +493,9 @@ def _upsert_item(code, r, item_group, default_uom):
 		doc.item_name = name
 		doc.is_sales_item = is_sales
 		_ensure_item_default(doc, company)
+		for fieldname, value in _mandatory_custom_fields("Item").items():
+			if not doc.get(fieldname):
+				setattr(doc, fieldname, value)
 		doc.flags.ignore_permissions = True
 		doc.save()
 	else:
