@@ -295,15 +295,62 @@ def _mandatory_custom_fields(doctype):
 	return mandatory_customs
 
 
+def _build_item_default(company):
+	"""
+	Build an item_defaults child row for the given company.
+	Introspects mandatory custom fields on the 'Item Default' child table
+	(e.g. custom_company) and populates them automatically.
+	"""
+	row = {"company": company}
+	# Find mandatory custom fields on Item Default child table
+	child_customs = frappe.get_all(
+		"Custom Field",
+		filters={"dt": "Item Default", "reqd": 1},
+		fields=["fieldname", "fieldtype", "options"],
+	)
+	for cf in child_customs:
+		fn = cf.fieldname
+		if cf.fieldtype == "Link" and cf.options == "Company":
+			row[fn] = company
+		elif "company" in fn.lower() and cf.fieldtype == "Link":
+			row[fn] = company
+	return row
+
+
+def _ensure_item_default(doc, company):
+	"""
+	Ensure the Item document has an item_defaults row for the given company
+	with all mandatory custom fields populated. Works for both new and existing docs.
+	"""
+	row_data = _build_item_default(company)
+
+	# Check if a row already exists for this company
+	existing_row = None
+	for d in doc.get("item_defaults", []):
+		if d.get("company") == company:
+			existing_row = d
+			break
+
+	if existing_row:
+		# Update the existing row with mandatory field values
+		for k, v in row_data.items():
+			setattr(existing_row, k, v)
+	else:
+		# Append a fresh row
+		doc.append("item_defaults", row_data)
+
+
 def _upsert_item(code, r, item_group, default_uom):
 	name = r.get("ItemName") or code
 	is_stock = 1 if (r.get("InventoryItem") == "tYES") else 0
 	is_sales = 1 if (r.get("SalesItem") != "tNO") else 0
+	company = _get_default_company()
 
 	if frappe.db.exists("Item", code):
 		doc = frappe.get_doc("Item", code)
 		doc.item_name = name
 		doc.is_sales_item = is_sales
+		_ensure_item_default(doc, company)
 		doc.flags.ignore_permissions = True
 		doc.save()
 	else:
@@ -317,8 +364,9 @@ def _upsert_item(code, r, item_group, default_uom):
 			"is_sales_item": is_sales,
 			"description": name,
 			"sap_synced": 1,
+			"item_defaults": [_build_item_default(company)],
 		}
-		# Inject any mandatory custom fields (e.g. custom_company)
+		# Also handle any mandatory custom fields directly on the Item doctype
 		payload.update(_mandatory_custom_fields("Item"))
 		frappe.get_doc(payload).insert(ignore_permissions=True)
 
