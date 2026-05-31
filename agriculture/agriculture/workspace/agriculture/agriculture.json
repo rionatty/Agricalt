@@ -1,7 +1,11 @@
 {
  "app": "agriculture",
- "charts": [],
- "content": "[{\"id\":\"hdr_shortcuts\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"sc_promoter\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Field Promoter\",\"col\":3}},{\"id\":\"sc_farmer\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Farmer\",\"col\":3}},{\"id\":\"sc_demo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Demo Garden\",\"col\":3}},{\"id\":\"sc_order\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Order Collection\",\"col\":3}},{\"id\":\"hdr_field\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Field Force Management</b></span>\",\"col\":12}},{\"id\":\"card_masters\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Data\",\"col\":4}},{\"id\":\"card_fieldops\",\"type\":\"card\",\"data\":{\"card_name\":\"Field Operations\",\"col\":4}},{\"id\":\"card_orders\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders & Payments\",\"col\":4}},{\"id\":\"hdr_demo\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Demo Garden Lifecycle</b></span>\",\"col\":12}},{\"id\":\"card_demosetup\",\"type\":\"card\",\"data\":{\"card_name\":\"Demo Garden Setup\",\"col\":4}},{\"id\":\"card_demomgmt\",\"type\":\"card\",\"data\":{\"card_name\":\"Demo Garden Operations\",\"col\":4}},{\"id\":\"card_demostock\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock & Inventory\",\"col\":4}},{\"id\":\"hdr_events\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Events & Crop Masters</b></span>\",\"col\":12}},{\"id\":\"card_events\",\"type\":\"card\",\"data\":{\"card_name\":\"Events & Training\",\"col\":4}},{\"id\":\"card_crops\",\"type\":\"card\",\"data\":{\"card_name\":\"Crops & Lands\",\"col\":4}},{\"id\":\"card_diseases\",\"type\":\"card\",\"data\":{\"card_name\":\"Diseases & Fertilizers\",\"col\":4}},{\"id\":\"hdr_analytics\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Field Analytics</b></span>\",\"col\":12}},{\"id\":\"card_analytics\",\"type\":\"card\",\"data\":{\"card_name\":\"Analytics\",\"col\":4}}]",
+ "charts": [
+  {"chart_name": "Activities by Type", "label": "Activities by Type"},
+  {"chart_name": "Demo Gardens by Status", "label": "Demo Gardens by Status"},
+  {"chart_name": "Activities by Region", "label": "Field Activities Trend"}
+ ],
+ "content": "[{\"id\":\"hdr_dash\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Dashboard</b></span>\",\"col\":12}},{\"id\":\"nc1\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Field Promoters\",\"col\":3}},{\"id\":\"nc2\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Demo Gardens\",\"col\":3}},{\"id\":\"nc3\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Activities This Month\",\"col\":3}},{\"id\":\"nc4\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Registered Farmers\",\"col\":3}},{\"id\":\"ch1\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Activities by Type\",\"col\":6}},{\"id\":\"ch2\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Demo Gardens by Status\",\"col\":6}},{\"id\":\"hdr_shortcuts\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"sc_promoter\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Field Promoter\",\"col\":3}},{\"id\":\"sc_farmer\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Farmer\",\"col\":3}},{\"id\":\"sc_demo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Demo Garden\",\"col\":3}},{\"id\":\"sc_perf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Promoter Performance\",\"col\":3}},{\"id\":\"hdr_field\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Field Force Management</b></span>\",\"col\":12}},{\"id\":\"card_masters\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Data\",\"col\":4}},{\"id\":\"card_fieldops\",\"type\":\"card\",\"data\":{\"card_name\":\"Field Operations\",\"col\":4}},{\"id\":\"card_orders\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders & Payments\",\"col\":4}},{\"id\":\"hdr_demo\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Demo Garden Lifecycle</b></span>\",\"col\":12}},{\"id\":\"card_demosetup\",\"type\":\"card\",\"data\":{\"card_name\":\"Demo Garden Setup\",\"col\":4}},{\"id\":\"card_demomgmt\",\"type\":\"card\",\"data\":{\"card_name\":\"Demo Garden Operations\",\"col\":4}},{\"id\":\"card_demostock\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock & Inventory\",\"col\":4}},{\"id\":\"hdr_reports\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports & Configuration</b></span>\",\"col\":12}},{\"id\":\"card_reports\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"card_config\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}},{\"id\":\"card_integration\",\"type\":\"card\",\"data\":{\"card_name\":\"Integration\",\"col\":4}},{\"id\":\"hdr_events\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Events & Crop Masters</b></span>\",\"col\":12}},{\"id\":\"card_events\",\"type\":\"card\",\"data\":{\"card_name\":\"Events & Training\",\"col\":4}},{\"id\":\"card_crops\",\"type\":\"card\",\"data\":{\"card_name\":\"Crops & Lands\",\"col\":4}},{\"id\":\"card_diseases\",\"type\":\"card\",\"data\":{\"card_name\":\"Diseases & Fertilizers\",\"col\":4}},{\"id\":\"hdr_analytics\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Field Analytics</b></span>\",\"col\":12}},{\"id\":\"card_analytics\",\"type\":\"card\",\"data\":{\"card_name\":\"Analytics\",\"col\":4}}]",
  "creation": "2020-03-02 17:23:34.339274",
  "custom_blocks": [],
  "docstatus": 0,
@@ -16,6 +20,7 @@
   {"hidden":0,"is_query_report":0,"label":"Master Data","link_count":0,"onboard":0,"type":"Card Break"},
   {"dependencies":"","hidden":0,"is_query_report":0,"label":"Field Promoter","link_count":0,"link_to":"Field Promoter","link_type":"DocType","onboard":1,"type":"Link"},
   {"dependencies":"","hidden":0,"is_query_report":0,"label":"Farmer","link_count":0,"link_to":"Farmer","link_type":"DocType","onboard":1,"type":"Link"},
+  {"dependencies":"","hidden":0,"is_query_report":0,"label":"Promoter KPI Target","link_count":0,"link_to":"Promoter KPI Target","link_type":"DocType","onboard":0,"type":"Link"},
   {"hidden":0,"is_query_report":0,"label":"Field Operations","link_count":0,"onboard":0,"type":"Card Break"},
   {"dependencies":"","hidden":0,"is_query_report":0,"label":"Activity Plan","link_count":0,"link_to":"Activity Plan","link_type":"DocType","onboard":1,"type":"Link"},
   {"dependencies":"","hidden":0,"is_query_report":0,"label":"Field Activity Log","link_count":0,"link_to":"Field Activity Log","link_type":"DocType","onboard":1,"type":"Link"},
@@ -31,6 +36,16 @@
   {"dependencies":"","hidden":0,"is_query_report":0,"label":"Demo Garden Field Day","link_count":0,"link_to":"Demo Garden Field Day","link_type":"DocType","onboard":1,"type":"Link"},
   {"hidden":0,"is_query_report":0,"label":"Stock & Inventory","link_count":0,"onboard":0,"type":"Card Break"},
   {"dependencies":"","hidden":0,"is_query_report":0,"label":"Promoter Stock Ledger","link_count":0,"link_to":"Promoter Stock Ledger","link_type":"DocType","onboard":0,"type":"Link"},
+  {"hidden":0,"is_query_report":0,"label":"Reports","link_count":0,"onboard":0,"type":"Card Break"},
+  {"dependencies":"","hidden":0,"is_query_report":1,"label":"Promoter Performance","link_count":0,"link_to":"Promoter Performance","link_type":"Report","onboard":1,"type":"Link"},
+  {"dependencies":"","hidden":0,"is_query_report":1,"label":"Demo Garden Status","link_count":0,"link_to":"Demo Garden Status","link_type":"Report","onboard":0,"type":"Link"},
+  {"dependencies":"","hidden":0,"is_query_report":1,"label":"Materials Issued vs Applied","link_count":0,"link_to":"Materials Issued vs Applied","link_type":"Report","onboard":0,"type":"Link"},
+  {"dependencies":"","hidden":0,"is_query_report":1,"label":"Farmer Visit History","link_count":0,"link_to":"Farmer Visit History","link_type":"Report","onboard":0,"type":"Link"},
+  {"hidden":0,"is_query_report":0,"label":"Configuration","link_count":0,"onboard":0,"type":"Card Break"},
+  {"dependencies":"","hidden":0,"is_query_report":0,"label":"Agriculture Settings","link_count":0,"link_to":"Agriculture Settings","link_type":"DocType","onboard":0,"type":"Link"},
+  {"dependencies":"","hidden":0,"is_query_report":0,"label":"Promoter KPI Target","link_count":0,"link_to":"Promoter KPI Target","link_type":"DocType","onboard":0,"type":"Link"},
+  {"hidden":0,"is_query_report":0,"label":"Integration","link_count":0,"onboard":0,"type":"Card Break"},
+  {"dependencies":"","hidden":0,"is_query_report":0,"label":"SAP B1 Sync Log","link_count":0,"link_to":"SAP B1 Sync Log","link_type":"DocType","onboard":0,"type":"Link"},
   {"hidden":0,"is_query_report":0,"label":"Events & Training","link_count":0,"onboard":0,"type":"Card Break"},
   {"dependencies":"","hidden":0,"is_query_report":0,"label":"Farmer Training Event","link_count":0,"link_to":"Farmer Training Event","link_type":"DocType","onboard":0,"type":"Link"},
   {"hidden":0,"is_query_report":0,"label":"Crops & Lands","link_count":0,"onboard":0,"type":"Card Break"},
@@ -48,11 +63,16 @@
   {"dependencies":"","hidden":0,"is_query_report":0,"label":"Weather","link_count":0,"link_to":"Weather","link_type":"DocType","onboard":0,"type":"Link"},
   {"dependencies":"","hidden":0,"is_query_report":0,"label":"Agriculture Analysis Criteria","link_count":0,"link_to":"Agriculture Analysis Criteria","link_type":"DocType","onboard":0,"type":"Link"}
  ],
- "modified": "2026-05-30 16:00:00.000000",
+ "modified": "2026-05-31 10:00:00.000000",
  "modified_by": "Administrator",
  "module": "Agriculture",
  "name": "Agriculture",
- "number_cards": [],
+ "number_cards": [
+  {"label": "Active Field Promoters", "number_card_name": "Active Field Promoters"},
+  {"label": "Active Demo Gardens", "number_card_name": "Active Demo Gardens"},
+  {"label": "Field Activities This Month", "number_card_name": "Field Activities This Month"},
+  {"label": "Registered Farmers", "number_card_name": "Registered Farmers"}
+ ],
  "owner": "Administrator",
  "parent_page": "",
  "public": 1,
@@ -64,7 +84,7 @@
   {"color":"Green","doc_view":"List","label":"Field Promoter","link_to":"Field Promoter","type":"DocType"},
   {"color":"Blue","doc_view":"List","label":"Farmer","link_to":"Farmer","type":"DocType"},
   {"color":"Orange","doc_view":"List","label":"Demo Garden","link_to":"Demo Garden","type":"DocType"},
-  {"color":"Green","doc_view":"List","label":"Order Collection","link_to":"Order Collection","type":"DocType"}
+  {"color":"Purple","doc_view":"","label":"Promoter Performance","link_to":"Promoter Performance","type":"Report"}
  ],
  "title": "Agriculture",
  "type": "Workspace"

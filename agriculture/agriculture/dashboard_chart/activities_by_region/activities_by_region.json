@@ -1,0 +1,23 @@
+{
+ "creation": "2026-05-30 00:00:00",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "chart_name": "Activities by Region",
+ "chart_type": "Count",
+ "document_type": "Field Activity Log",
+ "is_public": 1,
+ "modified": "2026-05-30 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Activities by Region",
+ "owner": "Administrator",
+ "number_of_groups": 0,
+ "timeseries": 1,
+ "type": "Line",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "filters_json": "[]",
+ "dynamic_filters_json": "[]",
+ "based_on": "activity_date",
+ "time_interval": "Monthly"
+}

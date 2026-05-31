@@ -1,0 +1,23 @@
+{
+ "creation": "2026-05-30 00:00:00",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "chart_name": "Demo Gardens by Status",
+ "chart_type": "Group By",
+ "document_type": "Demo Garden",
+ "is_public": 1,
+ "modified": "2026-05-30 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Demo Gardens by Status",
+ "owner": "Administrator",
+ "number_of_groups": 0,
+ "timeseries": 0,
+ "type": "Donut",
+ "use_report_chart": 0,
+ "value_based_on": "",
+ "filters_json": "[]",
+ "dynamic_filters_json": "[]",
+ "group_by_type": "Count",
+ "group_by_based_on": "status"
+}
