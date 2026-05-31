@@ -7,7 +7,7 @@ frappe.ui.form.on("Demo Garden Planting Record", {
 		if (frm.doc.status === "Draft") {
 			frm.add_custom_button(__("Submit Planting"), () => {
 				frm.call("submit_planting").then(() => frm.reload_doc());
-			}).addClass("btn-primary");
+			}).addClass("btn-success agri-btn-main");
 		}
 	},
 });

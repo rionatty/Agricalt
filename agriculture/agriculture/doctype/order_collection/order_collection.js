@@ -7,7 +7,7 @@ frappe.ui.form.on("Order Collection", {
 		if (frm.doc.status === "Draft") {
 			frm.add_custom_button(__("Submit Order"), () => {
 				frm.call("submit_order").then(() => frm.reload_doc());
-			}).addClass("btn-primary");
+			}).addClass("btn-success agri-btn-main");
 		}
 		if (frm.doc.status !== "Draft" && !frm.doc.erp_synced
 			&& frappe.user.has_role(["Agriculture Manager", "System Manager"])) {

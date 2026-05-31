@@ -1,0 +1,254 @@
+/* ============================================================
+   Agriculture App — Syova Seeds Theme
+   Nature-inspired green palette, clean and professional
+   ============================================================ */
+
+/* ── CSS Variables ─────────────────────────────────────────── */
+:root {
+  --agri-green:        #2E7D32;   /* deep forest green — primary */
+  --agri-green-mid:    #388E3C;   /* mid green */
+  --agri-green-light:  #4CAF50;   /* vivid leaf green */
+  --agri-green-pale:   #E8F5E9;   /* mint wash — section backgrounds */
+  --agri-green-border: #C8E6C9;   /* soft green border */
+  --agri-gold:         #F9A825;   /* harvest gold — accents / warnings */
+  --agri-earth:        #6D4C41;   /* earth brown — labels */
+  --agri-sky:          #E3F2FD;   /* sky blue — read-only fields */
+  --agri-radius:       10px;
+  --agri-shadow:       0 2px 8px rgba(46,125,50,.10);
+}
+
+/* ── Main action buttons — always leaf green ────────────────── */
+.agri-btn-main,
+.agri-btn-main:hover,
+.agri-btn-main:focus,
+.btn-success.agri-btn-main {
+  background: linear-gradient(135deg, var(--agri-green-mid) 0%, var(--agri-green-light) 100%) !important;
+  border-color: var(--agri-green) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+  letter-spacing: .3px;
+  box-shadow: 0 2px 6px rgba(46,125,50,.30) !important;
+  transition: all .2s ease !important;
+}
+.agri-btn-main:hover {
+  background: linear-gradient(135deg, var(--agri-green) 0%, var(--agri-green-mid) 100%) !important;
+  box-shadow: 0 4px 12px rgba(46,125,50,.40) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* ── Section breaks — green left border + pale background ─── */
+.form-section > .section-head {
+  color: var(--agri-green) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  border-left: 4px solid var(--agri-green-light) !important;
+  padding-left: 10px !important;
+  margin-bottom: 8px;
+}
+
+.form-section {
+  border: 1px solid var(--agri-green-border) !important;
+  border-radius: var(--agri-radius) !important;
+  padding: 14px 16px 8px !important;
+  margin-bottom: 16px !important;
+  background: #fff;
+  box-shadow: var(--agri-shadow);
+}
+
+/* ── Tab strip — green active indicator ─────────────────────── */
+.form-tabs .nav-tabs .nav-link.active {
+  color: var(--agri-green) !important;
+  border-bottom: 3px solid var(--agri-green-light) !important;
+  font-weight: 700 !important;
+}
+.form-tabs .nav-tabs .nav-link:hover {
+  color: var(--agri-green-mid) !important;
+}
+
+/* ── Mandatory fields — green star ──────────────────────────── */
+.reqd .label-area::after,
+.reqd.control-label::after {
+  color: var(--agri-green) !important;
+}
+
+/* ── Read-only fields — sky blue wash ───────────────────────── */
+.control-input.read-only-input,
+.form-control[readonly]:not([disabled]),
+.like-disabled-input.read-only-value {
+  background: var(--agri-sky) !important;
+  border-color: #BBDEFB !important;
+  color: #1565C0 !important;
+}
+
+/* ── Form header banner ─────────────────────────────────────── */
+.page-head {
+  background: linear-gradient(135deg, var(--agri-green) 0%, var(--agri-green-mid) 60%, #66BB6A 100%) !important;
+}
+.page-title .title-text,
+.page-head .title-text {
+  color: #fff !important;
+}
+.page-head .breadcrumb-container a,
+.page-head .breadcrumb-container .breadcrumb-item {
+  color: rgba(255,255,255,.85) !important;
+}
+
+/* ── Status badges ──────────────────────────────────────────── */
+/* Draft */
+.indicator-pill.gray, .indicator-pill.grey,
+.indicator-pill[data-color="gray"], .indicator-pill[data-color="grey"] {
+  background: #f0f0f0 !important; color: #555 !important;
+}
+/* Submitted / Approved */
+.indicator-pill.green, .indicator-pill[data-color="green"],
+[data-label="Approved"] .indicator-pill,
+[data-label="Submitted"] .indicator-pill {
+  background: var(--agri-green-pale) !important;
+  color: var(--agri-green) !important;
+  border: 1px solid var(--agri-green-border) !important;
+}
+/* Rejected / Failed */
+.indicator-pill.red, .indicator-pill[data-color="red"] {
+  background: #FFEBEE !important; color: #C62828 !important;
+}
+/* Issued / In Progress */
+.indicator-pill.orange, .indicator-pill[data-color="orange"],
+.indicator-pill.blue, .indicator-pill[data-color="blue"] {
+  background: #FFF3E0 !important; color: #E65100 !important;
+}
+/* Completed */
+.indicator-pill.purple, .indicator-pill[data-color="purple"] {
+  background: var(--agri-green-pale) !important;
+  color: var(--agri-green) !important;
+}
+
+/* ── Child table (grid) ─────────────────────────────────────── */
+.grid-heading-row .grid-row-head {
+  background: linear-gradient(90deg, var(--agri-green) 0%, var(--agri-green-mid) 100%) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+}
+.grid-heading-row .col.grid-col {
+  color: #fff !important;
+  border-right: 1px solid rgba(255,255,255,.20) !important;
+}
+.grid-body .rows .grid-row:nth-child(even) .data-row {
+  background: var(--agri-green-pale) !important;
+}
+.grid-body .rows .grid-row:hover .data-row {
+  background: var(--agri-green-border) !important;
+}
+.btn.grid-add-row {
+  background: var(--agri-green-pale) !important;
+  color: var(--agri-green) !important;
+  border: 1px dashed var(--agri-green-light) !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
+}
+.btn.grid-add-row:hover {
+  background: var(--agri-green-border) !important;
+}
+
+/* ── Sidebar / workspace links ──────────────────────────────── */
+.sidebar-item.active > .sidebar-item-label {
+  color: var(--agri-green) !important;
+  font-weight: 700 !important;
+}
+.sidebar-item:hover > .sidebar-item-label {
+  color: var(--agri-green-mid) !important;
+}
+
+/* ── Workspace cards (number cards) ─────────────────────────── */
+.widget.number-widget-box {
+  border-top: 4px solid var(--agri-green-light) !important;
+  border-radius: var(--agri-radius) !important;
+  box-shadow: var(--agri-shadow) !important;
+}
+.widget.number-widget-box .widget-head .widget-label .widget-title {
+  color: var(--agri-green) !important;
+  font-weight: 700 !important;
+}
+
+/* ── Workspace section headers ──────────────────────────────── */
+.widget.section-widget .section-header {
+  background: linear-gradient(90deg, var(--agri-green-pale), #fff) !important;
+  border-left: 4px solid var(--agri-green-light) !important;
+  border-radius: 6px !important;
+  padding: 6px 12px !important;
+}
+.widget.section-widget .section-header .section-title {
+  color: var(--agri-green) !important;
+  font-weight: 700 !important;
+}
+
+/* ── Workspace shortcut cards ───────────────────────────────── */
+.widget.shortcut-widget-box {
+  border: 1px solid var(--agri-green-border) !important;
+  border-radius: var(--agri-radius) !important;
+  box-shadow: var(--agri-shadow) !important;
+  transition: transform .15s ease, box-shadow .15s ease !important;
+}
+.widget.shortcut-widget-box:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(46,125,50,.18) !important;
+  border-color: var(--agri-green-light) !important;
+}
+.widget.shortcut-widget-box .widget-head .widget-label {
+  color: var(--agri-green) !important;
+  font-weight: 600 !important;
+}
+
+/* ── Links card items ───────────────────────────────────────── */
+.widget.links-widget-box {
+  border: 1px solid var(--agri-green-border) !important;
+  border-radius: var(--agri-radius) !important;
+  box-shadow: var(--agri-shadow) !important;
+}
+.widget.links-widget-box .widget-head .widget-label .widget-title {
+  color: var(--agri-green) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.link-item:hover {
+  background: var(--agri-green-pale) !important;
+  border-radius: 4px !important;
+}
+.link-item .link-content {
+  color: var(--agri-green-mid) !important;
+}
+
+/* ── Form save / standard buttons ───────────────────────────── */
+.btn-primary {
+  background: var(--agri-green-mid) !important;
+  border-color: var(--agri-green) !important;
+}
+.btn-primary:hover {
+  background: var(--agri-green) !important;
+}
+
+/* ── Alert / msgprint colours ───────────────────────────────── */
+.msgprint .msgprint-content {
+  border-left: 4px solid var(--agri-green-light) !important;
+}
+
+/* ── Agriculture module badge in navbar (if visible) ─────────── */
+.navbar .navbar-home img {
+  filter: drop-shadow(0 0 4px rgba(76,175,80,.5));
+}
+
+/* ── Subtle leaf watermark on main form area ────────────────── */
+.form-page::before {
+  content: "🌱";
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  font-size: 64px;
+  opacity: .05;
+  pointer-events: none;
+  z-index: 0;
+}

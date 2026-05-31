@@ -55,6 +55,6 @@ frappe.ui.form.on("Agriculture Settings", {
 					},
 				});
 			});
-		}, __("SAP B1")).addClass("btn-primary");
+		}, __("SAP B1")).addClass("btn-success agri-btn-main");
 	},
 });

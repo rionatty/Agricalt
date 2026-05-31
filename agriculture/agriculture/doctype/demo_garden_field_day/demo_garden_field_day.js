@@ -7,7 +7,7 @@ frappe.ui.form.on("Demo Garden Field Day", {
 		if (frm.doc.status !== "Completed") {
 			frm.add_custom_button(__("Mark Complete"), () => {
 				frm.call("mark_complete").then(() => frm.reload_doc());
-			}).addClass("btn-primary");
+			}).addClass("btn-success agri-btn-main");
 		}
 	},
 });

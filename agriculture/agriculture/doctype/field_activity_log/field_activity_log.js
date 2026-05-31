@@ -7,7 +7,7 @@ frappe.ui.form.on("Field Activity Log", {
 		if (frm.doc.status === "Draft") {
 			frm.add_custom_button(__("Submit Activity"), () => {
 				frm.call("submit_activity").then(() => frm.reload_doc());
-			}).addClass("btn-primary");
+			}).addClass("btn-success agri-btn-main");
 		}
 	},
 });
