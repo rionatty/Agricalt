@@ -619,6 +619,10 @@ def _ensure_territory():
 @frappe.whitelist()
 def sync_masters_from_sap():
 	"""Pull everything: Price Lists, Items (+prices), Customers. Scheduler entry point (runs inline)."""
+	# Ensure custom fields exist before any sync — handles sites installed before the patch ran
+	from agriculture.agriculture.setup import ensure_custom_fields
+	ensure_custom_fields()
+
 	result = {}
 	result["price_lists"] = len(pull_price_lists())
 	result["items"] = pull_items()
