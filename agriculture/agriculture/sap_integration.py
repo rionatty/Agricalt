@@ -262,10 +262,44 @@ def pull_items():
 	return count
 
 
+def _get_default_company():
+	"""Return the default company for this ERPNext instance."""
+	return (
+		frappe.db.get_single_value("Global Defaults", "default_company")
+		or frappe.db.get_value("Company", {}, "name")
+		or ""
+	)
+
+
+def _mandatory_custom_fields(doctype):
+	"""
+	Return a dict of fieldname: default_value for every mandatory custom field
+	on the given doctype that we need to satisfy during programmatic inserts.
+	Currently handles 'custom_company' universally; extend as needed.
+	"""
+	mandatory_customs = {}
+	custom_fields = frappe.get_all(
+		"Custom Field",
+		filters={"dt": doctype, "reqd": 1},
+		fields=["fieldname", "fieldtype", "options"],
+	)
+	default_company = _get_default_company()
+	for cf in custom_fields:
+		fn = cf.fieldname
+		# Company link fields
+		if cf.fieldtype == "Link" and cf.options == "Company":
+			mandatory_customs[fn] = default_company
+		# Any other mandatory Link pointing to Company by naming convention
+		elif "company" in fn.lower() and cf.fieldtype == "Link":
+			mandatory_customs[fn] = default_company
+	return mandatory_customs
+
+
 def _upsert_item(code, r, item_group, default_uom):
 	name = r.get("ItemName") or code
 	is_stock = 1 if (r.get("InventoryItem") == "tYES") else 0
 	is_sales = 1 if (r.get("SalesItem") != "tNO") else 0
+
 	if frappe.db.exists("Item", code):
 		doc = frappe.get_doc("Item", code)
 		doc.item_name = name
@@ -273,7 +307,7 @@ def _upsert_item(code, r, item_group, default_uom):
 		doc.flags.ignore_permissions = True
 		doc.save()
 	else:
-		frappe.get_doc({
+		payload = {
 			"doctype": "Item",
 			"item_code": code,
 			"item_name": name,
@@ -282,7 +316,10 @@ def _upsert_item(code, r, item_group, default_uom):
 			"is_stock_item": is_stock,
 			"is_sales_item": is_sales,
 			"description": name,
-		}).insert(ignore_permissions=True)
+		}
+		# Inject any mandatory custom fields (e.g. custom_company)
+		payload.update(_mandatory_custom_fields("Item"))
+		frappe.get_doc(payload).insert(ignore_permissions=True)
 
 
 def _upsert_item_prices(code, item_prices, price_map, settings):
@@ -352,14 +389,17 @@ def _upsert_customer(r, customer_group, territory):
 		doc.flags.ignore_permissions = True
 		doc.save()
 	else:
-		frappe.get_doc({
+		payload = {
 			"doctype": "Customer",
 			"customer_name": card_name,
 			"customer_group": customer_group,
 			"territory": territory,
 			"sap_card_code": card_code,
 			"mobile_no": r.get("Phone1"),
-		}).insert(ignore_permissions=True)
+		}
+		# Inject mandatory custom fields (e.g. custom_company)
+		payload.update(_mandatory_custom_fields("Customer"))
+		frappe.get_doc(payload).insert(ignore_permissions=True)
 
 
 # ── default-master helpers ───────────────────────────────────────────────────
