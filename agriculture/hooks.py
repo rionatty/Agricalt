@@ -153,6 +153,7 @@ scheduler_events = {
 		"agriculture.agriculture.tasks.alert_unapplied_inputs",
 		"agriculture.agriculture.tasks.alert_planned_not_executed",
 		"agriculture.agriculture.tasks.alert_missing_weekly_plans",
+		"agriculture.agriculture.sap_integration.scheduled_master_sync",
 	],
 }
 

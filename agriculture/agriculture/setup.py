@@ -19,6 +19,7 @@ ALL_ROLES = ["Agriculture Manager", "Agriculture User", "Store Manager", "Market
 
 def setup_agriculture():
 	create_roles()
+	ensure_custom_fields()
 	if frappe.get_all("Agriculture Analysis Criteria"):
 		# data already seeded; still ensure permissions are in place
 		add_additional_permissions()
@@ -33,6 +34,35 @@ def create_roles():
 		if not frappe.db.exists("Role", role_name):
 			frappe.get_doc({"doctype": "Role", "role_name": role_name}).insert()
 	frappe.db.commit()
+
+
+def ensure_custom_fields():
+	"""Custom fields needed to map ERPNext masters back to SAP B1."""
+	from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
+
+	create_custom_fields({
+		"Customer": [
+			{
+				"fieldname": "sap_card_code",
+				"label": "SAP B1 Card Code",
+				"fieldtype": "Data",
+				"insert_after": "customer_name",
+				"unique": 0,
+				"read_only": 0,
+				"in_standard_filter": 1,
+				"description": "Business Partner CardCode in SAP Business One",
+			}
+		],
+		"Item": [
+			{
+				"fieldname": "sap_synced",
+				"label": "Synced from SAP B1",
+				"fieldtype": "Check",
+				"insert_after": "item_group",
+				"read_only": 1,
+			}
+		],
+	}, ignore_validate=True)
 
 def create_agriculture_data():
 	records = [

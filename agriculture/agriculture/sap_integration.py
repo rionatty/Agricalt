@@ -119,6 +119,30 @@ def _post_to_sap(settings, endpoint, payload):
 	return resp.json()
 
 
+def _get_all(settings, endpoint, params=None):
+	"""
+	GET all rows from a SAP B1 Service Layer collection, following @odata.nextLink
+	pagination. Returns a flat list of row dicts.
+	"""
+	import requests
+
+	base, cookies = _get_session(settings)
+	url = f"{base}/{endpoint}"
+	rows = []
+	page = 0
+	while url and page < 500:  # hard safety cap
+		resp = requests.get(url, params=params if page == 0 else None,
+		                    cookies=cookies, verify=False, timeout=60)
+		if resp.status_code != 200:
+			raise Exception(f"SAP B1 GET {endpoint} returned {resp.status_code}: {resp.text[:300]}")
+		body = resp.json()
+		rows.extend(body.get("value", []))
+		next_link = body.get("@odata.nextLink")
+		url = f"{base}/{next_link}" if next_link else None
+		page += 1
+	return rows
+
+
 def _build_order_payload(order, settings):
 	"""
 	Map an ERPNext Order Collection to the SAP B1 Service Layer `Orders` object.
@@ -154,3 +178,222 @@ def test_connection():
 		return {"ok": True, "message": _("Successfully connected to SAP B1.")}
 	except Exception as e:
 		return {"ok": False, "message": str(e)}
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+#  INBOUND: pull master data from SAP B1 (Items, Customers, Price Lists)
+#  These create/update native ERPNext masters used in Order Collection / Sales Order.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def _sync_log(sync_type, status, count=0, error=""):
+	log = frappe.new_doc("SAP B1 Sync Log")
+	log.sync_type = sync_type
+	log.status = status
+	log.reference_doctype = None
+	log.response_text = f"{count} record(s) processed."
+	log.error_message = error[:1000] if error else ""
+	log.insert(ignore_permissions=True)
+	return log.name
+
+
+def _require_enabled(settings):
+	if not settings.sap_b1_enabled:
+		frappe.throw(_("SAP B1 integration is disabled in Agriculture Settings."))
+
+
+@frappe.whitelist()
+def pull_price_lists():
+	"""Pull SAP B1 Price Lists into ERPNext Price List. Returns {PriceListNo: name}."""
+	settings = frappe.get_cached_doc("Agriculture Settings")
+	_require_enabled(settings)
+	count = 0
+	mapping = {}
+	try:
+		rows = _get_all(settings, "PriceLists",
+		                params={"$select": "PriceListNo,PriceListName,BasePriceList"})
+		for r in rows:
+			name = r.get("PriceListName") or f"SAP Price List {r.get('PriceListNo')}"
+			if not frappe.db.exists("Price List", name):
+				frappe.get_doc({
+					"doctype": "Price List", "price_list_name": name,
+					"selling": 1, "currency": "UGX",
+				}).insert(ignore_permissions=True)
+			mapping[r.get("PriceListNo")] = name
+			count += 1
+		frappe.db.commit()
+		_sync_log("Price List", "Success", count)
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), "SAP B1 Price List Pull")
+		_sync_log("Price List", "Failed", count, str(e))
+		raise
+	return mapping
+
+
+@frappe.whitelist()
+def pull_items():
+	"""Pull SAP B1 Items into ERPNext Item, plus their Item Prices."""
+	settings = frappe.get_cached_doc("Agriculture Settings")
+	_require_enabled(settings)
+
+	item_group = settings.sap_default_item_group or _ensure_item_group()
+	default_uom = settings.sap_default_uom or "Nos"
+	price_map = pull_price_lists()
+
+	count = 0
+	try:
+		rows = _get_all(settings, "Items", params={
+			"$select": "ItemCode,ItemName,ItemsGroupCode,InventoryItem,SalesItem,ItemPrices",
+		})
+		for r in rows:
+			code = r.get("ItemCode")
+			if not code:
+				continue
+			_upsert_item(code, r, item_group, default_uom)
+			_upsert_item_prices(code, r.get("ItemPrices") or [], price_map, settings)
+			count += 1
+		frappe.db.set_value("Agriculture Settings", "Agriculture Settings",
+		                    "last_master_sync", frappe.utils.now())
+		frappe.db.commit()
+		_sync_log("Item", "Success", count)
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), "SAP B1 Item Pull")
+		_sync_log("Item", "Failed", count, str(e))
+		raise
+	return count
+
+
+def _upsert_item(code, r, item_group, default_uom):
+	name = r.get("ItemName") or code
+	is_stock = 1 if (r.get("InventoryItem") == "tYES") else 0
+	is_sales = 1 if (r.get("SalesItem") != "tNO") else 0
+	if frappe.db.exists("Item", code):
+		doc = frappe.get_doc("Item", code)
+		doc.item_name = name
+		doc.is_sales_item = is_sales
+		doc.flags.ignore_permissions = True
+		doc.save()
+	else:
+		frappe.get_doc({
+			"doctype": "Item",
+			"item_code": code,
+			"item_name": name,
+			"item_group": item_group,
+			"stock_uom": default_uom,
+			"is_stock_item": is_stock,
+			"is_sales_item": is_sales,
+			"description": name,
+		}).insert(ignore_permissions=True)
+
+
+def _upsert_item_prices(code, item_prices, price_map, settings):
+	for p in item_prices:
+		rate = p.get("Price")
+		if not rate:
+			continue
+		pl_name = price_map.get(p.get("PriceList")) or settings.sap_default_price_list
+		if not pl_name:
+			continue
+		existing = frappe.db.get_value(
+			"Item Price",
+			{"item_code": code, "price_list": pl_name, "selling": 1},
+			"name",
+		)
+		if existing:
+			frappe.db.set_value("Item Price", existing, "price_list_rate", rate)
+		else:
+			frappe.get_doc({
+				"doctype": "Item Price",
+				"item_code": code,
+				"price_list": pl_name,
+				"price_list_rate": rate,
+				"selling": 1,
+				"currency": p.get("Currency") or "UGX",
+			}).insert(ignore_permissions=True)
+
+
+@frappe.whitelist()
+def pull_customers():
+	"""Pull SAP B1 customer Business Partners into ERPNext Customer."""
+	settings = frappe.get_cached_doc("Agriculture Settings")
+	_require_enabled(settings)
+
+	customer_group = settings.sap_default_customer_group or _ensure_customer_group()
+	territory = settings.sap_default_territory or _ensure_territory()
+
+	count = 0
+	try:
+		rows = _get_all(settings, "BusinessPartners", params={
+			"$select": "CardCode,CardName,Phone1,EmailAddress,Currency",
+			"$filter": "CardType eq 'cCustomer'",
+		})
+		for r in rows:
+			_upsert_customer(r, customer_group, territory)
+			count += 1
+		frappe.db.commit()
+		_sync_log("Customer", "Success", count)
+	except Exception as e:
+		frappe.log_error(frappe.get_traceback(), "SAP B1 Customer Pull")
+		_sync_log("Customer", "Failed", count, str(e))
+		raise
+	return count
+
+
+def _upsert_customer(r, customer_group, territory):
+	card_code = r.get("CardCode")
+	card_name = r.get("CardName") or card_code
+	if not card_code:
+		return
+	# Match on the stored SAP CardCode (custom field) to avoid duplicates
+	existing = frappe.db.get_value("Customer", {"sap_card_code": card_code}, "name")
+	if existing:
+		doc = frappe.get_doc("Customer", existing)
+		doc.customer_name = card_name
+		doc.mobile_no = r.get("Phone1")
+		doc.flags.ignore_permissions = True
+		doc.save()
+	else:
+		frappe.get_doc({
+			"doctype": "Customer",
+			"customer_name": card_name,
+			"customer_group": customer_group,
+			"territory": territory,
+			"sap_card_code": card_code,
+			"mobile_no": r.get("Phone1"),
+		}).insert(ignore_permissions=True)
+
+
+# ── default-master helpers ───────────────────────────────────────────────────
+def _ensure_item_group():
+	if not frappe.db.exists("Item Group", "SAP Items"):
+		frappe.get_doc({"doctype": "Item Group", "item_group_name": "SAP Items",
+		                "parent_item_group": "All Item Groups", "is_group": 0}).insert(ignore_permissions=True)
+	return "SAP Items"
+
+
+def _ensure_customer_group():
+	if not frappe.db.exists("Customer Group", "Stockists"):
+		frappe.get_doc({"doctype": "Customer Group", "customer_group_name": "Stockists",
+		                "parent_customer_group": "All Customer Groups", "is_group": 0}).insert(ignore_permissions=True)
+	return "Stockists"
+
+
+def _ensure_territory():
+	return "All Territories" if frappe.db.exists("Territory", "All Territories") else frappe.db.get_value("Territory", {"is_group": 0}, "name")
+
+
+# ── orchestrator ─────────────────────────────────────────────────────────────
+@frappe.whitelist()
+def sync_masters_from_sap():
+	"""Pull everything: Price Lists, Items (+prices), Customers. Button + scheduler entry point."""
+	result = {}
+	result["price_lists"] = len(pull_price_lists())
+	result["items"] = pull_items()
+	result["customers"] = pull_customers()
+	return result
+
+
+def scheduled_master_sync():
+	"""Daily scheduler — only runs if both SAP and auto-sync are enabled."""
+	s = frappe.get_cached_doc("Agriculture Settings")
+	if s.sap_b1_enabled and s.auto_sync_masters_daily:
+		sync_masters_from_sap()

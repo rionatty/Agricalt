@@ -37,7 +37,16 @@
   "sap_auto_push_payments",
   "col_11",
   "sap_default_warehouse",
-  "sap_default_customer_group"
+  "sap_default_customer_group",
+  "sec_sap_masters",
+  "sap_default_item_group",
+  "sap_default_uom",
+  "col_masters",
+  "sap_default_territory",
+  "sap_default_price_list",
+  "sec_sap_synced",
+  "last_master_sync",
+  "auto_sync_masters_daily"
  ],
  "fields": [
   {
@@ -233,6 +242,64 @@
    "fieldname": "sap_default_customer_group",
    "fieldtype": "Data",
    "label": "Default SAP Customer Group",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sec_sap_masters",
+   "fieldtype": "Section Break",
+   "label": "SAP B1 Master Data Sync Defaults",
+   "description": "Defaults applied to records pulled from SAP B1 (Items, Customers, Price Lists).",
+   "depends_on": "sap_b1_enabled",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "sap_default_item_group",
+   "fieldtype": "Link",
+   "label": "Default Item Group",
+   "options": "Item Group",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sap_default_uom",
+   "fieldtype": "Link",
+   "label": "Default UOM",
+   "options": "UOM",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "col_masters",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sap_default_territory",
+   "fieldtype": "Link",
+   "label": "Default Territory",
+   "options": "Territory",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sap_default_price_list",
+   "fieldtype": "Link",
+   "label": "Default Selling Price List",
+   "options": "Price List",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sec_sap_synced",
+   "fieldtype": "Section Break",
+   "label": "",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "last_master_sync",
+   "fieldtype": "Datetime",
+   "label": "Last Master Data Sync",
+   "read_only": 1
+  },
+  {
+   "fieldname": "auto_sync_masters_daily",
+   "fieldtype": "Check",
+   "label": "Auto-Sync Masters Daily",
    "depends_on": "sap_b1_enabled"
   }
  ],
