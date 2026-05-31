@@ -141,6 +141,9 @@ doc_events = {
 	"Order Collection": {
 		"on_update": "agriculture.agriculture.sap_integration.on_order_update",
 	},
+	"Demo Garden Material Request": {
+		"on_update": "agriculture.agriculture.sap_integration.on_material_request_update",
+	},
 }
 
 # Scheduled Tasks

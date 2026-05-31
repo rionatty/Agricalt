@@ -20,20 +20,52 @@ from frappe import _
 from frappe.utils import getdate
 
 
-# ─── Hook entry point ────────────────────────────────────────────────────────
+# ─── Hook entry points ───────────────────────────────────────────────────────
 def on_order_update(doc, method=None):
 	"""Auto-push an Order Collection to SAP B1 when submitted, if enabled."""
 	settings = frappe.get_cached_doc("Agriculture Settings")
-	if not settings.sap_b1_enabled or not settings.sap_auto_push_orders:
+	if not settings.sap_b1_enabled or doc.status != "Submitted":
 		return
-	if doc.status != "Submitted" or doc.erp_synced:
+
+	if settings.sap_auto_push_orders and not doc.erp_synced:
+		frappe.enqueue(
+			"agriculture.agriculture.sap_integration.push_order",
+			queue="long",
+			order_name=doc.name,
+		)
+
+	if settings.sap_auto_push_payments and doc.payment_collected and doc.payment_amount:
+		already_pushed = frappe.db.exists("SAP B1 Sync Log", {
+			"reference_doctype": "Order Collection",
+			"reference_name": doc.name,
+			"sync_type": "Payment",
+			"status": "Success",
+		})
+		if not already_pushed:
+			frappe.enqueue(
+				"agriculture.agriculture.sap_integration.push_payment",
+				queue="long",
+				order_name=doc.name,
+			)
+
+
+def on_material_request_update(doc, method=None):
+	"""Push material issuance to SAP B1 as a Goods Issue when store dispatches."""
+	settings = frappe.get_cached_doc("Agriculture Settings")
+	if not settings.sap_b1_enabled or doc.status != "Issued":
 		return
-	# Push in background so the user isn't blocked on SAP latency
-	frappe.enqueue(
-		"agriculture.agriculture.sap_integration.push_order",
-		queue="long",
-		order_name=doc.name,
-	)
+	already_pushed = frappe.db.exists("SAP B1 Sync Log", {
+		"reference_doctype": "Demo Garden Material Request",
+		"reference_name": doc.name,
+		"sync_type": "Inventory",
+		"status": "Success",
+	})
+	if not already_pushed:
+		frappe.enqueue(
+			"agriculture.agriculture.sap_integration.push_material_issuance",
+			queue="long",
+			request_name=doc.name,
+		)
 
 
 # ─── Public API ──────────────────────────────────────────────────────────────
@@ -74,6 +106,79 @@ def push_order(order_name):
 		log.status = "Failed"
 		log.error_message = str(e)[:1000]
 		frappe.log_error(frappe.get_traceback(), "SAP B1 Order Push Failed")
+
+	log.insert(ignore_permissions=True)
+	frappe.db.commit()
+	return log.name
+
+
+@frappe.whitelist()
+def push_payment(order_name):
+	"""Push a payment collected on an Order Collection to SAP B1 IncomingPayments."""
+	order = frappe.get_doc("Order Collection", order_name)
+	settings = frappe.get_cached_doc("Agriculture Settings")
+
+	log = frappe.new_doc("SAP B1 Sync Log")
+	log.reference_doctype = "Order Collection"
+	log.reference_name = order.name
+	log.sync_type = "Payment"
+	log.status = "Pending"
+
+	if not settings.sap_b1_enabled:
+		log.status = "Failed"
+		log.error_message = "SAP B1 integration is disabled in Agriculture Settings."
+		log.insert(ignore_permissions=True)
+		return log.name
+
+	try:
+		payload = _build_payment_payload(order, settings)
+		log.request_payload = json.dumps(payload, indent=2)
+
+		response = _post_to_sap(settings, "IncomingPayments", payload)
+		log.response_text = json.dumps(response, indent=2)[:140000]
+		log.status = "Success"
+		log.sap_document_number = str(response.get("DocNum") or response.get("DocEntry") or "")
+	except Exception as e:
+		log.status = "Failed"
+		log.error_message = str(e)[:1000]
+		frappe.log_error(frappe.get_traceback(), "SAP B1 Payment Push Failed")
+
+	log.insert(ignore_permissions=True)
+	frappe.db.commit()
+	return log.name
+
+
+@frappe.whitelist()
+def push_material_issuance(request_name):
+	"""Push a Demo Garden Material Request (status=Issued) as a SAP B1 Goods Issue."""
+	from frappe.utils import today as _today
+	request = frappe.get_doc("Demo Garden Material Request", request_name)
+	settings = frappe.get_cached_doc("Agriculture Settings")
+
+	log = frappe.new_doc("SAP B1 Sync Log")
+	log.reference_doctype = "Demo Garden Material Request"
+	log.reference_name = request.name
+	log.sync_type = "Inventory"
+	log.status = "Pending"
+
+	if not settings.sap_b1_enabled:
+		log.status = "Failed"
+		log.error_message = "SAP B1 integration is disabled in Agriculture Settings."
+		log.insert(ignore_permissions=True)
+		return log.name
+
+	try:
+		payload = _build_goods_issue_payload(request, settings, _today)
+		log.request_payload = json.dumps(payload, indent=2)
+
+		response = _post_to_sap(settings, "InventoryGenExits", payload)
+		log.response_text = json.dumps(response, indent=2)[:140000]
+		log.status = "Success"
+		log.sap_document_number = str(response.get("DocNum") or response.get("DocEntry") or "")
+	except Exception as e:
+		log.status = "Failed"
+		log.error_message = str(e)[:1000]
+		frappe.log_error(frappe.get_traceback(), "SAP B1 Inventory Push Failed")
 
 	log.insert(ignore_permissions=True)
 	frappe.db.commit()
@@ -165,6 +270,43 @@ def _build_order_payload(order, settings):
 		"DocDueDate": str(getdate(order.collection_date)),
 		"Comments": f"Field order via CyveTech — {order.name} (Promoter: {order.promoter_name or order.promoter})",
 		"U_CyveTechRef": order.name,  # UDF to trace back to the field record
+		"DocumentLines": lines,
+	}
+
+
+def _build_payment_payload(order, settings):
+	"""Map an Order Collection payment to a SAP B1 IncomingPayments object."""
+	return {
+		"CardCode": order.stockist or "",
+		"DocDate": str(getdate(order.collection_date)),
+		"CashSum": float(order.payment_amount or 0),
+		"CashAccount": getattr(settings, "sap_default_cash_account", "") or "",
+		"Remarks": (
+			f"Field payment via CyveTech — {order.name} "
+			f"(Promoter: {order.promoter_name or order.promoter})"
+		),
+		"U_CyveTechRef": order.name,
+	}
+
+
+def _build_goods_issue_payload(request, settings, today_fn):
+	"""Map a Demo Garden Material Request to a SAP B1 InventoryGenExits (Goods Issue)."""
+	lines = []
+	for item in request.items:
+		qty = item.quantity_issued or item.quantity_requested or 0
+		if not qty:
+			continue
+		lines.append({
+			"ItemCode": item.item or item.item_name,
+			"Quantity": float(qty),
+			"WarehouseCode": settings.sap_default_warehouse or "",
+		})
+	return {
+		"DocDate": str(getdate(request.issue_date or today_fn())),
+		"Comments": (
+			f"Demo garden material issue — {request.name} → {request.demo_garden}"
+		),
+		"U_CyveTechRef": request.name,
 		"DocumentLines": lines,
 	}
 

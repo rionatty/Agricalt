@@ -174,10 +174,14 @@ def alert_missing_weekly_plans():
 			"promoter": p.name, "from_date": [">=", week_start],
 			"status": ["in", ["Submitted", "Approved"]],
 		})
-		if exists or not p.email_id:
+		if exists:
+			continue
+		sup_email = _supervisor_email(p.name)
+		recipients = [r for r in [p.email_id, sup_email] if r]
+		if not recipients:
 			continue
 		_notify(
-			[p.email_id],
+			recipients,
 			_("Reminder: Submit Your Weekly Activity Plan"),
 			_("Dear {0}, you have not submitted an activity plan for {1} to {2}. "
 			  "Please submit it as soon as possible.").format(p.promoter_name, week_start, week_end),
