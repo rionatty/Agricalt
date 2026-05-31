@@ -5,56 +5,72 @@ frappe.ui.form.on("Agriculture Settings", {
 	refresh(frm) {
 		if (!frm.doc.sap_b1_enabled) return;
 
+		// ── Test connection ───────────────────────────────────────────────────
 		frm.add_custom_button(__("Test Connection"), () => {
 			frappe.call({
 				method: "agriculture.agriculture.sap_integration.test_connection",
 				freeze: true,
-				freeze_message: __("Connecting to SAP B1..."),
-				callback: (r) => {
-					if (r.message && r.message.ok) {
-						frappe.msgprint({ title: __("Success"), indicator: "green",
-							message: r.message.message });
-					} else {
-						frappe.msgprint({ title: __("Connection Failed"), indicator: "red",
-							message: (r.message && r.message.message) || __("Unknown error") });
-					}
+				freeze_message: __("Connecting to SAP B1…"),
+				callback(r) {
+					const res = r.message || {};
+					frappe.msgprint({
+						title: res.ok ? __("Connected") : __("Connection Failed"),
+						indicator: res.ok ? "green" : "red",
+						message: res.message || __("Unknown error"),
+					});
 				},
 			});
 		}, __("SAP B1"));
 
-		const sync = (method, label) => {
+		// ── Individual sync buttons (all run in background) ───────────────────
+		const sync_bg = (method, label) => {
 			frappe.call({
 				method: `agriculture.agriculture.sap_integration.${method}`,
 				freeze: true,
-				freeze_message: __("Syncing {0} from SAP B1...", [label]),
-				callback: (r) => {
-					frappe.show_alert({ message: __("{0} sync complete", [label]), indicator: "green" });
-					frm.reload_doc();
+				freeze_message: __("Queuing {0} sync…", [label]),
+				callback(r) {
+					const res = r.message || {};
+					frappe.show_alert({ message: res.message || __("{0} sync queued", [label]), indicator: "green" }, 8);
+					// Auto-open Sync Log after 3 seconds so user can watch progress
+					setTimeout(() => {
+						frappe.set_route("List", "SAP B1 Sync Log", {});
+					}, 3000);
 				},
 			});
 		};
 
-		frm.add_custom_button(__("Sync Items"), () => sync("pull_items", "Items"), __("SAP B1"));
-		frm.add_custom_button(__("Sync Customers"), () => sync("pull_customers", "Customers"), __("SAP B1"));
-		frm.add_custom_button(__("Sync Price Lists"), () => sync("pull_price_lists", "Price Lists"), __("SAP B1"));
+		frm.add_custom_button(__("Sync Price Lists"), () => sync_bg("enqueue_pull_price_lists", "Price Lists"), __("SAP B1"));
+		frm.add_custom_button(__("Sync Customers"),   () => sync_bg("enqueue_pull_customers",   "Customers"),   __("SAP B1"));
+		frm.add_custom_button(__("Sync Items"),       () => sync_bg("enqueue_pull_items",       "Items"),       __("SAP B1"));
 
-		frm.add_custom_button(__("Sync All Masters"), () => {
-			frappe.confirm(__("Pull all Items, Customers and Price Lists from SAP B1 now?"), () => {
-				frappe.call({
-					method: "agriculture.agriculture.sap_integration.sync_masters_from_sap",
-					freeze: true,
-					freeze_message: __("Syncing all master data from SAP B1..."),
-					callback: (r) => {
-						const m = r.message || {};
-						frappe.msgprint({
-							title: __("SAP B1 Master Sync Complete"), indicator: "green",
-							message: __("Price Lists: {0}<br>Items: {1}<br>Customers: {2}",
-								[m.price_lists || 0, m.items || 0, m.customers || 0]),
-						});
-						frm.reload_doc();
-					},
-				});
-			});
+		// ── Sync All (primary green button) ──────────────────────────────────
+		frm.add_custom_button(__("🔄 Sync All Masters"), () => {
+			frappe.confirm(
+				__("Pull all Items, Customers and Price Lists from SAP B1 now?<br><br>"
+				 + "<b>This runs in the background</b> — you will be notified via SAP B1 Sync Log when done."),
+				() => {
+					frappe.call({
+						method: "agriculture.agriculture.sap_integration.enqueue_sync_all",
+						freeze: true,
+						freeze_message: __("Starting background sync…"),
+						callback(r) {
+							const res = r.message || {};
+							frappe.msgprint({
+								title: __("Sync Started"),
+								indicator: "green",
+								message: res.message || __("Background sync queued. Check SAP B1 Sync Log for results."),
+							});
+							// Redirect to Sync Log so user can monitor
+							setTimeout(() => frappe.set_route("List", "SAP B1 Sync Log", {}), 2000);
+						},
+					});
+				}
+			);
 		}, __("SAP B1")).addClass("btn-success agri-btn-main");
+
+		// ── Sync Log shortcut ─────────────────────────────────────────────────
+		frm.add_custom_button(__("View Sync Log"), () => {
+			frappe.set_route("List", "SAP B1 Sync Log", {});
+		}, __("SAP B1"));
 	},
 });

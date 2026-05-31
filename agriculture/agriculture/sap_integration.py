@@ -425,7 +425,7 @@ def _ensure_territory():
 # ── orchestrator ─────────────────────────────────────────────────────────────
 @frappe.whitelist()
 def sync_masters_from_sap():
-	"""Pull everything: Price Lists, Items (+prices), Customers. Button + scheduler entry point."""
+	"""Pull everything: Price Lists, Items (+prices), Customers. Scheduler entry point (runs inline)."""
 	result = {}
 	result["price_lists"] = len(pull_price_lists())
 	result["items"] = pull_items()
@@ -438,3 +438,56 @@ def scheduled_master_sync():
 	s = frappe.get_cached_doc("Agriculture Settings")
 	if s.sap_b1_enabled and s.auto_sync_masters_daily:
 		sync_masters_from_sap()
+
+
+# ── Background job entry points (called by UI buttons, no HTTP timeout) ───────
+@frappe.whitelist()
+def enqueue_pull_items():
+	"""Enqueue item sync as a background job — returns immediately, no timeout."""
+	frappe.enqueue(
+		"agriculture.agriculture.sap_integration.pull_items",
+		queue="long",
+		timeout=3600,
+		job_name="SAP B1 — Sync Items",
+		is_async=True,
+	)
+	return {"status": "queued", "message": _("Item sync started in the background. Check SAP B1 Sync Log for results.")}
+
+
+@frappe.whitelist()
+def enqueue_pull_customers():
+	"""Enqueue customer sync as a background job."""
+	frappe.enqueue(
+		"agriculture.agriculture.sap_integration.pull_customers",
+		queue="long",
+		timeout=1800,
+		job_name="SAP B1 — Sync Customers",
+		is_async=True,
+	)
+	return {"status": "queued", "message": _("Customer sync started in the background. Check SAP B1 Sync Log for results.")}
+
+
+@frappe.whitelist()
+def enqueue_pull_price_lists():
+	"""Enqueue price list sync as a background job."""
+	frappe.enqueue(
+		"agriculture.agriculture.sap_integration.pull_price_lists",
+		queue="long",
+		timeout=600,
+		job_name="SAP B1 — Sync Price Lists",
+		is_async=True,
+	)
+	return {"status": "queued", "message": _("Price list sync started in the background. Check SAP B1 Sync Log for results.")}
+
+
+@frappe.whitelist()
+def enqueue_sync_all():
+	"""Enqueue full master sync (price lists + items + customers) as a single background job."""
+	frappe.enqueue(
+		"agriculture.agriculture.sap_integration.sync_masters_from_sap",
+		queue="long",
+		timeout=7200,
+		job_name="SAP B1 — Sync All Masters",
+		is_async=True,
+	)
+	return {"status": "queued", "message": _("Full master data sync started in the background. This may take several minutes. Check SAP B1 Sync Log for results.")}
