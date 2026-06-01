@@ -28,6 +28,12 @@
   "sec_52",
   "promoter_receipt_confirmed",
   "promoter_receipt_date",
+  "sec_sap",
+  "sap_transfer_request_number",
+  "sap_transfer_status",
+  "col_sap",
+  "sap_transfer_number",
+  "sap_receipt_number",
   "sec_53",
   "remarks"
  ],
@@ -170,6 +176,44 @@
    "fieldname": "promoter_receipt_date",
    "fieldtype": "Date",
    "label": "Confirmed On"
+  },
+  {
+   "fieldname": "sec_sap",
+   "fieldtype": "Section Break",
+   "label": "SAP B1 Stock Transfer",
+   "collapsible": 1,
+   "description": "SAP B1 integration — tracks material movement from main store to promoter warehouse"
+  },
+  {
+   "fieldname": "sap_transfer_request_number",
+   "fieldtype": "Data",
+   "label": "SAP Transfer Request No.",
+   "read_only": 1,
+   "description": "SAP B1 Stock Transfer Request document number"
+  },
+  {
+   "fieldname": "sap_transfer_status",
+   "fieldtype": "Data",
+   "label": "SAP Transfer Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_sap",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sap_transfer_number",
+   "fieldtype": "Data",
+   "label": "SAP Transfer Doc No.",
+   "read_only": 1,
+   "description": "SAP B1 Stock Transfer (actual movement) document number"
+  },
+  {
+   "fieldname": "sap_receipt_number",
+   "fieldtype": "Data",
+   "label": "SAP Receipt Doc No.",
+   "read_only": 1,
+   "description": "SAP B1 Goods Receipt document number"
   },
   {
    "fieldname": "sec_53",

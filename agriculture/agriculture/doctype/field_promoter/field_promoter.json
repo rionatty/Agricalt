@@ -24,6 +24,7 @@
   "employee",
   "col_14",
   "user",
+  "promoter_warehouse",
   "sec_15",
   "remarks"
  ],
@@ -134,6 +135,14 @@
    "fieldtype": "Link",
    "label": "System User",
    "options": "User"
+  },
+  {
+   "fieldname": "promoter_warehouse",
+   "fieldtype": "Link",
+   "label": "Promoter Warehouse",
+   "options": "Warehouse",
+   "read_only": 1,
+   "description": "Auto-created when promoter is registered. Used to track demo materials."
   },
   {
    "fieldname": "sec_15",

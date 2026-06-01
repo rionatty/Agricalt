@@ -50,22 +50,60 @@ def on_order_update(doc, method=None):
 
 
 def on_material_request_update(doc, method=None):
-	"""Push material issuance to SAP B1 as a Goods Issue when store dispatches."""
+	"""
+	Push Demo Garden Material Request to SAP B1:
+	- On Submitted → create a SAP B1 Stock Transfer Request (from main warehouse to promoter)
+	- On Issued    → create a SAP B1 Stock Transfer (actual movement)
+	- On Received  → create a SAP B1 Goods Receipt to confirm promoter received stock
+	"""
 	settings = frappe.get_cached_doc("Agriculture Settings")
-	if not settings.sap_b1_enabled or doc.status != "Issued":
+	if not settings.sap_b1_enabled:
 		return
-	already_pushed = frappe.db.exists("SAP B1 Sync Log", {
-		"reference_doctype": "Demo Garden Material Request",
-		"reference_name": doc.name,
-		"sync_type": "Inventory",
-		"status": "Success",
-	})
-	if not already_pushed:
-		frappe.enqueue(
-			"agriculture.agriculture.sap_integration.push_material_issuance",
-			queue="long",
-			request_name=doc.name,
-		)
+
+	if doc.status == "Submitted":
+		# Push as a Stock Transfer Request so store team sees it in SAP
+		already_pushed = frappe.db.exists("SAP B1 Sync Log", {
+			"reference_doctype": "Demo Garden Material Request",
+			"reference_name": doc.name,
+			"sync_type": "StockTransferRequest",
+			"status": "Success",
+		})
+		if not already_pushed:
+			frappe.enqueue(
+				"agriculture.agriculture.sap_integration.push_stock_transfer_request",
+				queue="long",
+				request_name=doc.name,
+			)
+
+	elif doc.status == "Issued":
+		# Push actual stock transfer (store → promoter warehouse)
+		already_pushed = frappe.db.exists("SAP B1 Sync Log", {
+			"reference_doctype": "Demo Garden Material Request",
+			"reference_name": doc.name,
+			"sync_type": "StockTransfer",
+			"status": "Success",
+		})
+		if not already_pushed:
+			frappe.enqueue(
+				"agriculture.agriculture.sap_integration.push_material_issuance",
+				queue="long",
+				request_name=doc.name,
+			)
+
+	elif doc.status == "Received":
+		# Confirm receipt in SAP B1
+		already_pushed = frappe.db.exists("SAP B1 Sync Log", {
+			"reference_doctype": "Demo Garden Material Request",
+			"reference_name": doc.name,
+			"sync_type": "GoodsReceipt",
+			"status": "Success",
+		})
+		if not already_pushed:
+			frappe.enqueue(
+				"agriculture.agriculture.sap_integration.push_stock_receipt",
+				queue="long",
+				request_name=doc.name,
+			)
 
 
 # ─── Public API ──────────────────────────────────────────────────────────────
@@ -183,6 +221,133 @@ def push_material_issuance(request_name):
 	log.insert(ignore_permissions=True)
 	frappe.db.commit()
 	return log.name
+
+
+@frappe.whitelist()
+def push_stock_transfer_request(request_name):
+	"""Push a Demo Garden Material Request (status=Submitted) to SAP B1 as a Stock Transfer Request."""
+	from frappe.utils import today as _today
+	request = frappe.get_doc("Demo Garden Material Request", request_name)
+	settings = frappe.get_cached_doc("Agriculture Settings")
+
+	log = frappe.new_doc("SAP B1 Sync Log")
+	log.reference_doctype = "Demo Garden Material Request"
+	log.reference_name = request.name
+	log.sync_type = "StockTransferRequest"
+	log.status = "Pending"
+
+	try:
+		# Get the promoter's warehouse
+		promoter_warehouse = frappe.db.get_value(
+			"Field Promoter", request.promoter, "promoter_warehouse"
+		) or settings.sap_default_warehouse
+
+		lines = []
+		for item in request.items:
+			lines.append({
+				"ItemCode": item.item or item.item_name,
+				"Quantity": float(item.quantity_requested or 0),
+				"WarehouseCode": settings.sap_default_warehouse or "",
+				"ToWarehouseCode": promoter_warehouse or "",
+			})
+
+		payload = {
+			"DocDate": str(getdate(request.request_date or _today())),
+			"Comments": f"Demo material request — {request.name} for {request.demo_garden} (Promoter: {request.promoter})",
+			"U_CyveTechRef": request.name,
+			"StockTransferLines": lines,
+		}
+		log.request_payload = json.dumps(payload, indent=2)
+		response = _post_to_sap(settings, "StockTransferRequests", payload)
+		log.response_text = json.dumps(response, indent=2)[:140000]
+		log.status = "Success"
+		log.sap_document_number = str(response.get("DocNum") or response.get("DocEntry") or "")
+
+		# Store SAP transfer request number back on the material request
+		frappe.db.set_value("Demo Garden Material Request", request.name,
+			"sap_transfer_request_number", log.sap_document_number)
+	except Exception as e:
+		log.status = "Failed"
+		log.error_message = str(e)[:1000]
+		frappe.log_error(frappe.get_traceback(), "SAP B1 Stock Transfer Request Failed")
+
+	log.insert(ignore_permissions=True)
+	frappe.db.commit()
+	return log.name
+
+
+@frappe.whitelist()
+def push_stock_receipt(request_name):
+	"""Confirm promoter received materials in SAP B1 as a Goods Receipt."""
+	from frappe.utils import today as _today
+	request = frappe.get_doc("Demo Garden Material Request", request_name)
+	settings = frappe.get_cached_doc("Agriculture Settings")
+
+	log = frappe.new_doc("SAP B1 Sync Log")
+	log.reference_doctype = "Demo Garden Material Request"
+	log.reference_name = request.name
+	log.sync_type = "GoodsReceipt"
+	log.status = "Pending"
+
+	try:
+		promoter_warehouse = frappe.db.get_value(
+			"Field Promoter", request.promoter, "promoter_warehouse"
+		) or settings.sap_default_warehouse
+
+		lines = []
+		for item in request.items:
+			qty = item.quantity_received or item.quantity_issued or item.quantity_requested or 0
+			lines.append({
+				"ItemCode": item.item or item.item_name,
+				"Quantity": float(qty),
+				"WarehouseCode": promoter_warehouse or "",
+			})
+
+		payload = {
+			"DocDate": str(getdate(request.promoter_receipt_date or _today())),
+			"Comments": f"Material receipt confirmed — {request.name} (Promoter: {request.promoter})",
+			"U_CyveTechRef": request.name,
+			"DocumentLines": lines,
+		}
+		log.request_payload = json.dumps(payload, indent=2)
+		response = _post_to_sap(settings, "PurchaseDeliveryNotes", payload)
+		log.response_text = json.dumps(response, indent=2)[:140000]
+		log.status = "Success"
+		log.sap_document_number = str(response.get("DocNum") or response.get("DocEntry") or "")
+	except Exception as e:
+		log.status = "Failed"
+		log.error_message = str(e)[:1000]
+		frappe.log_error(frappe.get_traceback(), "SAP B1 Goods Receipt Failed")
+
+	log.insert(ignore_permissions=True)
+	frappe.db.commit()
+	return log.name
+
+
+@frappe.whitelist()
+def get_stock_transfer_status(request_name):
+	"""Fetch the current status of a Stock Transfer Request from SAP B1."""
+	request = frappe.get_doc("Demo Garden Material Request", request_name)
+	sap_doc_num = getattr(request, "sap_transfer_request_number", None)
+	if not sap_doc_num:
+		return {"status": "Not pushed to SAP B1 yet"}
+
+	settings = frappe.get_cached_doc("Agriculture Settings")
+	try:
+		from frappe.utils import nowdate
+		base, cookies = _get_session(settings)
+		import requests as _requests
+		resp = _requests.get(
+			f"{base}/StockTransferRequests({sap_doc_num})",
+			params={"$select": "DocNum,DocStatus,Comments"},
+			cookies=cookies, verify=False, timeout=30
+		)
+		if resp.status_code == 200:
+			data = resp.json()
+			return {"sap_doc_num": sap_doc_num, "status": data.get("DocStatus"), "raw": data}
+		return {"error": f"SAP returned {resp.status_code}"}
+	except Exception as e:
+		return {"error": str(e)}
 
 
 # ─── SAP B1 Service Layer plumbing ───────────────────────────────────────────

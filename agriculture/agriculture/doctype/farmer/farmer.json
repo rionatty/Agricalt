@@ -17,6 +17,9 @@
   "sec_3",
   "region",
   "district",
+  "sub_county",
+  "col_4_a",
+  "parish",
   "village",
   "col_4",
   "gps_latitude",
@@ -104,12 +107,30 @@
   {
    "fieldname": "district",
    "fieldtype": "Data",
-   "label": "District"
+   "label": "District",
+   "in_list_view": 0
+  },
+  {
+   "fieldname": "sub_county",
+   "fieldtype": "Data",
+   "label": "Sub-County",
+   "in_list_view": 0
+  },
+  {
+   "fieldname": "col_4_a",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "parish",
+   "fieldtype": "Data",
+   "label": "Parish",
+   "in_list_view": 0
   },
   {
    "fieldname": "village",
    "fieldtype": "Data",
-   "label": "Village / Parish"
+   "label": "Village / LC1",
+   "in_list_view": 1
   },
   {
    "fieldname": "col_4",
