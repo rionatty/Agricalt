@@ -24,10 +24,12 @@ def setup_agriculture():
 		# data already seeded; still ensure permissions are in place
 		add_additional_permissions()
 		add_store_manager_permissions()
+		grant_oversight_permissions()
 		return
 	create_agriculture_data()
 	add_additional_permissions()
 	add_store_manager_permissions()
+	grant_oversight_permissions()
 
 
 def create_roles():
@@ -517,6 +519,28 @@ def add_store_manager_permissions():
 		"role": "Store Manager",
 		"read": 1, "write": 1, "email": 1, "print": 1,
 	}).insert()
+
+
+OVERSIGHT_ROLES = ["Marketing Manager", "Store Manager"]
+OVERSIGHT_DOCTYPES = [
+	"Field Activity Log", "Activity Plan", "Demo Garden",
+	"Demo Garden Material Request", "Demo Garden Planting Record",
+	"Demo Garden Input Application", "Demo Garden Monitoring Visit",
+	"Demo Garden Field Day", "Farmer Training Event", "Order Collection",
+	"Promoter Stock Ledger", "Promoter KPI Target", "Field Promoter", "Farmer",
+]
+
+
+def grant_oversight_permissions():
+	"""Marketing Manager & Store Manager are treated as see-all roles in
+	permissions.py (FULL_ACCESS_ROLES). Give them read-level DocPerms so that
+	row-level visibility actually resolves to records they can open. Existing
+	stronger perms (e.g. Store Manager write on Material Request) are preserved
+	because _ensure_docperm skips a (doctype, role) that already exists."""
+	read_perms = {"read": 1, "report": 1, "export": 1, "print": 1, "email": 1, "share": 1}
+	for dt in OVERSIGHT_DOCTYPES:
+		for role in OVERSIGHT_ROLES:
+			_ensure_docperm(dt, role, read_perms)
 
 
 def cleanup_role_and_permissions():

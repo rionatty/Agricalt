@@ -1,1 +1,2 @@
 agriculture.agriculture.patches.v1_0_ensure_sap_custom_fields
+agriculture.agriculture.patches.v1_1_oversight_permissions
