@@ -25,11 +25,13 @@ def setup_agriculture():
 		add_additional_permissions()
 		add_store_manager_permissions()
 		grant_oversight_permissions()
+		grant_system_manager_permissions()
 		return
 	create_agriculture_data()
 	add_additional_permissions()
 	add_store_manager_permissions()
 	grant_oversight_permissions()
+	grant_system_manager_permissions()
 
 
 def create_roles():
@@ -541,6 +543,19 @@ def grant_oversight_permissions():
 	for dt in OVERSIGHT_DOCTYPES:
 		for role in OVERSIGHT_ROLES:
 			_ensure_docperm(dt, role, read_perms)
+
+
+def grant_system_manager_permissions():
+	"""System Manager was omitted from the custom doctypes' permissions, so a
+	System-Manager admin who is not the literal Administrator has no create/edit
+	access (the '+ Add' button disappears). Ensure the admin role can fully
+	manage every Agriculture doctype."""
+	full = {
+		"read": 1, "write": 1, "create": 1, "delete": 1,
+		"report": 1, "print": 1, "export": 1, "email": 1, "share": 1,
+	}
+	for dt in OVERSIGHT_DOCTYPES + ["Promoter Task"]:
+		_ensure_docperm(dt, "System Manager", full)
 
 
 def cleanup_role_and_permissions():
