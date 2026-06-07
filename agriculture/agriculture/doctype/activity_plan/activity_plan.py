@@ -35,10 +35,10 @@ class ActivityPlan(Document):
 			row.day_of_week = _WEEKDAY_CODES[pdate.weekday()]
 
 	def validate_no_overlap(self):
-		"""Prevent two plans of the same type overlapping for one promoter.
+		"""Flag (do NOT block) another same-type plan overlapping for this promoter.
 
-		Weekly and Monthly plans are allowed to overlap (a month contains its
-		weeks); two plans of the *same* type for the same period are not.
+		Promoters can legitimately have several plans covering the same period, so
+		this is only an informational notice — never a hard stop.
 		"""
 		if not (self.promoter and self.from_date and self.to_date):
 			return
@@ -51,8 +51,11 @@ class ActivityPlan(Document):
 			"to_date": [">=", self.from_date],
 		}, pluck="name", limit=1)
 		if dup:
-			frappe.throw(_("Overlapping {0} plan {1} already exists for this promoter.").format(
-				self.plan_type or "", dup[0]))
+			frappe.msgprint(
+				_("Note: an overlapping {0} plan ({1}) already exists for this promoter.").format(
+					self.plan_type or "", dup[0]),
+				indicator="orange", alert=True,
+			)
 
 	# ── Workflow ──────────────────────────────────────────────────────────────
 	@frappe.whitelist()
