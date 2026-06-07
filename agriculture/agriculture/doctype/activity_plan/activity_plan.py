@@ -77,12 +77,52 @@ class ActivityPlan(Document):
 			"approval_date": today(),
 		})
 		frappe.db.commit()
+		self.status = "Approved"
+		created = self._generate_tasks()
 		self._notify_promoter(
 			_("Activity Plan Approved: {0}").format(self.name),
-			_("Your activity plan {0} ({1} to {2}) has been approved.").format(
-				self.name, self.from_date, self.to_date),
+			_("Your activity plan {0} ({1} to {2}) has been approved. "
+			  "{3} task(s) were added to your task list.").format(
+				self.name, self.from_date, self.to_date, created),
 		)
 		return "Approved"
+
+	def _generate_tasks(self):
+		"""Create one Promoter Task per planned activity (idempotent per plan item).
+
+		The plan becomes the promoter's actionable task list; each task links back
+		to its Activity Plan Item so completing either side reconciles the other.
+		Returns the number of tasks created.
+		"""
+		created = 0
+		for item in self.activities:
+			if not item.planned_date:
+				continue
+			if frappe.db.exists("Promoter Task", {"activity_plan_item": item.name}):
+				continue
+			subject = item.activity_type or _("Planned activity")
+			contact = item.get("farmer_name") or item.location
+			if contact:
+				subject = f"{subject} — {contact}"
+			task = frappe.get_doc({
+				"doctype": "Promoter Task",
+				"subject": subject,
+				"promoter": self.promoter,
+				"status": "Open",
+				"priority": "Medium",
+				"due_date": item.planned_date,
+				"task_type": _TASK_TYPE_MAP.get(item.activity_type, "Other"),
+				"farmer": item.get("farmer"),
+				"description": item.get("purpose"),
+				"activity_plan": self.name,
+				"activity_plan_item": item.name,
+				"assigned_by": frappe.session.user,
+			})
+			task.flags.skip_assignee_notification = True
+			task.flags.ignore_permissions = True
+			task.insert()
+			created += 1
+		return created
 
 	@frappe.whitelist()
 	def reject(self, reason=""):
@@ -132,6 +172,34 @@ class ActivityPlan(Document):
 		email = frappe.db.get_value("Field Promoter", self.promoter, "email_id")
 		if email:
 			_notify([email], subject, message, "Activity Plan", self.name)
+
+
+_TASK_TYPE_MAP = {
+	"Farm Visit": "Farm Visit",
+	"Stockist Visit": "Stockist Visit",
+	"Farmer Training": "Training",
+	"Demo Garden Visit": "Farm Visit",
+	"Payment Collection": "Follow-up",
+	"Exhibition": "Other",
+}
+
+
+def complete_linked_task(plan_item_name, on_date=None):
+	"""Mark the Promoter Task generated for a plan item as Completed (if any).
+
+	Called when a plan item is reconciled from the actual visit side, so the
+	promoter's task list reflects work already done."""
+	if not plan_item_name:
+		return
+	tasks = frappe.get_all("Promoter Task", filters={
+		"activity_plan_item": plan_item_name,
+		"status": ["not in", ["Completed", "Cancelled"]],
+	}, pluck="name")
+	for t in tasks:
+		frappe.db.set_value("Promoter Task", t, {
+			"status": "Completed",
+			"completed_on": on_date or today(),
+		})
 
 
 def _ensure_can_approve():
@@ -188,6 +256,7 @@ def link_activity_to_plan(log):
 		"actual_date": log.activity_date,
 		"field_activity_log": log.name,
 	})
+	complete_linked_task(item.name, log.activity_date)
 	return item.parent
 
 

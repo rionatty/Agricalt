@@ -16,10 +16,12 @@
   "due_date",
   "sec_context",
   "task_type",
+  "activity_plan",
   "demo_garden",
   "col_2",
   "farmer",
   "stockist",
+  "activity_plan_item",
   "sec_details",
   "description",
   "sec_completion",
@@ -98,6 +100,13 @@
    "options": "\nFarm Visit\nFollow-up\nStockist Visit\nTraining\nData Collection\nOther"
   },
   {
+   "fieldname": "activity_plan",
+   "fieldtype": "Link",
+   "label": "From Activity Plan",
+   "options": "Activity Plan",
+   "read_only": 1
+  },
+  {
    "fieldname": "demo_garden",
    "fieldtype": "Link",
    "label": "Related Demo Garden",
@@ -118,6 +127,13 @@
    "fieldtype": "Link",
    "label": "Related Stockist",
    "options": "Customer"
+  },
+  {
+   "fieldname": "activity_plan_item",
+   "fieldtype": "Data",
+   "label": "Plan Item Ref",
+   "read_only": 1,
+   "hidden": 1
   },
   {
    "fieldname": "sec_details",

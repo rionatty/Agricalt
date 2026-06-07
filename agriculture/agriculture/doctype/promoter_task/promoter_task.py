@@ -18,8 +18,25 @@ class PromoterTask(Document):
 			self.completed_on = today()
 		if self.status != "Completed":
 			self.completed_on = None
+		self._sync_plan_item()
+
+	def _sync_plan_item(self):
+		"""When a plan-generated task is completed, mark its Activity Plan Item Done
+		so the plan-vs-actual view stays in sync (completing the task reconciles
+		the plan)."""
+		if self.status != "Completed" or not self.activity_plan_item:
+			return
+		cur = frappe.db.get_value("Activity Plan Item", self.activity_plan_item, "execution_status")
+		if cur is not None and cur != "Done":
+			frappe.db.set_value("Activity Plan Item", self.activity_plan_item, {
+				"execution_status": "Done",
+				"actual_date": self.completed_on or today(),
+			})
 
 	def after_insert(self):
+		# Plan-generated tasks are announced once by the plan, not per task
+		if self.flags.get("skip_assignee_notification"):
+			return
 		self._notify_assignee(
 			_("New task assigned: {0}").format(self.subject),
 			_("You have been assigned a task: <b>{0}</b> (priority {1}, due {2}).").format(

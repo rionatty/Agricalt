@@ -169,6 +169,10 @@ def alert_planned_not_executed():
 				})
 				frappe.db.set_value("Field Activity Log", log,
 					{"activity_plan": plan.name, "is_planned": 1})
+				from agriculture.agriculture.doctype.activity_plan.activity_plan import (
+					complete_linked_task,
+				)
+				complete_linked_task(item.name, check_date)
 			else:
 				frappe.db.set_value("Activity Plan Item", item.name, "execution_status", "Missed")
 				missed.append(item.activity_type)
