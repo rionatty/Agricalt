@@ -108,6 +108,7 @@ permission_query_conditions = {
 	"Order Collection": "agriculture.agriculture.permissions.order_collection_query",
 	"Promoter Stock Ledger": "agriculture.agriculture.permissions.stock_ledger_query",
 	"Promoter KPI Target": "agriculture.agriculture.permissions.kpi_target_query",
+	"Promoter Task": "agriculture.agriculture.permissions.promoter_task_query",
 }
 
 has_permission = {
@@ -123,6 +124,7 @@ has_permission = {
 	"Order Collection": "agriculture.agriculture.permissions.order_collection_perm",
 	"Promoter Stock Ledger": "agriculture.agriculture.permissions.stock_ledger_perm",
 	"Promoter KPI Target": "agriculture.agriculture.permissions.kpi_target_perm",
+	"Promoter Task": "agriculture.agriculture.permissions.promoter_task_perm",
 }
 
 # DocType Class

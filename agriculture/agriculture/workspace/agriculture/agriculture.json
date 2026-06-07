@@ -101,11 +101,11 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Agriculture Task",
+   "label": "Tasks",
    "link_count": 0,
-   "link_to": "Agriculture Task",
+   "link_to": "Promoter Task",
    "link_type": "DocType",
-   "onboard": 0,
+   "onboard": 1,
    "type": "Link"
   },
   {
@@ -559,7 +559,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-05-31 12:00:00.000000",
+ "modified": "2026-06-09 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Agriculture",
  "name": "Agriculture",
