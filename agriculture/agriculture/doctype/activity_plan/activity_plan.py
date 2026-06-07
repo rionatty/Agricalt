@@ -147,10 +147,14 @@ def link_activity_to_plan(log):
 	"""Match a Field Activity Log to an approved, not-yet-fulfilled planned activity
 	and link the two.
 
-	Matching key: same promoter, same activity_type, and planned_date ==
-	activity_date inside an Approved plan covering that date. On a match the
-	Activity Plan Item is marked Done (with the actual date and log) and the
-	plan name is returned; otherwise None.
+	Matching, in order of preference:
+	  1. A planned item for the SAME Farmer in an approved plan covering the visit
+	     date — so visiting the planned farmer counts even if it happens on a
+	     different day than scheduled ("off the planned" day).
+	  2. A planned item of the same activity type on the exact planned date.
+	A visit that matches nothing stays off-plan (is_planned = 0). On a match the
+	Activity Plan Item is marked Done (with the actual date and log) and the plan
+	name is returned; otherwise None.
 	"""
 	if not (getattr(log, "promoter", None) and getattr(log, "activity_date", None)
 			and getattr(log, "activity_type", None)):
@@ -167,19 +171,31 @@ def link_activity_to_plan(log):
 	if not plans:
 		return None
 
-	items = frappe.get_all("Activity Plan Item", filters={
-		"parent": ["in", plans],
-		"parenttype": "Activity Plan",
-		"planned_date": log.activity_date,
-		"activity_type": log.activity_type,
-	}, fields=["name", "parent", "execution_status"])
-	for it in items:
-		if it.execution_status == "Done":
-			continue
-		frappe.db.set_value("Activity Plan Item", it.name, {
-			"execution_status": "Done",
-			"actual_date": log.activity_date,
-			"field_activity_log": log.name,
-		})
-		return it.parent
+	base = {"parent": ["in", plans], "parenttype": "Activity Plan"}
+	item = None
+	# 1) same farmer, anywhere within the plan window
+	if getattr(log, "farmer", None):
+		item = _first_open_item(dict(base, activity_type=log.activity_type, farmer=log.farmer))
+	# 2) same activity type on the exact planned date
+	if not item:
+		item = _first_open_item(dict(base, activity_type=log.activity_type,
+			planned_date=log.activity_date))
+	if not item:
+		return None
+
+	frappe.db.set_value("Activity Plan Item", item.name, {
+		"execution_status": "Done",
+		"actual_date": log.activity_date,
+		"field_activity_log": log.name,
+	})
+	return item.parent
+
+
+def _first_open_item(filters):
+	"""First Activity Plan Item matching filters that is not yet Done."""
+	rows = frappe.get_all("Activity Plan Item", filters=filters,
+		fields=["name", "parent", "execution_status"], order_by="planned_date asc")
+	for r in rows:
+		if r.execution_status != "Done":
+			return r
 	return None
