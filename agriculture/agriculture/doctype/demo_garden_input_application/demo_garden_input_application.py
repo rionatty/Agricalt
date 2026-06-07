@@ -8,6 +8,7 @@ from frappe.utils import today
 
 from agriculture.agriculture.doctype.demo_garden_planting_record.demo_garden_planting_record import (
 	_post_ledger_entry,
+	get_consumed_qty,
 )
 
 
@@ -18,10 +19,11 @@ class DemoGardenInputApplication(Document):
 	def validate_stock_available(self):
 		"""Ensure the promoter has received the inputs they are trying to apply."""
 		received = self._get_received_inputs()
+		consumed = get_consumed_qty(self.demo_garden, self.doctype, self.name)
 		errors = []
 		for row in self.inputs:
 			key = (row.product_name or "").strip().lower()
-			available = received.get(key, 0)
+			available = received.get(key, 0) - consumed.get(key, 0)
 			row.quantity_available = available
 			if row.quantity_applied > available:
 				errors.append(

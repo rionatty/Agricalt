@@ -15,7 +15,10 @@
   "location",
   "approx_kms",
   "purpose",
-  "halt_place"
+  "halt_place",
+  "execution_status",
+  "actual_date",
+  "field_activity_log"
  ],
  "fields": [
   {
@@ -83,6 +86,28 @@
    "fieldtype": "Data",
    "label": "Halt Place",
    "in_list_view": 0
+  },
+  {
+   "fieldname": "execution_status",
+   "fieldtype": "Select",
+   "label": "Execution",
+   "options": "Planned\nDone\nMissed",
+   "default": "Planned",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "actual_date",
+   "fieldtype": "Date",
+   "label": "Actual Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "field_activity_log",
+   "fieldtype": "Link",
+   "label": "Actual Activity Log",
+   "options": "Field Activity Log",
+   "read_only": 1
   }
  ],
  "istable": 1,

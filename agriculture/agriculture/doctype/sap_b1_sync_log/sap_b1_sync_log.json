@@ -48,7 +48,7 @@
    "fieldname": "sync_type",
    "fieldtype": "Select",
    "label": "Sync Type",
-   "options": "Order\nPayment\nInventory\nCustomer\nItem\nPrice List",
+   "options": "Order\nPayment\nInventory\nStockTransferRequest\nGoodsReceipt\nCustomer\nItem\nPrice List",
    "in_list_view": 1,
    "read_only": 1
   },

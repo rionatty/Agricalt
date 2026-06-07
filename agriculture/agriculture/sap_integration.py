@@ -80,7 +80,7 @@ def on_material_request_update(doc, method=None):
 		already_pushed = frappe.db.exists("SAP B1 Sync Log", {
 			"reference_doctype": "Demo Garden Material Request",
 			"reference_name": doc.name,
-			"sync_type": "StockTransfer",
+			"sync_type": "Inventory",
 			"status": "Success",
 		})
 		if not already_pushed:
@@ -340,7 +340,7 @@ def get_stock_transfer_status(request_name):
 		resp = _requests.get(
 			f"{base}/StockTransferRequests({sap_doc_num})",
 			params={"$select": "DocNum,DocStatus,Comments"},
-			cookies=cookies, verify=False, timeout=30
+			cookies=cookies, verify=_verify_ssl(settings), timeout=30
 		)
 		if resp.status_code == 200:
 			data = resp.json()
@@ -351,6 +351,15 @@ def get_stock_transfer_status(request_name):
 
 
 # ─── SAP B1 Service Layer plumbing ───────────────────────────────────────────
+def _verify_ssl(settings):
+	"""
+	Whether to verify the SAP B1 Service Layer TLS certificate.
+	Controlled by the 'Verify SAP B1 SSL Certificate' setting (default: on).
+	Disable ONLY for an internal SAP server using a self-signed certificate.
+	"""
+	return bool(getattr(settings, "sap_b1_verify_ssl", 1))
+
+
 def _get_session(settings):
 	"""Authenticate against the SAP B1 Service Layer and return (base_url, cookies)."""
 	import requests  # imported lazily so the app loads even if requests is absent
@@ -366,7 +375,7 @@ def _get_session(settings):
 			"UserName": settings.sap_b1_username,
 			"Password": settings.get_password("sap_b1_password"),
 		},
-		verify=False,
+		verify=_verify_ssl(settings),
 		timeout=30,
 	)
 	resp.raise_for_status()
@@ -381,7 +390,7 @@ def _post_to_sap(settings, endpoint, payload):
 		f"{base}/{endpoint}",
 		json=payload,
 		cookies=cookies,
-		verify=False,
+		verify=_verify_ssl(settings),
 		timeout=60,
 	)
 	if resp.status_code not in (200, 201):
@@ -402,7 +411,7 @@ def _get_all(settings, endpoint, params=None):
 	page = 0
 	while url and page < 500:  # hard safety cap
 		resp = requests.get(url, params=params if page == 0 else None,
-		                    cookies=cookies, verify=False, timeout=60)
+		                    cookies=cookies, verify=_verify_ssl(settings), timeout=60)
 		if resp.status_code != 200:
 			raise Exception(f"SAP B1 GET {endpoint} returned {resp.status_code}: {resp.text[:300]}")
 		body = resp.json()
@@ -552,14 +561,15 @@ def pull_price_lists():
 
 
 @frappe.whitelist()
-def pull_items():
+def pull_items(price_map=None):
 	"""Pull SAP B1 Items into ERPNext Item, plus their Item Prices."""
 	settings = frappe.get_cached_doc("Agriculture Settings")
 	_require_enabled(settings)
 
 	item_group = settings.sap_default_item_group or _ensure_item_group()
 	default_uom = settings.sap_default_uom or "Nos"
-	price_map = pull_price_lists()
+	if price_map is None:
+		price_map = pull_price_lists()
 
 	count = 0
 	try:
@@ -820,8 +830,9 @@ def sync_masters_from_sap():
 	ensure_custom_fields()
 
 	result = {}
-	result["price_lists"] = len(pull_price_lists())
-	result["items"] = pull_items()
+	price_map = pull_price_lists()
+	result["price_lists"] = len(price_map)
+	result["items"] = pull_items(price_map=price_map)
 	result["customers"] = pull_customers()
 	return result
 

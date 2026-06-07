@@ -26,7 +26,18 @@ class FieldActivityLog(Document):
 		if self.status != "Draft":
 			frappe.throw(_("Only Draft activities can be submitted"))
 		frappe.db.set_value("Field Activity Log", self.name, "status", "Submitted")
+		self.status = "Submitted"
+		self._link_to_activity_plan()
 		return "Submitted"
+
+	def _link_to_activity_plan(self):
+		"""If this activity matches an approved planned activity, link them and
+		mark the corresponding Activity Plan Item as executed."""
+		from agriculture.agriculture.doctype.activity_plan.activity_plan import link_activity_to_plan
+		plan = link_activity_to_plan(self)
+		if plan:
+			frappe.db.set_value("Field Activity Log", self.name,
+				{"activity_plan": plan, "is_planned": 1})
 
 	@frappe.whitelist()
 	def get_promoter_summary(promoter, from_date, to_date):

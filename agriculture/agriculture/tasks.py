@@ -135,23 +135,42 @@ def alert_planned_not_executed():
 		planned_items = frappe.get_all(
 			"Activity Plan Item",
 			filters={"parent": plan.name, "planned_date": check_date},
-			fields=["activity_type"],
+			fields=["name", "activity_type", "execution_status"],
 		)
-		if not planned_items:
-			continue
-		actual = frappe.db.count(
-			"Field Activity Log",
-			{"promoter": plan.promoter, "activity_date": check_date},
-		)
-		if actual >= len(planned_items):
-			continue
-		_notify(
-			[_supervisor_email(plan.promoter)],
-			_("Planned Activities Not Fully Executed — {0}").format(check_date),
-			_("Promoter logged {0} of {1} planned activities for {2} (plan {3}).").format(
-				actual, len(planned_items), check_date, plan.name),
-			"Activity Plan", plan.name,
-		)
+		missed = []
+		for item in planned_items:
+			if item.execution_status == "Done":
+				continue
+			# Find an actual, not-yet-linked log of the same type on that day
+			log = frappe.get_all(
+				"Field Activity Log",
+				filters={
+					"promoter": plan.promoter,
+					"activity_date": check_date,
+					"activity_type": item.activity_type,
+					"activity_plan": ["is", "not set"],
+				},
+				pluck="name", limit=1,
+			)
+			if log:
+				frappe.db.set_value("Activity Plan Item", item.name, {
+					"execution_status": "Done",
+					"actual_date": check_date,
+					"field_activity_log": log[0],
+				})
+				frappe.db.set_value("Field Activity Log", log[0],
+					{"activity_plan": plan.name, "is_planned": 1})
+			else:
+				frappe.db.set_value("Activity Plan Item", item.name, "execution_status", "Missed")
+				missed.append(item.activity_type)
+		if missed:
+			_notify(
+				[_supervisor_email(plan.promoter), _promoter_email(plan.promoter)],
+				_("Planned Activities Not Executed — {0}").format(check_date),
+				_("Promoter missed {0} of {1} planned activity(ies) on {2}: {3} (plan {4}).").format(
+					len(missed), len(planned_items), check_date, ", ".join(missed), plan.name),
+				"Activity Plan", plan.name,
+			)
 
 
 # ─── 5. Weekly plan not submitted ────────────────────────────────────────────
@@ -172,6 +191,7 @@ def alert_missing_weekly_plans():
 	                        fields=["name", "promoter_name", "email_id"]):
 		exists = frappe.get_all("Activity Plan", filters={
 			"promoter": p.name, "from_date": [">=", week_start],
+			"plan_type": "Weekly",
 			"status": ["in", ["Submitted", "Approved"]],
 		})
 		if exists:

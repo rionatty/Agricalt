@@ -32,6 +32,7 @@
   "col_9",
   "sap_b1_username",
   "sap_b1_password",
+  "sap_b1_verify_ssl",
   "sec_10",
   "sap_auto_push_orders",
   "sap_auto_push_payments",
@@ -209,6 +210,14 @@
    "fieldtype": "Password",
    "label": "Password",
    "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sap_b1_verify_ssl",
+   "fieldtype": "Check",
+   "label": "Verify SAP B1 SSL Certificate",
+   "default": "1",
+   "depends_on": "sap_b1_enabled",
+   "description": "Verify the Service Layer TLS certificate. Uncheck ONLY for an internal SAP server with a self-signed certificate."
   },
   {
    "fieldname": "sec_10",

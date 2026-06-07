@@ -2,12 +2,12 @@ from . import __version__ as app_version
 
 app_name = "agriculture"
 app_title = "Agriculture"
-app_publisher = "Frappe"
-app_description = "Agriculture"
+app_publisher = "AgriTheory"
+app_description = "Agriculture field-operations system for Syova Seeds (CyveTech)"
 app_icon = "🌱"
 app_color = "green"
 app_email = "pandikunta@frappe.io"
-app_license = "MIT"
+app_license = "GNU General Public License v3.0"
 
 required_apps = ["erpnext"]
 

@@ -16,12 +16,13 @@ class DemoGardenPlantingRecord(Document):
 	def _populate_available_quantities(self):
 		"""Fill quantity_available for each row so the user can see what's in stock."""
 		received = self._get_received_materials()
+		consumed = get_consumed_qty(self.demo_garden, self.doctype, self.name)
 		has_any_received = bool(received)
 		all_ok = True
 		notes = []
 		for row in self.products:
 			key = (row.product_name or "").strip().lower()
-			available = received.get(key, 0)
+			available = received.get(key, 0) - consumed.get(key, 0)
 			row.quantity_available = available
 			if row.quantity_planted and row.quantity_planted > available:
 				all_ok = False
@@ -52,10 +53,11 @@ class DemoGardenPlantingRecord(Document):
 			)
 			return
 
+		consumed = get_consumed_qty(self.demo_garden, self.doctype, self.name)
 		errors = []
 		for row in self.products:
 			key = (row.product_name or "").strip().lower()
-			available = received.get(key, 0)
+			available = received.get(key, 0) - consumed.get(key, 0)
 			if row.quantity_planted > available:
 				errors.append(
 					_("Row {0}: Cannot plant {1} {2} of '{3}' — only {4} received from store.").format(
@@ -167,3 +169,31 @@ def _post_ledger_entry(promoter, demo_garden, transaction_type, transaction_date
 	})
 	doc.flags.ignore_permissions = True
 	doc.insert()
+
+
+def get_consumed_qty(demo_garden, exclude_ref_doctype=None, exclude_ref_name=None):
+	"""Return {product_name_lower: total qty_out} already consumed for a demo garden.
+
+	Reads the Promoter Stock Ledger so stock validation nets out prior
+	consumption (planting + input applications) instead of comparing against
+	gross received quantities — this prevents the same receipt being spent
+	twice across multiple planting records / input applications.
+
+	A document can be excluded (by reference) so it never validates against its
+	own previously-posted ledger entries when it is re-saved after submission.
+	"""
+	if not demo_garden:
+		return {}
+	entries = frappe.get_all(
+		"Promoter Stock Ledger",
+		filters={"demo_garden": demo_garden},
+		fields=["product_name", "qty_out", "reference_doctype", "reference_name"],
+	)
+	consumed = {}
+	for e in entries:
+		if (exclude_ref_doctype and e.reference_doctype == exclude_ref_doctype
+				and e.reference_name == exclude_ref_name):
+			continue
+		key = (e.product_name or "").strip().lower()
+		consumed[key] = consumed.get(key, 0) + (e.qty_out or 0)
+	return consumed

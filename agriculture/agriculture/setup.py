@@ -23,9 +23,11 @@ def setup_agriculture():
 	if frappe.get_all("Agriculture Analysis Criteria"):
 		# data already seeded; still ensure permissions are in place
 		add_additional_permissions()
+		add_store_manager_permissions()
 		return
 	create_agriculture_data()
 	add_additional_permissions()
+	add_store_manager_permissions()
 
 
 def create_roles():
@@ -484,34 +486,26 @@ def create_agriculture_data():
 	]
 	insert_record(records)
 
-def add_additional_permissions():
-	frappe.get_doc({
-		"doctype": "Custom DocPerm",
-		"parent": "Location",
-		"role": "Agriculture Manager",
-		"create": 1,
-		"delete": 1,
-		"email": 1,
-		"export": 1,
-		"print": 1,
-		"read": 1,
-		"report": 1,
-		"share": 1,
-		"write": 1
-	}).insert()
+def _ensure_docperm(parent, role, perms):
+	"""Insert a Custom DocPerm for (parent, role) only if one doesn't exist.
 
-	frappe.get_doc({
-		"doctype": "Custom DocPerm",
-		"parent": "Location",
-		"role": "Agriculture User",
-		"email": 1,
-		"export": 1,
-		"print": 1,
-		"read": 1,
-		"report": 1,	
-		"share": 1,
-		"write": 1
-	}).insert()
+	Guards against duplicate permission rows when setup runs more than once
+	(e.g. re-install or a re-run of after_install on an already-seeded site).
+	"""
+	if frappe.db.exists("Custom DocPerm", {"parent": parent, "role": role}):
+		return
+	frappe.get_doc(dict(doctype="Custom DocPerm", parent=parent, role=role, **perms)).insert()
+
+
+def add_additional_permissions():
+	_ensure_docperm("Location", "Agriculture Manager", {
+		"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1,
+		"read": 1, "report": 1, "share": 1, "write": 1,
+	})
+	_ensure_docperm("Location", "Agriculture User", {
+		"email": 1, "export": 1, "print": 1, "read": 1, "report": 1,
+		"share": 1, "write": 1,
+	})
 
 def add_store_manager_permissions():
 	"""Grant Store Manager read + write access to Demo Garden Material Request."""
