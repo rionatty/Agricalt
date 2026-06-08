@@ -1,3 +1,4 @@
 agriculture.agriculture.patches.v1_0_ensure_sap_custom_fields
 agriculture.agriculture.patches.v1_1_oversight_permissions
+agriculture.agriculture.patches.v1_2_grant_agriculture_user_to_promoters
 agriculture.agriculture.patches.v1_2_system_manager_permissions
