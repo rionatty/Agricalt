@@ -40,6 +40,7 @@ PROMOTER_FIELD = {
 	"Promoter Stock Ledger": "promoter",
 	"Promoter KPI Target": "promoter",
 	"Promoter Task": "promoter",
+	"Material Receipt": "promoter",
 }
 
 
@@ -149,3 +150,5 @@ def order_collection_perm(doc, user=None, permission_type=None): return _HASPERM
 def stock_ledger_perm(doc, user=None, permission_type=None): return _HASPERM["Promoter Stock Ledger"](doc, user)
 def kpi_target_perm(doc, user=None, permission_type=None): return _HASPERM["Promoter KPI Target"](doc, user)
 def promoter_task_perm(doc, user=None, permission_type=None): return _HASPERM["Promoter Task"](doc, user)
+def material_receipt_query(user=None): return _QUERY["Material Receipt"](user)
+def material_receipt_perm(doc, user=None, permission_type=None): return _HASPERM["Material Receipt"](doc, user)

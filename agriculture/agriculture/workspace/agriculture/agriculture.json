@@ -161,6 +161,18 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Material Receipt",
+   "link_count": 0,
+   "link_to": "Material Receipt",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link",
+   "description": "Stock received by promoter — posts to Promoter Stock Ledger"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Demo Garden Planting Record",
    "link_count": 0,
    "link_to": "Demo Garden Planting Record",

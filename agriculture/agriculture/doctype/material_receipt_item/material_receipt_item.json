@@ -1,0 +1,38 @@
+{
+ "autoname": "hash",
+ "creation": "2026-06-08 00:00:00.000000",
+ "docstatus": 0,
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_type",
+  "item",
+  "item_name",
+  "uom",
+  "quantity_received",
+  "batch_no",
+  "expiry_date",
+  "remarks"
+ ],
+ "fields": [
+  {"fieldname": "item_type", "fieldtype": "Select", "label": "Type", "options": "Seed\nChemical\nFertilizer\nOther", "in_list_view": 1},
+  {"fieldname": "item", "fieldtype": "Link", "label": "ERP Item", "options": "Item", "in_list_view": 1},
+  {"fieldname": "item_name", "fieldtype": "Data", "label": "Item / Product Name", "reqd": 1, "in_list_view": 1, "fetch_from": "item.item_name", "description": "Auto-filled from ERP Item; or type a custom name"},
+  {"fieldname": "uom", "fieldtype": "Select", "label": "Unit", "options": "Kg\nBags\nPcs\nLitres\nSachets\nGrams\nMl"},
+  {"fieldname": "quantity_received", "fieldtype": "Float", "label": "Quantity Received", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "batch_no", "fieldtype": "Data", "label": "Batch / Lot No.", "description": "Optional — for traceability"},
+  {"fieldname": "expiry_date", "fieldtype": "Date", "label": "Expiry Date"},
+  {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"}
+ ],
+ "istable": 1,
+ "modified": "2026-06-08 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Material Receipt Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
