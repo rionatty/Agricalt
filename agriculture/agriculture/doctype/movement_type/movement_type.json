@@ -1,0 +1,123 @@
+{
+ "actions": [],
+ "autoname": "field:movement_type_name",
+ "creation": "2026-06-28 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "movement_type_name",
+  "source_party_type",
+  "destination_party_type",
+  "affects_distributor_stock",
+  "is_active",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "movement_type_name",
+   "fieldtype": "Data",
+   "label": "Movement Type",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "bold": 1
+  },
+  {
+   "fieldname": "source_party_type",
+   "fieldtype": "Select",
+   "label": "Source Party Type",
+   "options": "\nDistributor\nStockist\nFarmer\nMedium-Scale Farmer\nFlower Farm\nNone",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "destination_party_type",
+   "fieldtype": "Select",
+   "label": "Destination Party Type",
+   "options": "\nDistributor\nStockist\nFarmer\nMedium-Scale Farmer\nFlower Farm\nNone",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "affects_distributor_stock",
+   "fieldtype": "Check",
+   "label": "Reduces Distributor Stock",
+   "description": "If checked, Sales Movement Entries of this type draw down the source Distributor Warehouse balance."
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Active",
+   "default": "1",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-06-28 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Movement Type",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "Agriculture Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Agriculture User",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Marketing Manager",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  },
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "title_field": "movement_type_name",
+ "show_title_field_in_link": 1
+}

@@ -14,8 +14,10 @@
   "category",
   "status",
   "gender",
+  "national_id",
   "sec_3",
   "region",
+  "territory",
   "district",
   "sub_county",
   "col_4_a",
@@ -31,9 +33,12 @@
   "col_6",
   "customer",
   "customer_display_name",
+  "linked_stockist",
+  "linked_distributor",
   "sec_7",
   "primary_crop",
   "primary_crop_name",
+  "crops_grown",
   "sec_8",
   "remarks"
  ],
@@ -218,6 +223,38 @@
    "fieldname": "remarks",
    "fieldtype": "Text",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "national_id",
+   "fieldtype": "Data",
+   "label": "National ID",
+   "description": "Optional"
+  },
+  {
+   "fieldname": "territory",
+   "fieldtype": "Link",
+   "label": "Territory (Town)",
+   "options": "Territory",
+   "in_standard_filter": 1,
+   "description": "Town-level territory in the Twiga geographic hierarchy."
+  },
+  {
+   "fieldname": "linked_stockist",
+   "fieldtype": "Link",
+   "label": "Linked Stockist",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "linked_distributor",
+   "fieldtype": "Link",
+   "label": "Linked Distributor",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "crops_grown",
+   "fieldtype": "Table",
+   "label": "Crops Grown",
+   "options": "Farmer Crop"
   }
  ],
  "istable": 0,

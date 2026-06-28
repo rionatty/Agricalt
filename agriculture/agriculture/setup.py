@@ -43,7 +43,8 @@ def create_roles():
 
 
 def ensure_custom_fields():
-	"""Custom fields needed to map ERPNext masters back to SAP B1."""
+	"""Custom fields needed to map ERPNext masters back to SAP B1, plus the
+	Twiga CRM master extensions (Phase 0 — Masters)."""
 	from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 	create_custom_fields({
@@ -57,7 +58,25 @@ def ensure_custom_fields():
 				"read_only": 0,
 				"in_standard_filter": 1,
 				"description": "Business Partner CardCode in SAP Business One",
-			}
+			},
+			{
+				"fieldname": "is_distributor",
+				"label": "Is Distributor",
+				"fieldtype": "Check",
+				"insert_after": "sap_card_code",
+				"in_standard_filter": 1,
+				"description": "Distributors are modelled as both Customer and Warehouse for stock visibility.",
+			},
+			{
+				"fieldname": "crm_warehouse",
+				"label": "CRM Warehouse",
+				"fieldtype": "Link",
+				"options": "Warehouse",
+				"insert_after": "is_distributor",
+				"read_only": 1,
+				"depends_on": "eval:doc.is_distributor",
+				"description": "Auto-created when a Customer is flagged as a Distributor. Holds the SAP-delivered stock baseline.",
+			},
 		],
 		"Item": [
 			{
@@ -66,7 +85,74 @@ def ensure_custom_fields():
 				"fieldtype": "Check",
 				"insert_after": "item_group",
 				"read_only": 1,
-			}
+			},
+			{
+				"fieldname": "division",
+				"label": "Division",
+				"fieldtype": "Select",
+				"options": "\nCrop Health\nAnimal Health\nSeeds",
+				"insert_after": "sap_synced",
+				"in_standard_filter": 1,
+			},
+			{
+				"fieldname": "is_mineral_salt",
+				"label": "Mineral Salt Product",
+				"fieldtype": "Check",
+				"insert_after": "division",
+			},
+		],
+		"Territory": [
+			{
+				"fieldname": "territory_level",
+				"label": "Territory Level",
+				"fieldtype": "Select",
+				"options": "\nNational\nRegion\nArea\nTown",
+				"insert_after": "territory_name",
+				"in_standard_filter": 1,
+				"description": "Twiga geographic hierarchy: National > Region > Area > Town.",
+			},
+		],
+		"Crop": [
+			{
+				"fieldname": "crop_category",
+				"label": "Crop Category",
+				"fieldtype": "Select",
+				"options": "\nCereals\nHorticulture\nCash Crops\nPasture\nFloriculture\nOther",
+				"insert_after": "crop_name",
+				"in_standard_filter": 1,
+			},
+			{
+				"fieldname": "applicable_season",
+				"label": "Applicable Season",
+				"fieldtype": "Select",
+				"options": "\nLong Rains\nShort Rains\nAll Year\nIrrigated",
+				"insert_after": "crop_category",
+			},
+		],
+		"Disease": [
+			{
+				"fieldname": "pest_type",
+				"label": "Type",
+				"fieldtype": "Select",
+				"options": "\nPest\nDisease\nWeed",
+				"insert_after": "common_name",
+				"in_standard_filter": 1,
+			},
+			{
+				"fieldname": "affected_crops",
+				"label": "Affected Crops",
+				"fieldtype": "Table",
+				"options": "Pest Disease Crop",
+				"insert_after": "pest_type",
+			},
+			{
+				"fieldname": "recommended_products",
+				"label": "Recommended Products",
+				"fieldtype": "Table",
+				"options": "Pest Disease Product",
+				"insert_after": "affected_crops",
+				"description": "Twiga products recommended against this pest/disease. Auto-suggested when planning Demos and Marketing Events.",
+			},
 		],
 	}, ignore_validate=True)
 

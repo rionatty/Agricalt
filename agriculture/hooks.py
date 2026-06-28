@@ -148,6 +148,9 @@ doc_events = {
 	"Demo Garden Material Request": {
 		"on_update": "agriculture.agriculture.sap_integration.on_material_request_update",
 	},
+	"Customer": {
+		"on_update": "agriculture.agriculture.customer_hooks.ensure_distributor_warehouse",
+	},
 }
 
 # Scheduled Tasks

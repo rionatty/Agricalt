@@ -13,6 +13,10 @@
   "col_10",
   "status",
   "joining_date",
+  "role_type",
+  "employment_type",
+  "qualification",
+  "monthly_salary",
   "sec_11",
   "region",
   "territory",
@@ -154,6 +158,30 @@
    "fieldname": "remarks",
    "fieldtype": "Text",
    "label": "Remarks"
+  },
+  {
+   "fieldname": "role_type",
+   "fieldtype": "Select",
+   "label": "Role Type",
+   "options": "\nPromoter\nChampion\nSector Specialist\nFlower Specialist\nOther",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "employment_type",
+   "fieldtype": "Select",
+   "label": "Employment Type",
+   "options": "\nPermanent\nSeasonal\nContract"
+  },
+  {
+   "fieldname": "qualification",
+   "fieldtype": "Data",
+   "label": "Qualification"
+  },
+  {
+   "fieldname": "monthly_salary",
+   "fieldtype": "Currency",
+   "label": "Monthly Salary",
+   "description": "Used for TFOP human-resource costing."
   }
  ],
  "istable": 0,
