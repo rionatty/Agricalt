@@ -48,7 +48,12 @@
   "sap_default_price_list",
   "sec_sap_synced",
   "last_master_sync",
-  "auto_sync_masters_daily"
+  "auto_sync_masters_daily",
+  "sec_downpayment",
+  "sap_downpayment_card_code",
+  "sap_downpayment_account",
+  "col_dp1",
+  "sap_downpayment_tax_code"
  ],
  "fields": [
   {
@@ -319,6 +324,35 @@
    "fieldtype": "Check",
    "label": "Auto-Sync Masters Daily",
    "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sec_downpayment",
+   "fieldtype": "Section Break",
+   "label": "Cash Requisition Defaults (SAP Down Payment Request)",
+   "description": "Defaults applied to a new Cash Requisition. The requisition posts to SAP B1 as an A/P Down Payment Request (PurchaseDownPayments, service-based).",
+   "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sap_downpayment_card_code",
+   "fieldtype": "Data",
+   "label": "Default Vendor Card Code",
+   "description": "SAP B1 vendor/supplier CardCode the advance is paid to (e.g. V0001). Editable per requisition."
+  },
+  {
+   "fieldname": "sap_downpayment_account",
+   "fieldtype": "Data",
+   "label": "Default Expense Account",
+   "description": "SAP B1 G/L expense account for the requisition lines (use the segmented FormatCode key if account segmentation is on)."
+  },
+  {
+   "fieldname": "col_dp1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sap_downpayment_tax_code",
+   "fieldtype": "Data",
+   "label": "Default Tax Code",
+   "description": "SAP B1 tax code for the lines (e.g. an exempt/0% code). Leave blank if your company doesn't require one on document lines."
   }
  ],
  "issingle": 1,

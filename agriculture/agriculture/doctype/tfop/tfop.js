@@ -25,5 +25,13 @@ frappe.ui.form.on("TFOP", {
 				frappe.new_doc("Marketing Material Request");
 			}, __("Create"));
 		}
+		// Request a cash advance for Activities + Other Costs (-> SAP B1 Down Payment Request).
+		if (frm.doc.docstatus === 1
+			&& ((frm.doc.activities || []).length || (frm.doc.other_costs || []).length)) {
+			frm.add_custom_button(__("Cash Requisition"), () => {
+				frappe.route_options = { tfop: frm.doc.name };
+				frappe.new_doc("Cash Requisition");
+			}, __("Create"));
+		}
 	},
 });

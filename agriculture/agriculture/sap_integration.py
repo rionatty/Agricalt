@@ -353,6 +353,93 @@ def push_marketing_material_request(request_name):
 
 
 @frappe.whitelist()
+def push_cash_requisition(requisition_name):
+	"""Push a submitted Cash Requisition to SAP B1 as an A/P Down Payment Request
+	(PurchaseDownPayments, service/account based — no item codes)."""
+	from frappe.utils import today as _today
+	req = frappe.get_doc("Cash Requisition", requisition_name)
+	settings = frappe.get_cached_doc("Agriculture Settings")
+
+	# Never post a second Down Payment Request for the same requisition (a
+	# duplicate financial document); a prior successful post is final.
+	already = frappe.db.exists("SAP B1 Sync Log", {
+		"reference_doctype": "Cash Requisition",
+		"reference_name": req.name,
+		"sync_type": "DownPaymentRequest",
+		"status": "Success",
+	})
+	if already:
+		if req.sap_status != "Posted":
+			frappe.db.set_value("Cash Requisition", req.name, "sap_status", "Posted")
+		return already
+
+	log = frappe.new_doc("SAP B1 Sync Log")
+	log.reference_doctype = "Cash Requisition"
+	log.reference_name = req.name
+	log.sync_type = "DownPaymentRequest"
+	log.status = "Pending"
+
+	try:
+		if not req.pay_to:
+			raise Exception("Pay To (SAP vendor CardCode) is required.")
+		if not req.expense_account:
+			raise Exception("SAP Expense Account is required.")
+
+		lines = []
+		for it in req.items:
+			amt = flt(it.amount)
+			if amt <= 0:
+				continue
+			line = {
+				"AccountCode": req.expense_account,
+				"ItemDescription": (it.description or "")[:100],
+				"LineTotal": amt,
+			}
+			if req.tax_code:
+				line["TaxCode"] = req.tax_code
+			lines.append(line)
+		if not lines:
+			raise Exception("No requisition lines with a positive amount to post.")
+
+		doc_date = str(getdate(req.request_date or _today()))
+		comment = f"TFOP Cash Requisition — {req.name}"
+		if req.tfop:
+			comment += f" for {req.tfop}"
+		payload = {
+			"CardCode": req.pay_to,
+			"DocType": "dDocument_Service",
+			"DownPaymentType": "dptRequest",
+			"DocDate": doc_date,
+			"DocDueDate": doc_date,
+			"Comments": comment,
+			"DocumentLines": lines,
+		}
+		log.request_payload = json.dumps(payload, indent=2)
+		response = _post_to_sap(settings, "PurchaseDownPayments", payload)
+		log.response_text = json.dumps(response, indent=2)[:140000]
+		log.status = "Success"
+		log.sap_document_number = str(response.get("DocNum") or response.get("DocEntry") or "")
+
+		frappe.db.set_value("Cash Requisition", req.name, {
+			"sap_downpayment_number": log.sap_document_number,
+			"sap_status": "Posted",
+			"sap_error": "",
+		})
+	except Exception as e:
+		log.status = "Failed"
+		log.error_message = str(e)[:1000]
+		frappe.db.set_value("Cash Requisition", req.name, {
+			"sap_status": "Failed",
+			"sap_error": str(e)[:2000],
+		})
+		frappe.log_error(frappe.get_traceback(), "SAP B1 Cash Requisition Failed")
+
+	log.insert(ignore_permissions=True)
+	frappe.db.commit()
+	return log.name
+
+
+@frappe.whitelist()
 def push_stock_receipt(request_name):
 	"""Confirm promoter received materials in SAP B1 as a Goods Receipt."""
 	from frappe.utils import today as _today
