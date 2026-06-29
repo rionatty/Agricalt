@@ -8,7 +8,9 @@
  "field_order": [
   "cost_description",
   "budget_category",
-  "amount"
+  "amount",
+  "actual_amount",
+  "variance"
  ],
  "fields": [
   {
@@ -17,7 +19,7 @@
    "label": "Description",
    "reqd": 1,
    "in_list_view": 1,
-   "columns": 5
+   "columns": 3
   },
   {
    "fieldname": "budget_category",
@@ -25,15 +27,33 @@
    "label": "Budget Category",
    "options": "Budget Category",
    "in_list_view": 1,
-   "columns": 3
+   "columns": 2
   },
   {
    "fieldname": "amount",
    "fieldtype": "Currency",
-   "label": "Amount",
+   "label": "Budget",
    "reqd": 1,
    "in_list_view": 1,
-   "columns": 2
+   "columns": 1
+  },
+  {
+   "fieldname": "actual_amount",
+   "fieldtype": "Currency",
+   "label": "Actual",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 1,
+   "description": "Cumulative actual posted against this line (via TFOP Actual)."
+  },
+  {
+   "fieldname": "variance",
+   "fieldtype": "Currency",
+   "label": "Variance",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 1,
+   "description": "Budget minus cumulative actual for this line."
   }
  ],
  "index_web_pages_for_search": 1,

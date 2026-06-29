@@ -19,15 +19,23 @@
   "sec_products",
   "products",
   "total_product_cost",
+  "col_pa",
+  "total_product_actual",
   "sec_activities",
   "activities",
   "total_activity_cost",
+  "col_aa",
+  "total_activity_actual",
   "sec_materials",
   "marketing_materials",
   "total_material_cost",
+  "col_ma",
+  "total_material_actual",
   "sec_other",
   "other_costs",
   "total_other_cost",
+  "col_oa",
+  "total_other_actual",
   "sec_budget",
   "total_campaign_cost",
   "col_b1",
@@ -114,9 +122,19 @@
   {
    "fieldname": "total_product_cost",
    "fieldtype": "Currency",
-   "label": "Total Product Cost",
+   "label": "Total Product Budget",
    "read_only": 1,
    "bold": 1
+  },
+  {
+   "fieldname": "col_pa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_product_actual",
+   "fieldtype": "Currency",
+   "label": "Total Product Actual",
+   "read_only": 1
   },
   {
    "fieldname": "sec_activities",
@@ -132,9 +150,19 @@
   {
    "fieldname": "total_activity_cost",
    "fieldtype": "Currency",
-   "label": "Total Activity Cost",
+   "label": "Total Activity Budget",
    "read_only": 1,
    "bold": 1
+  },
+  {
+   "fieldname": "col_aa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_activity_actual",
+   "fieldtype": "Currency",
+   "label": "Total Activity Actual",
+   "read_only": 1
   },
   {
    "fieldname": "sec_materials",
@@ -150,9 +178,19 @@
   {
    "fieldname": "total_material_cost",
    "fieldtype": "Currency",
-   "label": "Total Marketing Material Cost",
+   "label": "Total Marketing Material Budget",
    "read_only": 1,
    "bold": 1
+  },
+  {
+   "fieldname": "col_ma",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_material_actual",
+   "fieldtype": "Currency",
+   "label": "Total Marketing Material Actual",
+   "read_only": 1
   },
   {
    "fieldname": "sec_other",
@@ -168,9 +206,19 @@
   {
    "fieldname": "total_other_cost",
    "fieldtype": "Currency",
-   "label": "Total Other Cost",
+   "label": "Total Other Budget",
    "read_only": 1,
    "bold": 1
+  },
+  {
+   "fieldname": "col_oa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_other_actual",
+   "fieldtype": "Currency",
+   "label": "Total Other Actual",
+   "read_only": 1
   },
   {
    "fieldname": "sec_budget",

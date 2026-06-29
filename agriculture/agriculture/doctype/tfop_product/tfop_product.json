@@ -11,7 +11,9 @@
   "uom",
   "qty",
   "sales_price",
-  "line_total"
+  "line_total",
+  "actual_amount",
+  "variance"
  ],
  "fields": [
   {
@@ -30,16 +32,14 @@
    "fetch_from": "item_code.item_name",
    "read_only": 1,
    "in_list_view": 1,
-   "columns": 3
+   "columns": 2
   },
   {
    "fieldname": "uom",
    "fieldtype": "Link",
    "label": "UOM",
    "options": "UOM",
-   "fetch_from": "item_code.stock_uom",
-   "in_list_view": 1,
-   "columns": 1
+   "fetch_from": "item_code.stock_uom"
   },
   {
    "fieldname": "qty",
@@ -55,15 +55,33 @@
    "fieldtype": "Currency",
    "label": "Sales Price",
    "in_list_view": 1,
-   "columns": 2
+   "columns": 1
   },
   {
    "fieldname": "line_total",
    "fieldtype": "Currency",
-   "label": "Total",
+   "label": "Budget",
    "read_only": 1,
    "in_list_view": 1,
-   "columns": 2
+   "columns": 1
+  },
+  {
+   "fieldname": "actual_amount",
+   "fieldtype": "Currency",
+   "label": "Actual",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 1,
+   "description": "Cumulative actual posted against this line (via TFOP Actual)."
+  },
+  {
+   "fieldname": "variance",
+   "fieldtype": "Currency",
+   "label": "Variance",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 1,
+   "description": "Budget minus cumulative actual for this line."
   }
  ],
  "index_web_pages_for_search": 1,

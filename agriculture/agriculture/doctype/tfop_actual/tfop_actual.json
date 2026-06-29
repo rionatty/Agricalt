@@ -10,6 +10,8 @@
   "tfop",
   "posting_date",
   "cost_category",
+  "against_type",
+  "against",
   "amount",
   "description",
   "reference_no",
@@ -43,7 +45,23 @@
    "fieldtype": "Select",
    "label": "Cost Category",
    "options": "\nProducts\nActivities\nMarketing Material\nOther Cost",
+   "reqd": 1,
    "in_list_view": 1
+  },
+  {
+   "fieldname": "against_type",
+   "fieldtype": "Data",
+   "label": "Against Type",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "against",
+   "fieldtype": "Dynamic Link",
+   "label": "Against (Budget Line)",
+   "options": "against_type",
+   "in_list_view": 1,
+   "description": "The specific budget line this actual posts against (auto-typed from Cost Category)."
   },
   {
    "fieldname": "amount",
