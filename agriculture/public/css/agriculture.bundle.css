@@ -197,10 +197,21 @@ html:not([data-theme="dark"]) .like-disabled-input {
 html:not([data-theme="dark"]) .list-row-container:hover {
   background: var(--agri-green-wash) !important;
 }
+/* List header — force a light background AND dark text together so the column
+   labels stay legible (v16 was rendering it dark-on-dark). */
+.list-row-head {
+  background-color: var(--agri-green-pale) !important;
+  border-bottom: 2px solid var(--agri-green-border) !important;
+}
 .list-row-head,
+.list-row-head *,
+.list-row-head .list-row-col,
+.list-row-head .list-subject {
+  color: var(--agri-green-dark) !important;
+  font-weight: 600 !important;
+}
 .list-row-col.list-subject .level-item { font-weight: 600; }
 .list-row .list-subject a:hover { color: var(--agri-green) !important; }
-.list-row-head { border-bottom: 2px solid var(--agri-green-border) !important; }
 /* Filter / sort pills */
 .filter-button.btn, .sort-selector .btn { border-radius: 20px !important; }
 
