@@ -2,6 +2,15 @@
 // For license information, please see license.txt
 
 frappe.ui.form.on("TFOP Actual", {
+	onload(frm) {
+		// When launched from a TFOP ("Post Actual" button), preset the campaign,
+		// which fires the tfop handler below to load the lines.
+		if (frm.is_new() && frappe.route_options && frappe.route_options.tfop) {
+			frm.set_value("tfop", frappe.route_options.tfop);
+			frappe.route_options = null;
+		}
+	},
+
 	tfop(frm) {
 		// Selecting a campaign loads its budget lines into the actual tables so
 		// the user only types the actual against each line.

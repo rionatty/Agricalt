@@ -10,11 +10,20 @@ frappe.ui.form.on("TFOP", {
 	},
 
 	refresh(frm) {
-		// Quick action: post an actual against an approved campaign.
-		if (!frm.is_new() && frm.doc.docstatus === 1) {
+		if (frm.is_new()) return;
+		// Post an actual against an approved campaign.
+		if (frm.doc.docstatus === 1) {
 			frm.add_custom_button(__("Post Actual"), () => {
-				frappe.new_doc("TFOP Actual", { tfop: frm.doc.name });
-			});
+				frappe.route_options = { tfop: frm.doc.name };
+				frappe.new_doc("TFOP Actual");
+			}, __("Create"));
+		}
+		// Request the planned marketing materials (-> SAP B1 transfer request).
+		if ((frm.doc.marketing_materials || []).length) {
+			frm.add_custom_button(__("Request Materials"), () => {
+				frappe.route_options = { tfop: frm.doc.name };
+				frappe.new_doc("Marketing Material Request");
+			}, __("Create"));
 		}
 	},
 });

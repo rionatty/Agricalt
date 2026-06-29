@@ -8,3 +8,4 @@ agriculture.agriculture.patches.v1_2_system_manager_permissions
 agriculture.agriculture.patches.v2_0_twiga_crm_masters
 agriculture.agriculture.patches.v2_1_tfop_workflow
 agriculture.agriculture.patches.v2_2_workspace_marketing
+agriculture.agriculture.patches.v2_3_workspace_mmr

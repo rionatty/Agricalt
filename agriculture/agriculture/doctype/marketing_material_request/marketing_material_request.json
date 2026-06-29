@@ -1,0 +1,204 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2026-06-28 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "sec_req",
+  "tfop",
+  "request_date",
+  "requested_by",
+  "col_req1",
+  "from_warehouse",
+  "to_warehouse",
+  "sec_items",
+  "items",
+  "sec_sap",
+  "sap_transfer_request_number",
+  "col_sap1",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "MMR-.YYYY.-.####"
+  },
+  {
+   "fieldname": "sec_req",
+   "fieldtype": "Section Break",
+   "label": "Request Details"
+  },
+  {
+   "fieldname": "tfop",
+   "fieldtype": "Link",
+   "label": "TFOP Campaign",
+   "options": "TFOP",
+   "description": "Optional \u2014 the campaign these materials are for. Loads its Marketing Material lines."
+  },
+  {
+   "fieldname": "request_date",
+   "fieldtype": "Date",
+   "label": "Request Date",
+   "default": "Today",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "requested_by",
+   "fieldtype": "Link",
+   "label": "Requested By",
+   "options": "User"
+  },
+  {
+   "fieldname": "col_req1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "from_warehouse",
+   "fieldtype": "Link",
+   "label": "From Warehouse",
+   "options": "Warehouse",
+   "description": "Source store. Defaults to the SAP default warehouse if left blank."
+  },
+  {
+   "fieldname": "to_warehouse",
+   "fieldtype": "Link",
+   "label": "To Warehouse",
+   "options": "Warehouse",
+   "description": "Destination (event / promoter store)."
+  },
+  {
+   "fieldname": "sec_items",
+   "fieldtype": "Section Break",
+   "label": "Materials Requested"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Materials Requested",
+   "options": "Marketing Material Request Item"
+  },
+  {
+   "fieldname": "sec_sap",
+   "fieldtype": "Section Break",
+   "label": "SAP B1"
+  },
+  {
+   "fieldname": "sap_transfer_request_number",
+   "fieldtype": "Data",
+   "label": "SAP Transfer Request No.",
+   "read_only": 1,
+   "description": "SAP B1 Stock Transfer Request document number (set on submit)."
+  },
+  {
+   "fieldname": "col_sap1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "options": "Marketing Material Request",
+   "read_only": 1,
+   "no_copy": 1,
+   "print_hide": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "istable": 0,
+ "links": [],
+ "modified": "2026-06-28 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Marketing Material Request",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "Agriculture Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Agriculture User",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 1,
+   "delete": 0,
+   "cancel": 0,
+   "amend": 0,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Store Manager",
+   "read": 1,
+   "write": 1,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  },
+  {
+   "role": "Marketing Manager",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  },
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "submit": 1,
+   "cancel": 1,
+   "amend": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "title_field": "tfop",
+ "show_title_field_in_link": 1
+}

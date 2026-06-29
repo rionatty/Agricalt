@@ -277,6 +277,60 @@ def push_stock_transfer_request(request_name):
 
 
 @frappe.whitelist()
+def push_marketing_material_request(request_name):
+	"""Push a submitted Marketing Material Request to SAP B1 as a Stock Transfer
+	Request (from_warehouse -> to_warehouse)."""
+	from frappe.utils import today as _today
+	request = frappe.get_doc("Marketing Material Request", request_name)
+	settings = frappe.get_cached_doc("Agriculture Settings")
+
+	log = frappe.new_doc("SAP B1 Sync Log")
+	log.reference_doctype = "Marketing Material Request"
+	log.reference_name = request.name
+	log.sync_type = "StockTransferRequest"
+	log.status = "Pending"
+
+	try:
+		from_wh = request.from_warehouse or settings.sap_default_warehouse
+		to_wh = request.to_warehouse or settings.sap_default_warehouse
+
+		lines = []
+		for item in request.items:
+			lines.append({
+				"ItemCode": item.item or item.item_name,
+				"Quantity": float(item.qty or 0),
+				"WarehouseCode": from_wh or "",
+				"ToWarehouseCode": to_wh or "",
+			})
+
+		comment = f"Marketing material request — {request.name}"
+		if request.tfop:
+			comment += f" for TFOP {request.tfop}"
+		payload = {
+			"DocDate": str(getdate(request.request_date or _today())),
+			"Comments": comment,
+			"U_CyveTechRef": request.name,
+			"StockTransferLines": lines,
+		}
+		log.request_payload = json.dumps(payload, indent=2)
+		response = _post_to_sap(settings, "StockTransferRequests", payload)
+		log.response_text = json.dumps(response, indent=2)[:140000]
+		log.status = "Success"
+		log.sap_document_number = str(response.get("DocNum") or response.get("DocEntry") or "")
+
+		frappe.db.set_value("Marketing Material Request", request.name,
+			"sap_transfer_request_number", log.sap_document_number)
+	except Exception as e:
+		log.status = "Failed"
+		log.error_message = str(e)[:1000]
+		frappe.log_error(frappe.get_traceback(), "SAP B1 Marketing Material Request Failed")
+
+	log.insert(ignore_permissions=True)
+	frappe.db.commit()
+	return log.name
+
+
+@frappe.whitelist()
 def push_stock_receipt(request_name):
 	"""Confirm promoter received materials in SAP B1 as a Goods Receipt."""
 	from frappe.utils import today as _today

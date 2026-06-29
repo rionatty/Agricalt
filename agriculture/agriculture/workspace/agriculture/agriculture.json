@@ -163,6 +163,18 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
+   "label": "Marketing Material Request",
+   "link_count": 0,
+   "link_to": "Marketing Material Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "description": "Request marketing materials -> SAP B1 stock transfer request"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
    "label": "Marketing Activity Type",
    "link_count": 0,
    "link_to": "Marketing Activity Type",
