@@ -484,6 +484,20 @@ def get_user_default_warehouse():
 	return _get_user_default_warehouse(frappe.session.user)
 
 
+@frappe.whitelist()
+def get_mmr_warehouse_defaults():
+	"""Client-callable: defaults for a new Marketing Material Request.
+
+	Materials ship FROM the central source store TO the requester's own warehouse.
+	- to_warehouse   = the logged-in user's Default Warehouse (destination)
+	- from_warehouse = the org-wide Default Source Warehouse (source store)
+	"""
+	return {
+		"to_warehouse": _get_user_default_warehouse(frappe.session.user),
+		"from_warehouse": frappe.db.get_single_value("Agriculture Settings", "default_source_warehouse"),
+	}
+
+
 # ─── SAP B1 Service Layer plumbing ───────────────────────────────────────────
 def _verify_ssl(settings):
 	"""

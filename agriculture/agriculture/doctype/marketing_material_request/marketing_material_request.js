@@ -7,12 +7,14 @@ frappe.ui.form.on("Marketing Material Request", {
 			if (!frm.doc.requested_by) {
 				frm.set_value("requested_by", frappe.session.user);
 			}
-			// Auto-fill from_warehouse from the logged-in user's warehouse assignment.
-			if (!frm.doc.from_warehouse) {
+			// Materials ship FROM the central source store TO the user's own warehouse.
+			if (!frm.doc.to_warehouse || !frm.doc.from_warehouse) {
 				frappe.call({
-					method: "agriculture.agriculture.sap_integration.get_user_default_warehouse",
+					method: "agriculture.agriculture.sap_integration.get_mmr_warehouse_defaults",
 				}).then(r => {
-					if (r.message) frm.set_value("from_warehouse", r.message);
+					const d = r.message || {};
+					if (d.to_warehouse && !frm.doc.to_warehouse) frm.set_value("to_warehouse", d.to_warehouse);
+					if (d.from_warehouse && !frm.doc.from_warehouse) frm.set_value("from_warehouse", d.from_warehouse);
 				});
 			}
 			// Launched from a TFOP ("Request Materials" button) — preset the campaign.

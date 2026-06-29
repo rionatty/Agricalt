@@ -74,7 +74,8 @@
    "fieldtype": "Link",
    "label": "From Warehouse",
    "options": "Warehouse",
-   "description": "Auto-filled from your warehouse assignment. SAP code resolved automatically on submit."
+   "reqd": 1,
+   "description": "Source store the materials ship from. Auto-filled from the Default Source Warehouse in Agriculture Settings."
   },
   {
    "fieldname": "to_warehouse",
@@ -82,7 +83,7 @@
    "label": "To Warehouse",
    "options": "Warehouse",
    "reqd": 1,
-   "description": "Destination warehouse (must have a SAP B1 Warehouse Code set on the Warehouse record). Cannot be the same as From Warehouse."
+   "description": "Destination — your own warehouse. Auto-filled from your User's Default Warehouse. Cannot be the same as From Warehouse."
   },
   {
    "fieldname": "sec_items",

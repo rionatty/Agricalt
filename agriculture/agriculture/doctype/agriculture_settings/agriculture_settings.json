@@ -37,6 +37,7 @@
   "sap_auto_push_orders",
   "sap_auto_push_payments",
   "col_11",
+  "default_source_warehouse",
   "sap_default_warehouse",
   "sap_default_customer_group",
   "sec_sap_masters",
@@ -240,6 +241,13 @@
   {
    "fieldname": "col_11",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "default_source_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Source Warehouse",
+   "options": "Warehouse",
+   "description": "Central store that marketing/demo materials ship FROM. Auto-fills the From Warehouse on new material requests. Must have a SAP B1 Warehouse Code set."
   },
   {
    "fieldname": "sap_default_warehouse",
