@@ -14,3 +14,4 @@ agriculture.agriculture.patches.v2_5_workspace_stock
 agriculture.agriculture.patches.v2_6_workspace_cash_requisition
 agriculture.agriculture.patches.v2_7_user_supplier_mapping
 agriculture.agriculture.patches.v2_8_customer_warehouses
+agriculture.agriculture.patches.v2_9_workspace_channel

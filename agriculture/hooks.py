@@ -159,6 +159,7 @@ doc_events = {
 scheduler_events = {
 	"hourly": [
 		"agriculture.agriculture.sap_integration.poll_mmr_receipts",
+		"agriculture.agriculture.sap_integration.poll_customer_invoices",
 	],
 	"daily": [
 		"agriculture.agriculture.tasks.send_demo_garden_harvest_alerts",

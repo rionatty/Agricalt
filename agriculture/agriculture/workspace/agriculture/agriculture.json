@@ -279,6 +279,18 @@
    "description": "Channel partners — each customer has its own warehouse"
   },
   {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer Stock Receipt",
+   "link_count": 0,
+   "link_to": "Customer Stock Receipt",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "description": "Stock mirrored from SAP sales invoices into customer warehouses"
+  },
+  {
    "hidden": 0,
    "is_query_report": 0,
    "label": "Demo Garden Setup",

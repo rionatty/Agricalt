@@ -1004,6 +1004,7 @@ def _receive_mmr_materials(mmr, gi_doc_num="", gi_doc_entry="", gi_doc_date=None
 			"qty": flt(item.qty),
 			"uom": item.uom or frappe.db.get_value("Item", item.item, "stock_uom") or "Nos",
 			"t_warehouse": to_wh,
+			"allow_zero_valuation_rate": 1,
 		})
 
 	receipt = {
@@ -1035,6 +1036,169 @@ def _receive_mmr_materials(mmr, gi_doc_num="", gi_doc_entry="", gi_doc_date=None
 
 	receipt["erp_stock_entry"] = se.name
 	frappe.db.set_value("Marketing Material Request", mmr.name, receipt)
+
+
+# ─── SAP Sales Invoice → ERPNext customer-warehouse stock ─────────────────────
+#
+# When a Sales Invoice is created in SAP for a customer, mirror the invoiced
+# stock into that customer's warehouse in ERPNext (a Material Receipt), so the
+# customer's on-hand stock — the starting point for channel movement — stays
+# accurate. The link is deterministic: the invoice header CardCode identifies
+# the customer (Customer.sap_card_code) and we receipt into its crm_warehouse.
+
+_INVOICE_SCAN = 500          # most-recent invoices to scan per poll
+_INVOICE_WINDOW_DAYS = 30    # how far back to look
+
+
+def _fetch_recent_invoices(settings, top=_INVOICE_SCAN, since_date=None):
+	"""Recent A/R Sales Invoices (Invoices), lines inline, EXCLUDING cancelled and
+	service-only invoices. DocStatus is NOT filtered (a paid/closed invoice still
+	moved real stock). Falls back to an unfiltered scan if the $filter is rejected."""
+	import requests
+
+	base, cookies = _get_session(settings)
+
+	def _run(use_filter):
+		url = f"{base}/Invoices"
+		params = {
+			"$select": "DocEntry,DocNum,DocDate,CardCode,Cancelled,DocType,DocumentLines",
+			"$orderby": "DocEntry desc",
+			"$top": top,
+		}
+		if use_filter:
+			conds = ["Cancelled eq 'tNO'", "DocType eq 'dDocument_Items'"]
+			if since_date:
+				conds.append(f"DocDate ge '{since_date}'")
+			params["$filter"] = " and ".join(conds)
+		rows, page = [], 0
+		while url and len(rows) < top and page < 80:
+			resp = requests.get(url, params=params if page == 0 else None,
+			                    cookies=cookies, verify=_verify_ssl(settings), timeout=60)
+			if resp.status_code != 200:
+				raise Exception(f"SAP B1 GET Invoices returned {resp.status_code}: {resp.text[:300]}")
+			body = resp.json()
+			rows.extend(body.get("value", []))
+			nxt = body.get("@odata.nextLink")
+			url = f"{base}/{nxt}" if nxt else None
+			page += 1
+		return rows
+
+	try:
+		rows = _run(use_filter=True)
+	except Exception:
+		rows = _run(use_filter=False)
+
+	# Client-side safety net (covers the unfiltered fallback path).
+	out = [r for r in rows if (r.get("Cancelled") or "tNO") != "tYES"]
+	return out[:top]
+
+
+def poll_customer_invoices():
+	"""Scheduled (hourly): mirror new SAP Sales Invoices into the customer's
+	warehouse as a Material Receipt. Deduped by invoice DocEntry."""
+	settings = frappe.get_cached_doc("Agriculture Settings")
+	if not settings.sap_b1_enabled:
+		return
+
+	from frappe.utils import add_days
+	since = str(getdate(add_days(_frappe_today(), -_INVOICE_WINDOW_DAYS)))
+	try:
+		invoices = _fetch_recent_invoices(settings, since_date=since)
+	except Exception as e:
+		frappe.log_error(str(e), "SAP Poll — fetch Invoices failed")
+		return
+
+	for inv in invoices:
+		docentry = str(inv.get("DocEntry") or "")
+		if not docentry:
+			continue
+		if frappe.db.exists("Customer Stock Receipt", {"sap_invoice_docentry": docentry}):
+			continue
+		try:
+			_mirror_invoice(inv)
+			frappe.db.commit()
+		except Exception as e:
+			frappe.db.rollback()
+			frappe.log_error(f"Invoice {docentry}: {e}", "SAP Poll — invoice mirror failed")
+			continue
+
+
+def _mirror_invoice(inv):
+	"""Create a Material Receipt of a SAP invoice's stock into the customer's
+	warehouse, and log it (unique by DocEntry). Raises on failure so the caller
+	rolls back — never half-mirror or double-mirror an invoice."""
+	docentry = str(inv.get("DocEntry") or "")
+	card_code = inv.get("CardCode")
+	if not docentry or not card_code:
+		return
+	# Re-check dedupe (the unique key on Customer Stock Receipt is the backstop).
+	if frappe.db.exists("Customer Stock Receipt", {"sap_invoice_docentry": docentry}):
+		return
+
+	customer = frappe.db.get_value("Customer", {"sap_card_code": card_code}, "name")
+	if not customer:
+		frappe.log_error(
+			f"No ERPNext Customer for SAP CardCode {card_code} (invoice {docentry}); sync customers.",
+			"SAP Invoice Mirror",
+		)
+		return
+	warehouse = frappe.db.get_value("Customer", customer, "crm_warehouse")
+	if not warehouse:
+		frappe.log_error(
+			f"Customer {customer} has no CRM Warehouse (invoice {docentry}); save the Customer to create one.",
+			"SAP Invoice Mirror",
+		)
+		return
+
+	company = frappe.db.get_value("Warehouse", warehouse, "company")
+	stock_items = []
+	for ln in (inv.get("DocumentLines") or []):
+		code = ln.get("ItemCode")
+		# Map by ItemCode = ERPNext item_code (items are synced from SAP that way).
+		if not code or not frappe.db.exists("Item", code):
+			continue
+		if not frappe.db.get_value("Item", code, "is_stock_item"):
+			continue
+		qty = flt(ln.get("Quantity") or 0)
+		if qty <= 0:
+			continue
+		stock_items.append({
+			"item_code": code,
+			"qty": qty,
+			"uom": frappe.db.get_value("Item", code, "stock_uom") or "Nos",
+			"t_warehouse": warehouse,
+			"allow_zero_valuation_rate": 1,
+		})
+
+	# Nothing stockable to mirror — skip without logging so it retries once the
+	# items are synced (bounded by the recent-invoice window).
+	if not stock_items:
+		return
+
+	se = frappe.get_doc({
+		"doctype": "Stock Entry",
+		"stock_entry_type": "Material Receipt",
+		"company": company,
+		"posting_date": getdate(inv.get("DocDate")) if inv.get("DocDate") else _frappe_today(),
+		"set_posting_time": 1,
+		"remarks": f"SAP Sales Invoice {inv.get('DocNum')} → {customer}",
+		"items": stock_items,
+	})
+	se.insert(ignore_permissions=True)
+	se.submit()
+
+	log = frappe.get_doc({
+		"doctype": "Customer Stock Receipt",
+		"sap_invoice_docentry": docentry,
+		"sap_invoice_number": str(inv.get("DocNum") or ""),
+		"customer": customer,
+		"warehouse": warehouse,
+		"invoice_date": getdate(inv.get("DocDate")) if inv.get("DocDate") else None,
+		"total_qty": sum(i["qty"] for i in stock_items),
+		"stock_entry": se.name,
+	})
+	log.flags.ignore_permissions = True
+	log.insert(ignore_permissions=True)
 
 
 @frappe.whitelist()

@@ -42,6 +42,7 @@ class ChannelStockMovement(Document):
 				"uom": r.uom or frappe.db.get_value("Item", r.item, "stock_uom") or "Nos",
 				"s_warehouse": self.from_warehouse,
 				"t_warehouse": self.to_warehouse,
+				"allow_zero_valuation_rate": 1,
 			})
 		if not items:
 			frappe.throw(_("Nothing to move."))
