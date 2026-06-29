@@ -89,8 +89,7 @@ def ensure_custom_fields():
 				"options": "Warehouse",
 				"insert_after": "is_distributor",
 				"read_only": 1,
-				"depends_on": "eval:doc.is_distributor",
-				"description": "Auto-created when a Customer is flagged as a Distributor. Holds the SAP-delivered stock baseline.",
+				"description": "Auto-created per customer (under a warehouse group for the Customer Group). Holds this customer's stock for channel movement tracking.",
 			},
 		],
 		"Item": [

@@ -1,43 +1,89 @@
 # Copyright (c) 2026, CyveTech and contributors
 # For license information, please see license.txt
-"""Distributor = Warehouse model (Twiga CRM — Masters).
+"""Customer = Warehouse model (Twiga CRM — channel stock visibility).
 
-When a Customer is flagged as a Distributor, auto-create (once) a CRM Warehouse
-that holds the SAP-delivered stock baseline. This mirrors the Field Promoter
-warehouse pattern in field_promoter.py. Non-fatal: a warehouse failure must
-never block saving the Customer.
+Every Customer (Distributor, Stockist, Farmer, or any other Customer Group) is
+modelled as its own Warehouse so we can trace stock holding per customer. The
+warehouses are organised under a group-warehouse per Customer Group, so stock
+rolls up by channel type in the Warehouse tree / Stock Balance report.
+
+Non-fatal: a warehouse failure must never block saving the Customer.
 """
 import frappe
 
 
-def ensure_distributor_warehouse(doc, method=None):
-	"""doc_event on Customer (on_update). Idempotent — runs on every save but
-	only creates the warehouse once, then links it via `crm_warehouse`."""
-	if not doc.get("is_distributor"):
-		return
+def _default_company():
+	return (
+		frappe.db.get_single_value("Global Defaults", "default_company")
+		or frappe.db.get_value("Company", {}, "name")
+		or ""
+	)
+
+
+def _company_root_warehouse(company):
+	"""The top group warehouse for a company (parentless is_group)."""
+	return (
+		frappe.db.get_value(
+			"Warehouse",
+			{"company": company, "is_group": 1, "parent_warehouse": ["in", [None, ""]]},
+			"name",
+		)
+		or frappe.db.get_value("Warehouse", {"company": company, "is_group": 1}, "name")
+		or "All Warehouses"
+	)
+
+
+def _ensure_group_warehouse(group_label, company):
+	"""Ensure a group (is_group=1) warehouse exists for a Customer Group, under the
+	company root, and return its name. Idempotent."""
+	existing = frappe.db.get_value(
+		"Warehouse", {"warehouse_name": group_label, "company": company, "is_group": 1}, "name"
+	)
+	if existing:
+		return existing
+	g = frappe.get_doc({
+		"doctype": "Warehouse",
+		"warehouse_name": group_label,
+		"company": company,
+		"is_group": 1,
+		"parent_warehouse": _company_root_warehouse(company),
+	})
+	g.flags.ignore_permissions = True
+	g.insert()
+	return g.name
+
+
+def ensure_customer_warehouse(doc, method=None):
+	"""doc_event on Customer (on_update). Idempotent — creates a per-customer
+	warehouse once (under the customer's group warehouse), then links it via
+	`crm_warehouse`."""
 	if doc.get("crm_warehouse"):
 		return
-
-	warehouse_name = f"{doc.customer_name} - Distributor Store"
-	existing = frappe.db.get_value("Warehouse", {"warehouse_name": warehouse_name}, "name")
-	if existing:
-		frappe.db.set_value("Customer", doc.name, "crm_warehouse", existing)
+	if doc.get("disabled"):
 		return
 
 	try:
-		company = (
-			frappe.db.get_single_value("Global Defaults", "default_company")
-			or frappe.db.get_value("Company", {}, "name")
-			or ""
+		company = _default_company()
+		if not company:
+			return
+
+		group_label = doc.get("customer_group") or "Customers"
+		parent = _ensure_group_warehouse(group_label, company)
+
+		# ERPNext appends " - {company abbr}" to the warehouse name on insert.
+		existing = frappe.db.get_value(
+			"Warehouse",
+			{"warehouse_name": doc.customer_name, "company": company, "is_group": 0},
+			"name",
 		)
-		parent_warehouse = frappe.db.get_value(
-			"Warehouse", {"is_group": 1, "company": company}, "name"
-		) or "All Warehouses"
+		if existing:
+			frappe.db.set_value("Customer", doc.name, "crm_warehouse", existing)
+			return
 
 		wh = frappe.get_doc({
 			"doctype": "Warehouse",
-			"warehouse_name": warehouse_name,
-			"parent_warehouse": parent_warehouse,
+			"warehouse_name": doc.customer_name,
+			"parent_warehouse": parent,
 			"company": company,
 			"warehouse_type": "Stores",
 			"is_group": 0,
@@ -47,8 +93,12 @@ def ensure_distributor_warehouse(doc, method=None):
 		frappe.db.set_value("Customer", doc.name, "crm_warehouse", wh.name)
 		frappe.db.commit()
 	except Exception as e:
-		# Non-fatal — Customer save must not be blocked by warehouse creation.
+		# Non-fatal — saving the Customer must not be blocked by warehouse creation.
 		frappe.log_error(
-			f"Could not create distributor warehouse for {doc.name}: {e}",
-			"Distributor Warehouse Creation",
+			f"Could not create customer warehouse for {doc.name}: {e}",
+			"Customer Warehouse Creation",
 		)
+
+
+# Backwards-compatible alias (older hooks referenced this name).
+ensure_distributor_warehouse = ensure_customer_warehouse

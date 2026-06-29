@@ -1,0 +1,173 @@
+{
+ "actions": [],
+ "autoname": "naming_series:",
+ "creation": "2026-06-30 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "is_submittable": 1,
+ "istable": 0,
+ "track_changes": 1,
+ "index_web_pages_for_search": 1,
+ "field_order": [
+  "naming_series",
+  "sec_details",
+  "from_customer",
+  "from_warehouse",
+  "movement_date",
+  "col_d1",
+  "to_customer",
+  "to_warehouse",
+  "sec_items",
+  "items",
+  "sec_tot",
+  "total_qty",
+  "col_t1",
+  "stock_entry",
+  "sec_notes",
+  "remarks",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "CSM-.YYYY.-.####"
+  },
+  {
+   "fieldname": "sec_details",
+   "fieldtype": "Section Break",
+   "label": "Movement"
+  },
+  {
+   "fieldname": "from_customer",
+   "fieldtype": "Link",
+   "label": "From Customer",
+   "options": "Customer",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Channel partner the stock moves FROM (e.g. a Distributor)."
+  },
+  {
+   "fieldname": "from_warehouse",
+   "fieldtype": "Link",
+   "label": "From Warehouse",
+   "options": "Warehouse",
+   "fetch_from": "from_customer.crm_warehouse",
+   "fetch_if_empty": 0,
+   "read_only": 1,
+   "description": "The From Customer's warehouse (auto)."
+  },
+  {
+   "fieldname": "movement_date",
+   "fieldtype": "Date",
+   "label": "Movement Date",
+   "default": "Today",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "col_d1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "to_customer",
+   "fieldtype": "Link",
+   "label": "To Customer",
+   "options": "Customer",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Channel partner the stock moves TO (e.g. a Stockist or Farmer)."
+  },
+  {
+   "fieldname": "to_warehouse",
+   "fieldtype": "Link",
+   "label": "To Warehouse",
+   "options": "Warehouse",
+   "fetch_from": "to_customer.crm_warehouse",
+   "fetch_if_empty": 0,
+   "read_only": 1,
+   "description": "The To Customer's warehouse (auto). Cannot be the same as From."
+  },
+  {
+   "fieldname": "sec_items",
+   "fieldtype": "Section Break",
+   "label": "Items Moved"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items Moved",
+   "options": "Channel Stock Movement Item"
+  },
+  {
+   "fieldname": "sec_tot",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_qty",
+   "fieldtype": "Float",
+   "label": "Total Qty",
+   "read_only": 1,
+   "bold": 1
+  },
+  {
+   "fieldname": "col_t1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry",
+   "read_only": 1,
+   "description": "ERPNext Material Transfer created on submit."
+  },
+  {
+   "fieldname": "sec_notes",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "options": "Channel Stock Movement",
+   "read_only": 1,
+   "no_copy": 1,
+   "print_hide": 1
+  }
+ ],
+ "links": [],
+ "modified": "2026-06-30 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "Channel Stock Movement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "Agriculture Manager",
+   "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1, "cancel": 1, "amend": 1,
+   "report": 1, "export": 1, "print": 1, "email": 1, "share": 1
+  },
+  {
+   "role": "Agriculture User",
+   "read": 1, "write": 1, "create": 1, "submit": 1, "delete": 0, "cancel": 0, "amend": 0,
+   "report": 1, "export": 1, "print": 1, "email": 1, "share": 1
+  },
+  {
+   "role": "System Manager",
+   "read": 1, "write": 1, "create": 1, "delete": 1, "submit": 1, "cancel": 1, "amend": 1,
+   "report": 1, "export": 1, "print": 1, "email": 1, "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
