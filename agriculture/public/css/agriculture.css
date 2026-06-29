@@ -164,26 +164,21 @@ html:not([data-theme="dark"]) .like-disabled-input {
   color: #1565C0 !important;
 }
 
-/* ── Child table (grid) header — robust across Frappe v14/v15 markup ──
-   The header bar is .grid-heading-row, but an inner .grid-row / .data-row
-   paints its own (white) background over it. Apply the green to those inner
-   wrappers too, and force every label/icon inside the header to white so the
-   column titles are always legible. */
-.form-grid .grid-heading-row,
-.form-grid .grid-heading-row .grid-row,
-.form-grid .grid-heading-row > .grid-row > .data-row,
-.grid-heading-row .grid-row-head {
-  background-color: var(--agri-green-mid) !important;
-  background-image: none !important;
-  border-radius: var(--agri-radius-sm) var(--agri-radius-sm) 0 0 !important;
-}
+/* ── Child table (grid) header — legible regardless of inner markup ──
+   White-on-green failed: an inner row element paints its own light background
+   over .grid-heading-row, so the green never showed and the forced-white text
+   became invisible. Fail-safe: DARK bold text on a light-mint background,
+   applied to the header row AND every descendant — readable even if a child
+   keeps its own light background. */
 .form-grid .grid-heading-row,
 .form-grid .grid-heading-row * {
-  color: #fff !important;
-  font-weight: 600 !important;
+  background-color: var(--agri-green-pale) !important;
+  color: var(--agri-green-dark) !important;
+  font-weight: 700 !important;
 }
-.form-grid .grid-heading-row .col {
-  border-right: 1px solid rgba(255, 255, 255, .18) !important;
+.form-grid .grid-heading-row {
+  border-radius: var(--agri-radius-sm) var(--agri-radius-sm) 0 0 !important;
+  border-bottom: 2px solid var(--agri-green-border) !important;
 }
 .form-grid {
   border: 1px solid var(--agri-green-border) !important;
