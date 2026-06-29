@@ -64,17 +64,16 @@
   },
   {
    "fieldname": "from_warehouse",
-   "fieldtype": "Link",
-   "label": "From Warehouse",
-   "options": "Warehouse",
-   "description": "Source store. Defaults to the SAP default warehouse if left blank."
+   "fieldtype": "Data",
+   "label": "From Warehouse (SAP Code)",
+   "description": "SAP B1 warehouse code to transfer from (e.g. FG). Defaults to SAP default warehouse if left blank."
   },
   {
    "fieldname": "to_warehouse",
-   "fieldtype": "Link",
-   "label": "To Warehouse",
-   "options": "Warehouse",
-   "description": "Destination (event / promoter store)."
+   "fieldtype": "Data",
+   "label": "To Warehouse (SAP Code)",
+   "description": "SAP B1 warehouse code to transfer to (e.g. EVENT-01, PROMO-WH).",
+   "reqd": 0
   },
   {
    "fieldname": "sec_items",
