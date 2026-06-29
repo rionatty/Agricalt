@@ -59,11 +59,15 @@ class TFOP(Document):
 	def recalc_actuals(self):
 		"""Re-sum submitted TFOP Actual postings against this campaign and store
 		the actual total + variance. Called from TFOP Actual on submit/cancel."""
-		actual = frappe.db.get_value(
-			"TFOP Actual",
-			{"tfop": self.name, "docstatus": 1},
-			"coalesce(sum(amount), 0)",
-		) or 0
+		rows = frappe.db.sql(
+			"""
+			select coalesce(sum(amount), 0)
+			from `tabTFOP Actual`
+			where tfop = %s and docstatus = 1
+			""",
+			self.name,
+		)
+		actual = rows[0][0] if rows else 0
 		self.db_set("total_actual_cost", flt(actual))
 		self.db_set("budget_variance", flt(self.total_campaign_cost) - flt(actual))
 		self.db_set(
