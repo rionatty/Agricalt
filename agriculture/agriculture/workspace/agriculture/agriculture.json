@@ -14,7 +14,7 @@
    "label": "Field Activities Trend"
   }
  ],
- "content": "[{\"id\":\"hdr_dash\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Dashboard</b></span>\",\"col\":12}},{\"id\":\"nc1\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Field Promoters\",\"col\":3}},{\"id\":\"nc2\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Demo Gardens\",\"col\":3}},{\"id\":\"nc3\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Activities This Month\",\"col\":3}},{\"id\":\"nc4\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Registered Farmers\",\"col\":3}},{\"id\":\"ch1\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Activities by Type\",\"col\":6}},{\"id\":\"ch2\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Demo Gardens by Status\",\"col\":6}},{\"id\":\"hdr_shortcuts\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"sc_promoter\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Field Promoter\",\"col\":3}},{\"id\":\"sc_farmer\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Farmer\",\"col\":3}},{\"id\":\"sc_demo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Demo Garden\",\"col\":3}},{\"id\":\"sc_perf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Promoter Performance\",\"col\":3}},{\"id\":\"hdr_field\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Field Force Management</b></span>\",\"col\":12}},{\"id\":\"card_masters\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Data\",\"col\":4}},{\"id\":\"card_fieldops\",\"type\":\"card\",\"data\":{\"card_name\":\"Field Operations\",\"col\":4}},{\"id\":\"card_orders\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders & Payments\",\"col\":4}},{\"id\":\"hdr_demo\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Demo Garden Lifecycle</b></span>\",\"col\":12}},{\"id\":\"card_demosetup\",\"type\":\"card\",\"data\":{\"card_name\":\"Demo Garden Setup\",\"col\":4}},{\"id\":\"card_demomgmt\",\"type\":\"card\",\"data\":{\"card_name\":\"Demo Garden Operations\",\"col\":4}},{\"id\":\"card_demostock\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock & Inventory\",\"col\":4}},{\"id\":\"hdr_reports\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports & Configuration</b></span>\",\"col\":12}},{\"id\":\"card_reports\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"card_config\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}},{\"id\":\"card_integration\",\"type\":\"card\",\"data\":{\"card_name\":\"Integration\",\"col\":4}},{\"id\":\"card_sap_masters\",\"type\":\"card\",\"data\":{\"card_name\":\"SAP B1 Master Data\",\"col\":4}},{\"id\":\"hdr_events\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Events & Crop Masters</b></span>\",\"col\":12}},{\"id\":\"card_events\",\"type\":\"card\",\"data\":{\"card_name\":\"Events & Training\",\"col\":4}},{\"id\":\"card_crops\",\"type\":\"card\",\"data\":{\"card_name\":\"Crops & Lands\",\"col\":4}},{\"id\":\"card_diseases\",\"type\":\"card\",\"data\":{\"card_name\":\"Diseases & Fertilizers\",\"col\":4}},{\"id\":\"hdr_analytics\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Field Analytics</b></span>\",\"col\":12}},{\"id\":\"card_analytics\",\"type\":\"card\",\"data\":{\"card_name\":\"Analytics\",\"col\":4}}]",
+ "content": "[{\"id\":\"hdr_dash\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Dashboard</b></span>\",\"col\":12}},{\"id\":\"nc1\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Field Promoters\",\"col\":3}},{\"id\":\"nc2\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Demo Gardens\",\"col\":3}},{\"id\":\"nc3\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Field Activities This Month\",\"col\":3}},{\"id\":\"nc4\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Registered Farmers\",\"col\":3}},{\"id\":\"ch1\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Activities by Type\",\"col\":6}},{\"id\":\"ch2\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Demo Gardens by Status\",\"col\":6}},{\"id\":\"hdr_shortcuts\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Quick Access</b></span>\",\"col\":12}},{\"id\":\"sc_promoter\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Field Promoter\",\"col\":3}},{\"id\":\"sc_farmer\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Farmer\",\"col\":3}},{\"id\":\"sc_demo\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Demo Garden\",\"col\":3}},{\"id\":\"sc_perf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Promoter Performance\",\"col\":3}},{\"id\":\"hdr_field\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Field Force Management</b></span>\",\"col\":12}},{\"id\":\"card_masters\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Data\",\"col\":4}},{\"id\":\"card_fieldops\",\"type\":\"card\",\"data\":{\"card_name\":\"Field Operations\",\"col\":4}},{\"id\":\"card_orders\",\"type\":\"card\",\"data\":{\"card_name\":\"Orders & Payments\",\"col\":4}},{\"id\":\"hdr_marketing\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Marketing & Campaigns</b></span>\",\"col\":12}},{\"id\":\"card_marketing\",\"type\":\"card\",\"data\":{\"card_name\":\"Marketing\",\"col\":4}},{\"id\":\"card_competition\",\"type\":\"card\",\"data\":{\"card_name\":\"Competition\",\"col\":4}},{\"id\":\"hdr_demo\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Demo Garden Lifecycle</b></span>\",\"col\":12}},{\"id\":\"card_demosetup\",\"type\":\"card\",\"data\":{\"card_name\":\"Demo Garden Setup\",\"col\":4}},{\"id\":\"card_demomgmt\",\"type\":\"card\",\"data\":{\"card_name\":\"Demo Garden Operations\",\"col\":4}},{\"id\":\"card_demostock\",\"type\":\"card\",\"data\":{\"card_name\":\"Stock & Inventory\",\"col\":4}},{\"id\":\"hdr_reports\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports & Configuration</b></span>\",\"col\":12}},{\"id\":\"card_reports\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"card_config\",\"type\":\"card\",\"data\":{\"card_name\":\"Configuration\",\"col\":4}},{\"id\":\"card_integration\",\"type\":\"card\",\"data\":{\"card_name\":\"Integration\",\"col\":4}},{\"id\":\"card_sap_masters\",\"type\":\"card\",\"data\":{\"card_name\":\"SAP B1 Master Data\",\"col\":4}},{\"id\":\"hdr_events\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Events & Crop Masters</b></span>\",\"col\":12}},{\"id\":\"card_events\",\"type\":\"card\",\"data\":{\"card_name\":\"Events & Training\",\"col\":4}},{\"id\":\"card_crops\",\"type\":\"card\",\"data\":{\"card_name\":\"Crops & Lands\",\"col\":4}},{\"id\":\"card_diseases\",\"type\":\"card\",\"data\":{\"card_name\":\"Diseases & Fertilizers\",\"col\":4}},{\"id\":\"hdr_analytics\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Field Analytics</b></span>\",\"col\":12}},{\"id\":\"card_analytics\",\"type\":\"card\",\"data\":{\"card_name\":\"Analytics\",\"col\":4}}]",
  "creation": "2020-03-02 17:23:34.339274",
  "custom_blocks": [],
  "docstatus": 0,
@@ -125,6 +125,101 @@
    "link_to": "Order Collection",
    "link_type": "DocType",
    "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Marketing",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "TFOP",
+   "link_count": 0,
+   "link_to": "TFOP",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link",
+   "description": "Twiga Farmers Outreach Program — campaign budget"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "TFOP Actual",
+   "link_count": 0,
+   "link_to": "TFOP Actual",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link",
+   "description": "Actual spend posted against a TFOP (budget vs actual)"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Marketing Activity Type",
+   "link_count": 0,
+   "link_to": "Marketing Activity Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Marketing Material",
+   "link_count": 0,
+   "link_to": "Marketing Material",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Budget Category",
+   "link_count": 0,
+   "link_to": "Budget Category",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Competition",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Competitor",
+   "link_count": 0,
+   "link_to": "Competitor",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Competitor Product",
+   "link_count": 0,
+   "link_to": "Competitor Product",
+   "link_type": "DocType",
+   "onboard": 0,
    "type": "Link"
   },
   {
