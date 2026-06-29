@@ -258,7 +258,7 @@ def push_stock_transfer_request(request_name):
 			"StockTransferLines": lines,
 		}
 		log.request_payload = json.dumps(payload, indent=2)
-		response = _post_to_sap(settings, "StockTransferRequests", payload)
+		response = _post_to_sap(settings, "InventoryTransferRequests", payload)
 		log.response_text = json.dumps(response, indent=2)[:140000]
 		log.status = "Success"
 		log.sap_document_number = str(response.get("DocNum") or response.get("DocEntry") or "")
@@ -313,7 +313,7 @@ def push_marketing_material_request(request_name):
 			"StockTransferLines": lines,
 		}
 		log.request_payload = json.dumps(payload, indent=2)
-		response = _post_to_sap(settings, "StockTransferRequests", payload)
+		response = _post_to_sap(settings, "InventoryTransferRequests", payload)
 		log.response_text = json.dumps(response, indent=2)[:140000]
 		log.status = "Success"
 		log.sap_document_number = str(response.get("DocNum") or response.get("DocEntry") or "")
@@ -399,7 +399,7 @@ def get_stock_transfer_status(request_name):
 		base, cookies = _get_session(settings)
 		import requests as _requests
 		resp = _requests.get(
-			f"{base}/StockTransferRequests({sap_doc_num})",
+			f"{base}/InventoryTransferRequests({sap_doc_num})",
 			params={"$select": "DocNum,DocStatus,Comments"},
 			cookies=cookies, verify=_verify_ssl(settings), timeout=30
 		)
