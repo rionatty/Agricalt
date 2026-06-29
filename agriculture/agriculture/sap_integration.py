@@ -261,7 +261,6 @@ def push_stock_transfer_request(request_name):
 		payload = {
 			"DocDate": str(getdate(request.request_date or _today())),
 			"Comments": f"Demo material request — {request.name} for {request.demo_garden} (Promoter: {request.promoter})",
-			"U_CyveTechRef": request.name,
 			"FromWarehouse": from_sap,
 			"ToWarehouse": to_sap,
 			"StockTransferLines": lines,
@@ -323,7 +322,6 @@ def push_marketing_material_request(request_name):
 		payload = {
 			"DocDate": str(getdate(request.request_date or _today())),
 			"Comments": comment,
-			"U_CyveTechRef": request.name,
 			"FromWarehouse": from_sap,
 			"ToWarehouse": to_sap,
 			"StockTransferLines": lines,
@@ -384,7 +382,6 @@ def push_stock_receipt(request_name):
 		payload = {
 			"DocDate": str(getdate(request.promoter_receipt_date or _today())),
 			"Comments": f"Material receipt confirmed — {request.name} (Promoter: {request.promoter})",
-			"U_CyveTechRef": request.name,
 			"DocumentLines": lines,
 		}
 		log.request_payload = json.dumps(payload, indent=2)
@@ -605,7 +602,6 @@ def _build_order_payload(order, settings):
 		"CardCode": card_code,
 		"DocDueDate": str(getdate(order.collection_date)),
 		"Comments": f"Field order via CyveTech — {order.name} (Promoter: {order.promoter_name or order.promoter})",
-		"U_CyveTechRef": order.name,
 		"DocumentLines": lines,
 	}
 
@@ -622,7 +618,6 @@ def _build_payment_payload(order, settings):
 			f"Field payment via CyveTech — {order.name} "
 			f"(Promoter: {order.promoter_name or order.promoter})"
 		),
-		"U_CyveTechRef": order.name,
 	}
 
 
@@ -643,7 +638,6 @@ def _build_goods_issue_payload(request, settings, today_fn):
 		"Comments": (
 			f"Demo garden material issue — {request.name} → {request.demo_garden}"
 		),
-		"U_CyveTechRef": request.name,
 		"DocumentLines": lines,
 	}
 
