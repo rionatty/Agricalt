@@ -18,21 +18,25 @@
   "end_date",
   "sec_products",
   "products",
+  "sec_products_tot",
   "total_product_cost",
   "col_pa",
   "total_product_actual",
   "sec_activities",
   "activities",
+  "sec_activities_tot",
   "total_activity_cost",
   "col_aa",
   "total_activity_actual",
   "sec_materials",
   "marketing_materials",
+  "sec_materials_tot",
   "total_material_cost",
   "col_ma",
   "total_material_actual",
   "sec_other",
   "other_costs",
+  "sec_other_tot",
   "total_other_cost",
   "col_oa",
   "total_other_actual",
@@ -120,6 +124,10 @@
    "options": "TFOP Product"
   },
   {
+   "fieldname": "sec_products_tot",
+   "fieldtype": "Section Break"
+  },
+  {
    "fieldname": "total_product_cost",
    "fieldtype": "Currency",
    "label": "Total Product Budget",
@@ -146,6 +154,10 @@
    "fieldtype": "Table",
    "label": "Activities",
    "options": "TFOP Activity"
+  },
+  {
+   "fieldname": "sec_activities_tot",
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "total_activity_cost",
@@ -176,6 +188,10 @@
    "options": "TFOP Marketing Material"
   },
   {
+   "fieldname": "sec_materials_tot",
+   "fieldtype": "Section Break"
+  },
+  {
    "fieldname": "total_material_cost",
    "fieldtype": "Currency",
    "label": "Total Marketing Material Budget",
@@ -202,6 +218,10 @@
    "fieldtype": "Table",
    "label": "Other Costs",
    "options": "TFOP Other Cost"
+  },
+  {
+   "fieldname": "sec_other_tot",
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "total_other_cost",
