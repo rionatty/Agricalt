@@ -164,18 +164,26 @@ html:not([data-theme="dark"]) .like-disabled-input {
   color: #1565C0 !important;
 }
 
-/* ── Child table (grid) ─────────────────────────────────────── */
-.grid-heading-row .grid-row-head,
-.form-grid .grid-heading-row {
-  background: linear-gradient(90deg, var(--agri-green) 0%, var(--agri-green-mid) 100%) !important;
-  color: #fff !important;
-  font-weight: 700 !important;
+/* ── Child table (grid) header — robust across Frappe v14/v15 markup ──
+   The header bar is .grid-heading-row, but an inner .grid-row / .data-row
+   paints its own (white) background over it. Apply the green to those inner
+   wrappers too, and force every label/icon inside the header to white so the
+   column titles are always legible. */
+.form-grid .grid-heading-row,
+.form-grid .grid-heading-row .grid-row,
+.form-grid .grid-heading-row > .grid-row > .data-row,
+.grid-heading-row .grid-row-head {
+  background-color: var(--agri-green-mid) !important;
+  background-image: none !important;
   border-radius: var(--agri-radius-sm) var(--agri-radius-sm) 0 0 !important;
 }
-.grid-heading-row .col.grid-col,
-.grid-heading-row .static-area {
+.form-grid .grid-heading-row,
+.form-grid .grid-heading-row * {
   color: #fff !important;
-  border-right: 1px solid rgba(255,255,255,.18) !important;
+  font-weight: 600 !important;
+}
+.form-grid .grid-heading-row .col {
+  border-right: 1px solid rgba(255, 255, 255, .18) !important;
 }
 .form-grid {
   border: 1px solid var(--agri-green-border) !important;
