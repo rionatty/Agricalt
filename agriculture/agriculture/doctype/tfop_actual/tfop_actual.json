@@ -7,14 +7,22 @@
  "engine": "InnoDB",
  "field_order": [
   "naming_series",
+  "sec_act_details",
   "tfop",
   "posting_date",
-  "cost_category",
-  "against_type",
-  "against",
-  "amount",
-  "description",
+  "col_act1",
   "reference_no",
+  "total_actual",
+  "sec_act_products",
+  "product_actuals",
+  "sec_act_activities",
+  "activity_actuals",
+  "sec_act_materials",
+  "material_actuals",
+  "sec_act_other",
+  "other_actuals",
+  "sec_act_notes",
+  "remarks",
   "amended_from"
  ],
  "fields": [
@@ -25,12 +33,18 @@
    "options": "TACT-.YYYY.-.####"
   },
   {
+   "fieldname": "sec_act_details",
+   "fieldtype": "Section Break",
+   "label": "Actual Posting"
+  },
+  {
    "fieldname": "tfop",
    "fieldtype": "Link",
    "label": "TFOP Campaign",
    "options": "TFOP",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "description": "Selecting a campaign loads its budget lines below \u2014 enter the actuals against each."
   },
   {
    "fieldname": "posting_date",
@@ -41,44 +55,75 @@
    "in_list_view": 1
   },
   {
-   "fieldname": "cost_category",
-   "fieldtype": "Select",
-   "label": "Cost Category",
-   "options": "\nProducts\nActivities\nMarketing Material\nOther Cost",
-   "reqd": 1,
-   "in_list_view": 1
-  },
-  {
-   "fieldname": "against_type",
-   "fieldtype": "Data",
-   "label": "Against Type",
-   "read_only": 1,
-   "hidden": 1
-  },
-  {
-   "fieldname": "against",
-   "fieldtype": "Dynamic Link",
-   "label": "Against (Budget Line)",
-   "options": "against_type",
-   "in_list_view": 1,
-   "description": "The specific budget line this actual posts against (auto-typed from Cost Category)."
-  },
-  {
-   "fieldname": "amount",
-   "fieldtype": "Currency",
-   "label": "Amount",
-   "reqd": 1,
-   "in_list_view": 1
-  },
-  {
-   "fieldname": "description",
-   "fieldtype": "Data",
-   "label": "Description"
+   "fieldname": "col_act1",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "reference_no",
    "fieldtype": "Data",
    "label": "Reference No."
+  },
+  {
+   "fieldname": "total_actual",
+   "fieldtype": "Currency",
+   "label": "Total Actual",
+   "read_only": 1,
+   "bold": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sec_act_products",
+   "fieldtype": "Section Break",
+   "label": "Products"
+  },
+  {
+   "fieldname": "product_actuals",
+   "fieldtype": "Table",
+   "label": "Products",
+   "options": "TFOP Actual Product"
+  },
+  {
+   "fieldname": "sec_act_activities",
+   "fieldtype": "Section Break",
+   "label": "Activities"
+  },
+  {
+   "fieldname": "activity_actuals",
+   "fieldtype": "Table",
+   "label": "Activities",
+   "options": "TFOP Actual Activity"
+  },
+  {
+   "fieldname": "sec_act_materials",
+   "fieldtype": "Section Break",
+   "label": "Marketing Material"
+  },
+  {
+   "fieldname": "material_actuals",
+   "fieldtype": "Table",
+   "label": "Marketing Material",
+   "options": "TFOP Actual Marketing Material"
+  },
+  {
+   "fieldname": "sec_act_other",
+   "fieldtype": "Section Break",
+   "label": "Other Costs"
+  },
+  {
+   "fieldname": "other_actuals",
+   "fieldtype": "Table",
+   "label": "Other Costs",
+   "options": "TFOP Actual Other Cost"
+  },
+  {
+   "fieldname": "sec_act_notes",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
   },
   {
    "fieldname": "amended_from",

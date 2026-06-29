@@ -86,33 +86,42 @@ class TFOP(Document):
 		self.budget_utilisation_pct = (flt(actual) / budget * 100.0) if budget else 0.0
 
 	def recalc_actuals(self):
-		"""Recompute cumulative actuals per budget line from submitted TFOP Actual
-		postings, then roll up per-table + campaign totals. Called from TFOP Actual
-		on submit/cancel (parent is loaded fresh, so it writes via db.set_value)."""
-		postings = frappe.get_all(
-			"TFOP Actual",
-			filters={"tfop": self.name, "docstatus": 1},
-			fields=["cost_category", "against", "amount"],
-		)
-		acc = {}
-		for p in postings:
-			acc[(p.cost_category, p.against or "")] = (
-				acc.get((p.cost_category, p.against or ""), 0.0) + flt(p.amount)
+		"""Recompute cumulative actuals per budget line by summing the actual lines
+		of every submitted TFOP Actual document for this campaign, then roll up
+		per-table + campaign totals. Called from TFOP Actual on submit/cancel."""
+		def summed(actual_child_dt, keyfield):
+			rows = frappe.db.sql(
+				f"""
+				select c.`{keyfield}` as k, coalesce(sum(c.actual_amount), 0) as amt
+				from `tab{actual_child_dt}` c
+				inner join `tabTFOP Actual` p on p.name = c.parent
+				where p.tfop = %s and p.docstatus = 1
+				group by c.`{keyfield}`
+				""",
+				self.name, as_dict=True,
 			)
+			return {(r.k or ""): flt(r.amt) for r in rows}
 
-		subtotal = {"products": 0.0, "activities": 0.0, "marketing_materials": 0.0, "other_costs": 0.0}
+		acc = {
+			"products": summed("TFOP Actual Product", "item_code"),
+			"activities": summed("TFOP Actual Activity", "activity"),
+			"marketing_materials": summed("TFOP Actual Marketing Material", "item"),
+			"other_costs": summed("TFOP Actual Other Cost", "budget_category"),
+		}
+
 		for category, (table, child_dt, keyfield) in _LINE_MAP.items():
+			line_acc = acc[table]
 			for row in self.get(table):
-				actual = acc.get((category, row.get(keyfield) or ""), 0.0)
+				actual = line_acc.get(row.get(keyfield) or "", 0.0)
 				budget = self._budget_of(table, row)
 				frappe.db.set_value(
 					child_dt, row.name,
 					{"actual_amount": actual, "variance": budget - actual},
 					update_modified=False,
 				)
-				subtotal[table] += actual
 
-		total_actual = sum(flt(p.amount) for p in postings)
+		subtotal = {table: sum(vals.values()) for table, vals in acc.items()}
+		total_actual = sum(subtotal.values())
 		budget = flt(self.total_campaign_cost)
 		self.db_set("total_product_actual", subtotal["products"])
 		self.db_set("total_activity_actual", subtotal["activities"])

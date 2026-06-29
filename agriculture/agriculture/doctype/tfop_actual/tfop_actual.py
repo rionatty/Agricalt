@@ -1,30 +1,25 @@
 # Copyright (c) 2026, CyveTech and contributors
 # For license information, please see license.txt
-"""TFOP Actual — an actual-spend posting against a specific TFOP budget line.
+"""TFOP Actual — an actual-spend document posted against a TFOP campaign.
 
-`against` is a Dynamic Link whose target doctype is derived from cost_category:
-    Products / Marketing Material -> Item
-    Activities                    -> Marketing Activity Type
-    Other Cost                    -> Budget Category
-On submit/cancel the parent TFOP re-rolls cumulative actuals per line.
+Mirrors the TFOP layout: selecting a campaign loads its budget lines into the
+four actual tables (client script), the user enters the actual against each line,
+and on submit the parent TFOP re-rolls cumulative actuals per line.
 """
 import frappe
 from frappe.model.document import Document
+from frappe.utils import flt
 
-_AGAINST_TYPE = {
-	"Products": "Item",
-	"Marketing Material": "Item",
-	"Activities": "Marketing Activity Type",
-	"Other Cost": "Budget Category",
-}
+_ACTUAL_TABLES = ("product_actuals", "activity_actuals", "material_actuals", "other_actuals")
 
 
 class TFOPActual(Document):
 	def validate(self):
-		# Drive the Dynamic Link target doctype from the chosen cost category.
-		self.against_type = _AGAINST_TYPE.get(self.cost_category)
-		if not self.against_type:
-			self.against = None
+		self.total_actual = sum(
+			flt(row.actual_amount)
+			for table in _ACTUAL_TABLES
+			for row in self.get(table)
+		)
 
 	def on_submit(self):
 		self._update_parent()
