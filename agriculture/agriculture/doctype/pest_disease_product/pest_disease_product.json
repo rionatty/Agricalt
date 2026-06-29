@@ -19,7 +19,8 @@
    "label": "Recommended Item",
    "options": "Item",
    "in_list_view": 1,
-   "reqd": 1
+   "reqd": 1,
+   "columns": 3
   },
   {
    "fieldname": "product_name",
@@ -27,18 +28,22 @@
    "label": "Product Name",
    "fetch_from": "item.item_name",
    "read_only": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "columns": 3
   },
   {
    "fieldname": "dosage",
    "fieldtype": "Data",
    "label": "Dosage",
-   "in_list_view": 1
+   "in_list_view": 1,
+   "columns": 2
   },
   {
    "fieldname": "application_method",
    "fieldtype": "Data",
-   "label": "Application Method"
+   "label": "Application Method",
+   "in_list_view": 1,
+   "columns": 2
   },
   {
    "fieldname": "notes",

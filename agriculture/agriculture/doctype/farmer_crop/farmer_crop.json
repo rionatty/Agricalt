@@ -18,7 +18,8 @@
    "label": "Crop",
    "options": "Crop",
    "in_list_view": 1,
-   "reqd": 1
+   "reqd": 1,
+   "columns": 3
   },
   {
    "fieldname": "crop_name",
@@ -26,13 +27,15 @@
    "label": "Crop Name",
    "fetch_from": "crop.crop_name",
    "read_only": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "columns": 4
   },
   {
    "fieldname": "acreage",
    "fieldtype": "Float",
    "label": "Acreage",
-   "in_list_view": 1
+   "in_list_view": 1,
+   "columns": 2
   },
   {
    "fieldname": "notes",
