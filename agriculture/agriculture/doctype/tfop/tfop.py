@@ -16,7 +16,7 @@ _LINE_MAP = {
 	"Products": ("products", "TFOP Product", "item_code"),
 	"Activities": ("activities", "TFOP Activity", "activity"),
 	"Marketing Material": ("marketing_materials", "TFOP Marketing Material", "item"),
-	"Other Cost": ("other_costs", "TFOP Other Cost", "budget_category"),
+	"Other Cost": ("other_costs", "TFOP Other Cost", "cost_description"),
 }
 
 
@@ -106,7 +106,7 @@ class TFOP(Document):
 			"products": summed("TFOP Actual Product", "item_code"),
 			"activities": summed("TFOP Actual Activity", "activity"),
 			"marketing_materials": summed("TFOP Actual Marketing Material", "item"),
-			"other_costs": summed("TFOP Actual Other Cost", "budget_category"),
+			"other_costs": summed("TFOP Actual Other Cost", "cost_description"),
 		}
 
 		for category, (table, child_dt, keyfield) in _LINE_MAP.items():

@@ -7,7 +7,6 @@
  "engine": "InnoDB",
  "field_order": [
   "cost_description",
-  "budget_category",
   "amount",
   "actual_amount",
   "variance"
@@ -19,15 +18,7 @@
    "label": "Description",
    "reqd": 1,
    "in_list_view": 1,
-   "columns": 3
-  },
-  {
-   "fieldname": "budget_category",
-   "fieldtype": "Link",
-   "label": "Budget Category",
-   "options": "Budget Category",
-   "in_list_view": 1,
-   "columns": 2
+   "columns": 5
   },
   {
    "fieldname": "amount",

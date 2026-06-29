@@ -31,7 +31,6 @@ frappe.ui.form.on("TFOP Actual", {
 			});
 			(tfop.other_costs || []).forEach((r) => {
 				const row = frm.add_child("other_actuals");
-				row.budget_category = r.budget_category;
 				row.cost_description = r.cost_description;
 				row.budget_amount = r.amount;
 			});
