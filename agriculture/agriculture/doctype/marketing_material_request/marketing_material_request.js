@@ -51,10 +51,10 @@ frappe.ui.form.on("Marketing Material Request", {
 				}).then(r => {
 					const res = r.message || {};
 					if (res.status === "received") {
-						frappe.show_alert({ message: __("Materials received — Stock Entry created."), indicator: "green" });
+						frappe.show_alert({ message: __("Materials received — Stock Entry created from SAP Goods Issue {0}.", [res.goods_issue || ""]), indicator: "green" });
 						frm.reload_doc();
-					} else if (res.status === "still_open") {
-						frappe.show_alert({ message: __("SAP Transfer Request is still open — goods not yet issued."), indicator: "orange" });
+					} else if (res.status === "no_match") {
+						frappe.msgprint({ title: __("Not issued yet"), message: res.message || __("No matching SAP Goods Issue found yet."), indicator: "orange" });
 					} else if (res.status === "already_received") {
 						frappe.show_alert({ message: __("Already received."), indicator: "blue" });
 					} else {

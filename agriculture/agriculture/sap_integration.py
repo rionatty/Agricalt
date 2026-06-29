@@ -643,10 +643,134 @@ def _build_goods_issue_payload(request, settings, today_fn):
 
 
 # ─── SAP → ERPNext: goods-issue receipt ──────────────────────────────────────
+#
+# When the store fulfils a Marketing Material Request, it posts a SAP B1 Goods
+# Issue (InventoryGenExit) that expenses the materials from the source warehouse.
+# There is no link field on the Goods Issue, so we match it to the request by
+# item + source warehouse + quantity, on/after the request date, and we never
+# claim the same Goods Issue for two requests. (SAP B1 SL has no nested $filter,
+# so the recent Goods Issues are fetched and matched client-side.)
+
+# How many of the most-recent Goods Issues to scan per poll. Generous so a
+# fulfilment is never missed within the polling window; tune up if your SAP
+# issues a very high volume of Goods Issues.
+_GOODS_ISSUE_SCAN = 300
+
+# NOTE on quantity / UoM: the match requires the SAP issued Quantity to equal the
+# requested qty exactly, and the receipt is posted in the request item's UoM. This
+# assumes materials are issued in the item's stock UoM (true for these Nos items).
+# A genuine UoM mismatch simply won't match (the MMR stays Pending for manual
+# review) — it never posts a wrong quantity silently.
+
+
+def _fetch_recent_goods_issues(settings, top=_GOODS_ISSUE_SCAN, since_date=None):
+	"""Return recent Goods Issues (InventoryGenExits), lines inline.
+
+	SAP B1 SL returns DocumentLines inline on the collection GET (no $expand),
+	and supports $orderby/$top/$filter. `since_date` (YYYY-MM-DD) narrows to issues
+	on/after that date so the window always covers the oldest still-Pending request.
+	Pages via @odata.nextLink up to `top` rows.
+	"""
+	import requests
+
+	base, cookies = _get_session(settings)
+	url = f"{base}/InventoryGenExits"
+	params = {"$orderby": "DocEntry desc", "$top": top}
+	if since_date:
+		params["$filter"] = f"DocDate ge '{since_date}'"
+	rows = []
+	page = 0
+	while url and len(rows) < top and page < 60:
+		resp = requests.get(url, params=params if page == 0 else None,
+		                    cookies=cookies, verify=_verify_ssl(settings), timeout=60)
+		if resp.status_code != 200:
+			raise Exception(f"SAP B1 GET InventoryGenExits returned {resp.status_code}: {resp.text[:300]}")
+		body = resp.json()
+		rows.extend(body.get("value", []))
+		next_link = body.get("@odata.nextLink")
+		url = f"{base}/{next_link}" if next_link else None
+		page += 1
+	if len(rows) >= top and url:
+		# We hit the scan cap and SAP still had more — a very old Pending request
+		# could fall outside the window. Surface it rather than silently miss it.
+		frappe.log_error(
+			f"Goods Issue scan hit the {top}-row cap with more available; "
+			f"raise _GOODS_ISSUE_SCAN or narrow since_date ({since_date}).",
+			"SAP Poll — Goods Issue window overflow",
+		)
+	return rows[:top]
+
+
+def _claimed_goods_issue_docentries():
+	"""DocEntry of every Goods Issue already bound to a received MMR — so the same
+	Goods Issue is never claimed by two requests."""
+	return {
+		d for d in frappe.get_all(
+			"Marketing Material Request", pluck="sap_goods_issue_docentry"
+		) if d
+	}
+
+
+def _match_goods_issue(mmr, from_sap, goods_issues, claimed_docentries):
+	"""Find the Goods Issue that fulfils this MMR. Pure (no SAP calls).
+
+	A match is a SINGLE Goods Issue that, dated on/after the request and not yet
+	claimed, covers EVERY MMR item at the source warehouse (from_sap) with a
+	matching quantity (all positive lines). Returns (DocNum, DocEntry, DocDate)
+	or (None, None, None).
+	"""
+	expected = {}
+	for it in mmr.items:
+		if it.item and flt(it.qty):
+			expected[it.item] = expected.get(it.item, 0.0) + flt(it.qty)
+	if not expected or not from_sap:
+		return None, None, None
+
+	req_date = getdate(mmr.request_date) if mmr.request_date else None
+	EPS = 0.001
+
+	# Earliest qualifying issue first (the fulfilment is the first issue after
+	# the request), so sort the fetched window by DocEntry ascending.
+	for gi in sorted(goods_issues, key=lambda r: r.get("DocEntry") or 0):
+		doc_entry = str(gi.get("DocEntry") or "")
+		if not doc_entry or doc_entry in claimed_docentries:
+			continue
+		# The issue cannot predate the request. A missing/unparseable DocDate is
+		# treated as NOT a match (never bypass the date rule).
+		if req_date:
+			raw = gi.get("DocDate")
+			try:
+				gi_date = getdate(raw) if raw else None
+			except Exception:
+				gi_date = None
+			if not gi_date or gi_date < req_date:
+				continue
+		# Sum issued qty per expected item, only at the source warehouse. A
+		# zero/negative (reversal) line on an expected item disqualifies the whole
+		# candidate to avoid coincidental net-sum matches.
+		issued = {}
+		bad_line = False
+		for ln in (gi.get("DocumentLines") or []):
+			if (ln.get("WarehouseCode") or "") != from_sap:
+				continue
+			code = ln.get("ItemCode")
+			if code in expected:
+				q = flt(ln.get("Quantity") or 0)
+				if q <= 0:
+					bad_line = True
+					break
+				issued[code] = issued.get(code, 0.0) + q
+		if bad_line:
+			continue
+		# Require EVERY expected item satisfied with a matching quantity.
+		if all(abs(issued.get(code, 0.0) - qty) <= EPS for code, qty in expected.items()):
+			return str(gi.get("DocNum") or ""), doc_entry, gi.get("DocDate")
+	return None, None, None
+
 
 def poll_mmr_receipts():
-	"""Scheduled (hourly): check SAP for closed Inventory Transfer Requests and
-	create Stock Entries in ERPNext when the goods have been issued."""
+	"""Scheduled (hourly): match SAP Goods Issues to posted Material Requests and
+	create the ERPNext stock receipt when a fulfilment is found."""
 	settings = frappe.get_cached_doc("Agriculture Settings")
 	if not settings.sap_b1_enabled:
 		return
@@ -654,133 +778,118 @@ def poll_mmr_receipts():
 	pending = frappe.db.get_all(
 		"Marketing Material Request",
 		filters={"sap_status": "Posted", "receipt_status": "Pending", "docstatus": 1},
-		fields=["name", "sap_transfer_docentry", "to_warehouse", "from_warehouse"],
+		fields=["name", "from_warehouse", "request_date"],
+		order_by="creation asc",
 	)
 	if not pending:
 		return
 
-	import requests as _req
+	# Cover the window back to the oldest still-Pending request.
+	dates = [r.request_date for r in pending if r.request_date]
+	since = str(min(dates)) if dates else None
 	try:
-		base, cookies = _get_session(settings)
+		goods_issues = _fetch_recent_goods_issues(settings, since_date=since)
 	except Exception as e:
-		frappe.log_error(str(e), "SAP Poll — login failed")
+		frappe.log_error(str(e), "SAP Poll — fetch Goods Issues failed")
 		return
 
+	claimed = _claimed_goods_issue_docentries()
 	for row in pending:
-		docentry = row.get("sap_transfer_docentry")
-		if not docentry:
-			continue
 		try:
-			resp = _req.get(
-				f"{base}/InventoryTransferRequests({docentry})",
-				params={"$select": "DocStatus,DocNum,DocEntry"},
-				cookies=cookies,
-				verify=_verify_ssl(settings),
-				timeout=30,
-			)
-			if resp.status_code != 200:
-				continue
-			data = resp.json()
-			if data.get("DocStatus") != "bost_Close":
-				continue
-
-			# ITR is closed — find the resulting StockTransfers document
-			sap_transfer_num = ""
-			tr_resp = _req.get(
-				f"{base}/StockTransfers",
-				params={
-					"$filter": f"BaseEntry eq {docentry}",
-					"$select": "DocNum",
-					"$top": 1,
-				},
-				cookies=cookies,
-				verify=_verify_ssl(settings),
-				timeout=30,
-			)
-			if tr_resp.status_code == 200:
-				items = tr_resp.json().get("value", [])
-				if items:
-					sap_transfer_num = str(items[0].get("DocNum", ""))
-
 			mmr = frappe.get_doc("Marketing Material Request", row.name)
-			_receive_mmr_materials(mmr, sap_transfer_num)
-			frappe.db.commit()
-
+			from_sap = _resolve_sap_warehouse(mmr.from_warehouse, settings.sap_default_warehouse)
+			doc_num, doc_entry, doc_date = _match_goods_issue(mmr, from_sap, goods_issues, claimed)
+			if doc_entry:
+				_receive_mmr_materials(mmr, doc_num, doc_entry, doc_date)
+				claimed.add(doc_entry)
+				frappe.db.commit()
 		except Exception as e:
-			frappe.log_error(
-				f"MMR {row.name}: {e}",
-				"SAP Poll — MMR receipt failed",
-			)
+			frappe.db.rollback()
+			frappe.log_error(f"MMR {row.name}: {e}", "SAP Poll — MMR receipt failed")
 			continue
 
 
 @frappe.whitelist()
 def check_mmr_receipt(mmr_name):
-	"""Manual trigger: check SAP right now for a single MMR and receive if ready."""
+	"""Manual trigger: scan SAP Goods Issues now for one MMR and receive if matched."""
 	mmr = frappe.get_doc("Marketing Material Request", mmr_name)
+	# Posting a stock receipt is privileged — read access to the MMR is not enough.
+	mmr.check_permission("write")
 	if mmr.receipt_status == "Received":
 		return {"status": "already_received"}
-	if not mmr.sap_transfer_docentry:
-		return {"status": "no_docentry", "message": "No SAP DocEntry stored — re-post to SAP first."}
 
 	settings = frappe.get_cached_doc("Agriculture Settings")
 	if not settings.sap_b1_enabled:
 		return {"status": "disabled"}
 
-	import requests as _req
-	base, cookies = _get_session(settings)
+	from_sap = _resolve_sap_warehouse(mmr.from_warehouse, settings.sap_default_warehouse)
+	if not from_sap:
+		return {"status": "no_match", "message": "Could not resolve the source SAP warehouse for this request."}
 
-	resp = _req.get(
-		f"{base}/InventoryTransferRequests({mmr.sap_transfer_docentry})",
-		params={"$select": "DocStatus,DocNum"},
-		cookies=cookies,
-		verify=_verify_ssl(settings),
-		timeout=30,
-	)
-	if resp.status_code != 200:
-		return {"status": "sap_error", "message": f"SAP returned {resp.status_code}"}
+	try:
+		goods_issues = _fetch_recent_goods_issues(
+			settings, since_date=str(mmr.request_date) if mmr.request_date else None
+		)
+	except Exception as e:
+		return {"status": "sap_error", "message": str(e)[:300]}
 
-	data = resp.json()
-	doc_status = data.get("DocStatus")
-	if doc_status != "bost_Close":
-		return {"status": "still_open", "message": f"SAP ITR is still open (status: {doc_status})"}
+	claimed = _claimed_goods_issue_docentries()
+	doc_num, doc_entry, doc_date = _match_goods_issue(mmr, from_sap, goods_issues, claimed)
+	if not doc_entry:
+		return {
+			"status": "no_match",
+			"message": (
+				"No matching Goods Issue found in SAP yet — looking for an issue of these "
+				"items from warehouse '{0}' with matching quantities, dated on/after the request."
+			).format(from_sap),
+		}
 
-	sap_transfer_num = ""
-	tr_resp = _req.get(
-		f"{base}/StockTransfers",
-		params={
-			"$filter": f"BaseEntry eq {mmr.sap_transfer_docentry}",
-			"$select": "DocNum",
-			"$top": 1,
-		},
-		cookies=cookies,
-		verify=_verify_ssl(settings),
-		timeout=30,
-	)
-	if tr_resp.status_code == 200:
-		items = tr_resp.json().get("value", [])
-		if items:
-			sap_transfer_num = str(items[0].get("DocNum", ""))
-
-	_receive_mmr_materials(mmr, sap_transfer_num)
-	frappe.db.commit()
-	return {"status": "received", "stock_entry": mmr.erp_stock_entry}
+	try:
+		_receive_mmr_materials(mmr, doc_num, doc_entry, doc_date)
+		frappe.db.commit()
+	except Exception as e:
+		frappe.db.rollback()
+		frappe.log_error(f"MMR {mmr.name}: {e}", "SAP Receipt — manual check")
+		return {"status": "sap_error", "message": f"Found Goods Issue {doc_num} but the receipt failed: {str(e)[:200]}"}
+	return {"status": "received", "stock_entry": frappe.db.get_value("Marketing Material Request", mmr.name, "erp_stock_entry"), "goods_issue": doc_num}
 
 
-def _receive_mmr_materials(mmr, sap_transfer_number=""):
+def _receive_mmr_materials(mmr, gi_doc_num="", gi_doc_entry="", gi_doc_date=None):
 	"""Create an ERPNext Stock Entry (Material Receipt) at the destination warehouse
-	and mark the MMR as received."""
+	and mark the MMR received — ONLY if the Stock Entry actually posts.
+
+	Idempotent and claim-safe: re-checks under a row lock so one Goods Issue can
+	never be received twice or bound to two requests. On any failure it raises so
+	the caller rolls back and the MMR stays Pending for the next poll to retry.
+	"""
+	# Atomic re-check under a row lock on this MMR (serialises a concurrent poll +
+	# manual check), and never bind a Goods Issue already claimed by another request.
+	current = frappe.db.get_value(
+		"Marketing Material Request", mmr.name, "receipt_status", for_update=True
+	)
+	if current == "Received":
+		return
+	if gi_doc_entry and frappe.db.exists(
+		"Marketing Material Request",
+		{"sap_goods_issue_docentry": gi_doc_entry, "name": ["!=", mmr.name]},
+	):
+		return
+
 	to_wh = mmr.to_warehouse
 	if not to_wh:
 		frappe.log_error(f"MMR {mmr.name} has no to_warehouse", "SAP Receipt")
 		return
 
+	company = (
+		frappe.db.get_value("Warehouse", to_wh, "company")
+		or _get_default_company()
+	)
+
 	stock_items = []
 	for item in mmr.items:
 		if not item.item or not (item.qty or 0):
 			continue
-		is_stock = frappe.db.get_value("Item", item.item, "is_stock_item")
-		if not is_stock:
+		if not frappe.db.get_value("Item", item.item, "is_stock_item"):
 			continue
 		stock_items.append({
 			"item_code": item.item,
@@ -789,32 +898,35 @@ def _receive_mmr_materials(mmr, sap_transfer_number=""):
 			"t_warehouse": to_wh,
 		})
 
-	se_name = ""
-	if stock_items:
-		try:
-			se = frappe.get_doc({
-				"doctype": "Stock Entry",
-				"stock_entry_type": "Material Receipt",
-				"purpose": "Material Receipt",
-				"remarks": f"SAP B1 goods issued — MMR {mmr.name}"
-				           + (f" (SAP Transfer {sap_transfer_number})" if sap_transfer_number else ""),
-				"items": stock_items,
-			})
-			se.insert(ignore_permissions=True)
-			se.submit()
-			se_name = se.name
-		except Exception as e:
-			frappe.log_error(
-				f"Stock Entry creation failed for MMR {mmr.name}: {e}",
-				"SAP Receipt — Stock Entry",
-			)
-
-	frappe.db.set_value("Marketing Material Request", mmr.name, {
+	receipt = {
 		"receipt_status": "Received",
 		"received_date": frappe.utils.today(),
-		"sap_goods_transfer_number": sap_transfer_number,
-		"erp_stock_entry": se_name or None,
+		"sap_goods_transfer_number": gi_doc_num or "",
+		"sap_goods_issue_docentry": gi_doc_entry or "",
+	}
+
+	if not stock_items:
+		# Nothing stockable to receive (all non-stock items) — record the match.
+		frappe.db.set_value("Marketing Material Request", mmr.name, receipt)
+		return
+
+	# Build + submit the receipt. Any failure propagates so the caller rolls back
+	# and the MMR is left Pending (the Goods Issue is NOT claimed) to retry later.
+	se = frappe.get_doc({
+		"doctype": "Stock Entry",
+		"stock_entry_type": "Material Receipt",
+		"company": company,
+		"posting_date": getdate(gi_doc_date) if gi_doc_date else frappe.utils.today(),
+		"set_posting_time": 1,
+		"remarks": f"SAP B1 goods issued — MMR {mmr.name}"
+		           + (f" (SAP Goods Issue {gi_doc_num})" if gi_doc_num else ""),
+		"items": stock_items,
 	})
+	se.insert(ignore_permissions=True)
+	se.submit()
+
+	receipt["erp_stock_entry"] = se.name
+	frappe.db.set_value("Marketing Material Request", mmr.name, receipt)
 
 
 @frappe.whitelist()

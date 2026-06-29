@@ -27,6 +27,7 @@
   "received_date",
   "col_receipt1",
   "sap_goods_transfer_number",
+  "sap_goods_issue_docentry",
   "erp_stock_entry",
   "sec_notes",
   "remarks",
@@ -165,9 +166,17 @@
   {
    "fieldname": "sap_goods_transfer_number",
    "fieldtype": "Data",
-   "label": "SAP Goods Transfer No.",
+   "label": "SAP Goods Issue No.",
    "read_only": 1,
-   "description": "SAP B1 Stock Transfer document created when goods were issued."
+   "description": "SAP B1 Goods Issue document number that fulfilled this request."
+  },
+  {
+   "fieldname": "sap_goods_issue_docentry",
+   "fieldtype": "Data",
+   "label": "SAP Goods Issue DocEntry",
+   "read_only": 1,
+   "hidden": 1,
+   "description": "Internal — SAP DocEntry of the matched Goods Issue, used to prevent claiming it twice."
   },
   {
    "fieldname": "erp_stock_entry",
