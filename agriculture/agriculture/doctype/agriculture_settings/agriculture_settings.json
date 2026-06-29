@@ -335,8 +335,8 @@
   {
    "fieldname": "sap_downpayment_card_code",
    "fieldtype": "Data",
-   "label": "Default Vendor Card Code",
-   "description": "SAP B1 vendor/supplier CardCode the advance is paid to (e.g. V0001). Editable per requisition."
+   "label": "Fallback Vendor Card Code",
+   "description": "SAP B1 vendor CardCode used when the requesting user has no SAP Supplier Code mapped on their User record (e.g. V0001). Editable per requisition."
   },
   {
    "fieldname": "sap_downpayment_account",

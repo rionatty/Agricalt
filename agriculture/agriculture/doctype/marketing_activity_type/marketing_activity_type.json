@@ -8,6 +8,7 @@
  "field_order": [
   "activity_type_name",
   "is_active",
+  "expense_account",
   "description"
  ],
  "fields": [
@@ -26,6 +27,13 @@
    "label": "Active",
    "default": "1",
    "in_list_view": 1
+  },
+  {
+   "fieldname": "expense_account",
+   "fieldtype": "Data",
+   "label": "SAP Expense Account",
+   "in_list_view": 1,
+   "description": "SAP B1 G/L expense account this activity's cost is charged to on a Cash Requisition / Down Payment Request."
   },
   {
    "fieldname": "description",

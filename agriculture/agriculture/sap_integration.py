@@ -382,16 +382,21 @@ def push_cash_requisition(requisition_name):
 	try:
 		if not req.pay_to:
 			raise Exception("Pay To (SAP vendor CardCode) is required.")
-		if not req.expense_account:
-			raise Exception("SAP Expense Account is required.")
 
 		lines = []
 		for it in req.items:
 			amt = flt(it.amount)
 			if amt <= 0:
 				continue
+			# Per-line expense account, falling back to the requisition default.
+			account = it.expense_account or req.expense_account
+			if not account:
+				raise Exception(
+					f"No SAP expense account for line '{it.description or it.idx}'. "
+					"Set it on the activity, the line, or the requisition default."
+				)
 			line = {
-				"AccountCode": req.expense_account,
+				"AccountCode": account,
 				"ItemDescription": (it.description or "")[:100],
 				"LineTotal": amt,
 			}

@@ -78,14 +78,13 @@
    "fieldtype": "Data",
    "label": "Pay To (SAP Vendor Code)",
    "reqd": 1,
-   "description": "SAP B1 vendor/supplier CardCode the advance is paid to. Defaults from Agriculture Settings."
+   "description": "SAP B1 vendor/supplier CardCode the advance is paid to. Defaults from your user's Supplier mapping; editable."
   },
   {
    "fieldname": "expense_account",
    "fieldtype": "Data",
-   "label": "SAP Expense Account",
-   "reqd": 1,
-   "description": "SAP B1 G/L expense account charged on every line. Defaults from Agriculture Settings."
+   "label": "Default Expense Account",
+   "description": "SAP B1 G/L account used for lines that don't have their own account (e.g. Other Costs). Per-activity accounts come from the activity. Defaults from Agriculture Settings."
   },
   {
    "fieldname": "tax_code",

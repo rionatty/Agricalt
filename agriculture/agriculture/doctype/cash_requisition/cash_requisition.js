@@ -20,20 +20,17 @@ frappe.ui.form.on("Cash Requisition", {
 		if (!frm.doc.tfop) return;
 		// Only auto-fill when the items table is empty, so we never clobber edits.
 		if ((frm.doc.items || []).length) return;
-		frappe.db.get_doc("TFOP", frm.doc.tfop).then((tfop) => {
-			(tfop.activities || []).forEach((r) => {
-				if (!flt(r.amount)) return;
+		// Build lines server-side so each activity's SAP expense account is resolved.
+		frappe.call({
+			method: "agriculture.agriculture.doctype.cash_requisition.cash_requisition.get_cash_requisition_lines",
+			args: { tfop: frm.doc.tfop },
+		}).then((r) => {
+			(r.message || []).forEach((line) => {
 				const row = frm.add_child("items");
-				row.source = "Activity";
-				row.description = r.activity;
-				row.amount = r.amount;
-			});
-			(tfop.other_costs || []).forEach((r) => {
-				if (!flt(r.amount)) return;
-				const row = frm.add_child("items");
-				row.source = "Other Cost";
-				row.description = r.cost_description;
-				row.amount = r.amount;
+				row.source = line.source;
+				row.description = line.description;
+				row.expense_account = line.expense_account;
+				row.amount = line.amount;
 			});
 			frm.refresh_field("items");
 			frm.trigger("recalc_total");
