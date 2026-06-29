@@ -10,3 +10,4 @@ agriculture.agriculture.patches.v2_1_tfop_workflow
 agriculture.agriculture.patches.v2_2_workspace_marketing
 agriculture.agriculture.patches.v2_3_workspace_mmr
 agriculture.agriculture.patches.v2_4_warehouse_user_mapping
+agriculture.agriculture.patches.v2_5_workspace_stock
