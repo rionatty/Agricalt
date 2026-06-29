@@ -25,6 +25,7 @@ class MarketingMaterialRequest(Document):
 			"status": "Success",
 		})
 		if not already:
+			self.db_set("sap_status", "Pending")
 			frappe.enqueue(
 				"agriculture.agriculture.sap_integration.push_marketing_material_request",
 				queue="long",

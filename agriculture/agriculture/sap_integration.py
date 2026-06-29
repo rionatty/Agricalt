@@ -318,11 +318,18 @@ def push_marketing_material_request(request_name):
 		log.status = "Success"
 		log.sap_document_number = str(response.get("DocNum") or response.get("DocEntry") or "")
 
-		frappe.db.set_value("Marketing Material Request", request.name,
-			"sap_transfer_request_number", log.sap_document_number)
+		frappe.db.set_value("Marketing Material Request", request.name, {
+			"sap_transfer_request_number": log.sap_document_number,
+			"sap_status": "Posted",
+			"sap_error": "",
+		})
 	except Exception as e:
 		log.status = "Failed"
 		log.error_message = str(e)[:1000]
+		frappe.db.set_value("Marketing Material Request", request.name, {
+			"sap_status": "Failed",
+			"sap_error": str(e)[:2000],
+		})
 		frappe.log_error(frappe.get_traceback(), "SAP B1 Marketing Material Request Failed")
 
 	log.insert(ignore_permissions=True)

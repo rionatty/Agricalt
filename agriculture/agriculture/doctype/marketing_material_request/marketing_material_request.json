@@ -17,8 +17,11 @@
   "sec_items",
   "items",
   "sec_sap",
+  "sap_status",
   "sap_transfer_request_number",
   "col_sap1",
+  "sap_error",
+  "sec_notes",
   "remarks",
   "amended_from"
  ],
@@ -90,15 +93,37 @@
    "label": "SAP B1"
   },
   {
+   "fieldname": "sap_status",
+   "fieldtype": "Select",
+   "label": "SAP Status",
+   "options": "Not Posted\nPending\nPosted\nFailed",
+   "default": "Not Posted",
+   "read_only": 1,
+   "in_list_view": 1,
+   "description": "Whether this request has been posted to SAP B1 as a transfer request."
+  },
+  {
    "fieldname": "sap_transfer_request_number",
    "fieldtype": "Data",
    "label": "SAP Transfer Request No.",
    "read_only": 1,
-   "description": "SAP B1 Stock Transfer Request document number (set on submit)."
+   "description": "SAP B1 Stock Transfer Request document number (set on a successful post)."
   },
   {
    "fieldname": "col_sap1",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sap_error",
+   "fieldtype": "Small Text",
+   "label": "SAP Error",
+   "read_only": 1,
+   "depends_on": "eval:doc.sap_status=='Failed'"
+  },
+  {
+   "fieldname": "sec_notes",
+   "fieldtype": "Section Break",
+   "label": "Notes"
   },
   {
    "fieldname": "remarks",
