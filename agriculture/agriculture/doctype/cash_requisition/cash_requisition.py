@@ -61,6 +61,14 @@ class CashRequisition(Document):
 				requisition_name=self.name,
 			)
 
+	@frappe.whitelist()
+	def submit_requisition(self):
+		"""Mobile entry point — submit the draft created offline (queues the SAP
+		Down Payment Request)."""
+		if self.docstatus == 0:
+			self.submit()
+		return self.name
+
 
 @frappe.whitelist()
 def get_cash_requisition_lines(tfop):

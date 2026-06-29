@@ -68,3 +68,11 @@ class ChannelStockMovement(Document):
 				se.flags.ignore_permissions = True
 				se.cancel()
 		self.db_set("stock_entry", None)
+
+	@frappe.whitelist()
+	def submit_movement(self):
+		"""Mobile entry point — submit the draft created offline by the field
+		team (posts the Material Transfer between the two customer warehouses)."""
+		if self.docstatus == 0:
+			self.submit()
+		return self.name

@@ -50,3 +50,11 @@ class MarketingMaterialRequest(Document):
 				queue="long",
 				request_name=self.name,
 			)
+
+	@frappe.whitelist()
+	def submit_mmr(self):
+		"""Mobile entry point — submit the draft created offline (queues the SAP
+		transfer request)."""
+		if self.docstatus == 0:
+			self.submit()
+		return self.name
