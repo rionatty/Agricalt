@@ -14,12 +14,17 @@ def insert_record(records):
 			pass
 
 
-ALL_ROLES = ["Agriculture Manager", "Agriculture User", "Store Manager", "Marketing Manager"]
+ALL_ROLES = [
+	"Agriculture Manager", "Agriculture User", "Store Manager", "Marketing Manager",
+	# Twiga CRM marketing-approval roles (FOM -> GM -> Finance)
+	"Field Operations Manager", "General Manager", "Finance Manager",
+]
 
 
 def setup_agriculture():
 	create_roles()
 	ensure_custom_fields()
+	_ensure_marketing_workflow()
 	if frappe.get_all("Agriculture Analysis Criteria"):
 		# data already seeded; still ensure permissions are in place
 		add_additional_permissions()
@@ -40,6 +45,16 @@ def create_roles():
 		if not frappe.db.exists("Role", role_name):
 			frappe.get_doc({"doctype": "Role", "role_name": role_name}).insert()
 	frappe.db.commit()
+
+
+def _ensure_marketing_workflow():
+	"""Create the TFOP approval workflow on fresh installs (the migrate patch
+	covers existing sites). Non-fatal so a workflow issue can't block install."""
+	try:
+		from agriculture.agriculture.marketing import ensure_tfop_workflow
+		ensure_tfop_workflow()
+	except Exception as e:
+		frappe.log_error(f"Could not create TFOP workflow: {e}", "TFOP Workflow Setup")
 
 
 def ensure_custom_fields():
