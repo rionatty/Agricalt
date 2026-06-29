@@ -164,22 +164,11 @@ html:not([data-theme="dark"]) .like-disabled-input {
   color: #1565C0 !important;
 }
 
-/* ── Child table (grid) header — legible regardless of inner markup ──
-   White-on-green failed: an inner row element paints its own light background
-   over .grid-heading-row, so the green never showed and the forced-white text
-   became invisible. Fail-safe: DARK bold text on a light-mint background,
-   applied to the header row AND every descendant — readable even if a child
-   keeps its own light background. */
-.form-grid .grid-heading-row,
-.form-grid .grid-heading-row * {
-  background-color: var(--agri-green-pale) !important;
-  color: var(--agri-green-dark) !important;
-  font-weight: 700 !important;
-}
-.form-grid .grid-heading-row {
-  border-radius: var(--agri-radius-sm) var(--agri-radius-sm) 0 0 !important;
-  border-bottom: 2px solid var(--agri-green-border) !important;
-}
+/* ── Child table (grid) header ──
+   No overrides. Theming the grid header (white-on-green, then dark-on-mint)
+   broke header/column legibility on the Frappe v16 grid markup — and because
+   this stylesheet loads desk-wide, it broke EVERY child table in the ERP.
+   Let Frappe's native grid header render; it is legible by default. */
 .form-grid {
   border: 1px solid var(--agri-green-border) !important;
   border-radius: var(--agri-radius-sm) !important;
