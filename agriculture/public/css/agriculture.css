@@ -165,10 +165,16 @@ html:not([data-theme="dark"]) .like-disabled-input {
 }
 
 /* ── Child table (grid) header ──
-   No overrides. Theming the grid header (white-on-green, then dark-on-mint)
-   broke header/column legibility on the Frappe v16 grid markup — and because
-   this stylesheet loads desk-wide, it broke EVERY child table in the ERP.
-   Let Frappe's native grid header render; it is legible by default. */
+   Text-colour ONLY (no background, no layout overrides) so it cannot break the
+   grid on any version. Dark-green bold labels are legible on the default light
+   header. Broad selectors also catch the Frappe v16 header class. */
+.form-grid .grid-heading-row,
+.form-grid .grid-heading-row *,
+.form-grid [class*="heading"],
+.form-grid [class*="heading"] * {
+  color: var(--agri-green-dark) !important;
+  font-weight: 600 !important;
+}
 .form-grid {
   border: 1px solid var(--agri-green-border) !important;
   border-radius: var(--agri-radius-sm) !important;
