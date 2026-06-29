@@ -674,28 +674,44 @@ def _fetch_recent_goods_issues(settings, top=_GOODS_ISSUE_SCAN, since_date=None)
 	import requests
 
 	base, cookies = _get_session(settings)
-	url = f"{base}/InventoryGenExits"
-	params = {"$orderby": "DocEntry desc", "$top": top}
-	if since_date:
-		params["$filter"] = f"DocDate ge '{since_date}'"
-	rows = []
-	page = 0
-	while url and len(rows) < top and page < 60:
-		resp = requests.get(url, params=params if page == 0 else None,
-		                    cookies=cookies, verify=_verify_ssl(settings), timeout=60)
-		if resp.status_code != 200:
-			raise Exception(f"SAP B1 GET InventoryGenExits returned {resp.status_code}: {resp.text[:300]}")
-		body = resp.json()
-		rows.extend(body.get("value", []))
-		next_link = body.get("@odata.nextLink")
-		url = f"{base}/{next_link}" if next_link else None
-		page += 1
-	if len(rows) >= top and url:
-		# We hit the scan cap and SAP still had more — a very old Pending request
-		# could fall outside the window. Surface it rather than silently miss it.
+
+	def _run(use_filter):
+		url = f"{base}/InventoryGenExits"
+		params = {"$orderby": "DocEntry desc", "$top": top}
+		if use_filter and since_date:
+			params["$filter"] = f"DocDate ge '{since_date}'"
+		rows, page, more = [], 0, False
+		while url and len(rows) < top and page < 60:
+			resp = requests.get(url, params=params if page == 0 else None,
+			                    cookies=cookies, verify=_verify_ssl(settings), timeout=60)
+			if resp.status_code != 200:
+				raise Exception(f"SAP B1 GET InventoryGenExits returned {resp.status_code}: {resp.text[:300]}")
+			body = resp.json()
+			rows.extend(body.get("value", []))
+			nxt = body.get("@odata.nextLink")
+			url = f"{base}/{nxt}" if nxt else None
+			more = bool(url)
+			page += 1
+		return rows, more
+
+	# The server-side DocDate filter is only a pre-narrowing optimisation; the
+	# authoritative date check is client-side in _match_goods_issue. SAP B1 SL date
+	# literals are quirky, so if the filtered query is rejected, fall back to an
+	# unfiltered scan rather than failing the whole sync.
+	try:
+		rows, more = _run(use_filter=True)
+	except Exception:
+		if since_date:
+			rows, more = _run(use_filter=False)
+		else:
+			raise
+
+	if len(rows) >= top and more:
+		# Hit the scan cap with more available — a very old Pending request could
+		# fall outside the window. Surface it rather than silently miss it.
 		frappe.log_error(
-			f"Goods Issue scan hit the {top}-row cap with more available; "
-			f"raise _GOODS_ISSUE_SCAN or narrow since_date ({since_date}).",
+			f"Goods Issue scan hit the {top}-row cap with more available "
+			f"(since_date={since_date}); raise _GOODS_ISSUE_SCAN.",
 			"SAP Poll — Goods Issue window overflow",
 		)
 	return rows[:top]
