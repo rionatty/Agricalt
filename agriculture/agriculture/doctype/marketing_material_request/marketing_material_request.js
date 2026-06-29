@@ -3,14 +3,23 @@
 
 frappe.ui.form.on("Marketing Material Request", {
 	onload(frm) {
-		if (frm.is_new() && !frm.doc.requested_by) {
-			frm.set_value("requested_by", frappe.session.user);
-		}
-		// Launched from a TFOP ("Request Materials" button) — preset the campaign,
-		// which fires the tfop handler to load its marketing-material lines.
-		if (frm.is_new() && frappe.route_options && frappe.route_options.tfop) {
-			frm.set_value("tfop", frappe.route_options.tfop);
-			frappe.route_options = null;
+		if (frm.is_new()) {
+			if (!frm.doc.requested_by) {
+				frm.set_value("requested_by", frappe.session.user);
+			}
+			// Auto-fill from_warehouse from the logged-in user's warehouse assignment.
+			if (!frm.doc.from_warehouse) {
+				frappe.call({
+					method: "agriculture.agriculture.sap_integration.get_user_default_warehouse",
+				}).then(r => {
+					if (r.message) frm.set_value("from_warehouse", r.message);
+				});
+			}
+			// Launched from a TFOP ("Request Materials" button) — preset the campaign.
+			if (frappe.route_options && frappe.route_options.tfop) {
+				frm.set_value("tfop", frappe.route_options.tfop);
+				frappe.route_options = null;
+			}
 		}
 	},
 

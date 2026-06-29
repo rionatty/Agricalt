@@ -237,26 +237,28 @@ def push_stock_transfer_request(request_name):
 	log.status = "Pending"
 
 	try:
-		# Get the promoter's warehouse
-		promoter_warehouse = frappe.db.get_value(
+		# Get the promoter's warehouse (stored as an ERPNext Warehouse or raw SAP code)
+		promoter_wh_raw = frappe.db.get_value(
 			"Field Promoter", request.promoter, "promoter_warehouse"
-		) or settings.sap_default_warehouse
+		)
+		from_sap = _resolve_sap_warehouse(None, settings.sap_default_warehouse)
+		to_sap = _resolve_sap_warehouse(promoter_wh_raw, settings.sap_default_warehouse)
 
 		lines = []
 		for item in request.items:
 			lines.append({
 				"ItemCode": item.item or item.item_name,
 				"Quantity": float(item.quantity_requested or 0),
-				"WarehouseCode": settings.sap_default_warehouse or "",
-				"ToWarehouseCode": promoter_warehouse or "",
+				"WarehouseCode": from_sap,
+				"ToWarehouseCode": to_sap,
 			})
 
 		payload = {
 			"DocDate": str(getdate(request.request_date or _today())),
 			"Comments": f"Demo material request — {request.name} for {request.demo_garden} (Promoter: {request.promoter})",
 			"U_CyveTechRef": request.name,
-			"FromWarehouse": settings.sap_default_warehouse or "",
-			"ToWarehouse": promoter_warehouse or "",
+			"FromWarehouse": from_sap,
+			"ToWarehouse": to_sap,
 			"StockTransferLines": lines,
 		}
 		log.request_payload = json.dumps(payload, indent=2)
@@ -293,16 +295,16 @@ def push_marketing_material_request(request_name):
 	log.status = "Pending"
 
 	try:
-		from_wh = request.from_warehouse or settings.sap_default_warehouse
-		to_wh = request.to_warehouse or settings.sap_default_warehouse
+		from_sap = _resolve_sap_warehouse(request.from_warehouse, settings.sap_default_warehouse)
+		to_sap = _resolve_sap_warehouse(request.to_warehouse, settings.sap_default_warehouse)
 
 		lines = []
 		for item in request.items:
 			lines.append({
 				"ItemCode": item.item or item.item_name,
 				"Quantity": float(item.qty or 0),
-				"WarehouseCode": from_wh or "",
-				"ToWarehouseCode": to_wh or "",
+				"WarehouseCode": from_sap,
+				"ToWarehouseCode": to_sap,
 			})
 
 		comment = f"Marketing material request — {request.name}"
@@ -312,8 +314,8 @@ def push_marketing_material_request(request_name):
 			"DocDate": str(getdate(request.request_date or _today())),
 			"Comments": comment,
 			"U_CyveTechRef": request.name,
-			"FromWarehouse": from_wh or "",
-			"ToWarehouse": to_wh or "",
+			"FromWarehouse": from_sap,
+			"ToWarehouse": to_sap,
 			"StockTransferLines": lines,
 		}
 		log.request_payload = json.dumps(payload, indent=2)
@@ -413,6 +415,41 @@ def get_stock_transfer_status(request_name):
 		return {"error": f"SAP returned {resp.status_code}"}
 	except Exception as e:
 		return {"error": str(e)}
+
+
+# ─── Warehouse helpers ───────────────────────────────────────────────────────
+def _resolve_sap_warehouse(erp_warehouse, fallback=None):
+	"""Resolve an ERPNext Warehouse name to its SAP B1 warehouse code.
+
+	Admin maps each Warehouse once via the 'SAP B1 Warehouse Code' field.
+	Falls back to Agriculture Settings > Fallback SAP Warehouse Code when unset.
+	"""
+	if erp_warehouse:
+		code = frappe.db.get_value("Warehouse", erp_warehouse, "sap_warehouse_code")
+		if code:
+			return code
+	# fallback: explicit arg, then settings global default
+	if fallback:
+		return fallback
+	return frappe.db.get_single_value("Agriculture Settings", "sap_default_warehouse") or ""
+
+
+def _get_user_default_warehouse(user=None):
+	"""Return the ERPNext Warehouse assigned to this user in Agriculture Settings."""
+	user = user or frappe.session.user
+	rows = frappe.db.get_all(
+		"Agriculture User Warehouse",
+		filters={"parent": "Agriculture Settings", "user": user},
+		fields=["warehouse"],
+		limit=1,
+	)
+	return rows[0].warehouse if rows else None
+
+
+@frappe.whitelist()
+def get_user_default_warehouse():
+	"""Client-callable: returns the logged-in user's assigned warehouse (or None)."""
+	return _get_user_default_warehouse(frappe.session.user)
 
 
 # ─── SAP B1 Service Layer plumbing ───────────────────────────────────────────

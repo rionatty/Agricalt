@@ -13,6 +13,9 @@ class MarketingMaterialRequest(Document):
 	def before_insert(self):
 		if not self.requested_by:
 			self.requested_by = frappe.session.user
+		if not self.from_warehouse:
+			from agriculture.agriculture.sap_integration import _get_user_default_warehouse
+			self.from_warehouse = _get_user_default_warehouse(self.requested_by)
 
 	def on_submit(self):
 		settings = frappe.get_cached_doc("Agriculture Settings")

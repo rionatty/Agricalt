@@ -47,7 +47,9 @@
   "sap_default_price_list",
   "sec_sap_synced",
   "last_master_sync",
-  "auto_sync_masters_daily"
+  "auto_sync_masters_daily",
+  "sec_user_warehouses",
+  "user_warehouse_assignments"
  ],
  "fields": [
   {
@@ -244,7 +246,8 @@
   {
    "fieldname": "sap_default_warehouse",
    "fieldtype": "Data",
-   "label": "Default SAP Warehouse Code",
+   "label": "Fallback SAP Warehouse Code",
+   "description": "Used only when a warehouse has no SAP code mapped. Set the SAP code on each Warehouse record instead.",
    "depends_on": "sap_b1_enabled"
   },
   {
@@ -310,6 +313,18 @@
    "fieldtype": "Check",
    "label": "Auto-Sync Masters Daily",
    "depends_on": "sap_b1_enabled"
+  },
+  {
+   "fieldname": "sec_user_warehouses",
+   "fieldtype": "Section Break",
+   "label": "User Warehouse Assignments",
+   "description": "Assign each user to their default warehouse. The From Warehouse on material requests auto-fills from this table. Set the SAP B1 Warehouse Code on each Warehouse record (not here)."
+  },
+  {
+   "fieldname": "user_warehouse_assignments",
+   "fieldtype": "Table",
+   "label": "User Warehouse Assignments",
+   "options": "Agriculture User Warehouse"
   }
  ],
  "issingle": 1,
