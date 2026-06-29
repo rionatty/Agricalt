@@ -1,0 +1,10 @@
+/* Bundled entry for the Agriculture / Twiga desk theme.
+ *
+ * Referenced from hooks.py as `app_include_css = "agriculture.bundle.css"`.
+ * Frappe v16 builds *.bundle.css into a CONTENT-HASHED asset and injects it
+ * with that hash, so CSS changes actually reach the browser. The previous
+ * static include ("/assets/agriculture/css/agriculture.css") was cached
+ * indefinitely by nginx/the browser and never updated — which is why earlier
+ * grid-header fixes appeared to have "no effect".
+ */
+@import "./agriculture.css";
