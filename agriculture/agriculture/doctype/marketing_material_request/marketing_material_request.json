@@ -81,7 +81,8 @@
    "fieldtype": "Link",
    "label": "To Warehouse",
    "options": "Warehouse",
-   "description": "Destination warehouse (must have a SAP B1 Warehouse Code set on the Warehouse record)."
+   "reqd": 1,
+   "description": "Destination warehouse (must have a SAP B1 Warehouse Code set on the Warehouse record). Cannot be the same as From Warehouse."
   },
   {
    "fieldname": "sec_items",

@@ -243,14 +243,19 @@ def push_stock_transfer_request(request_name):
 		)
 		from_sap = _resolve_sap_warehouse(None, settings.sap_default_warehouse)
 		to_sap = _resolve_sap_warehouse(promoter_wh_raw, settings.sap_default_warehouse)
+		_assert_distinct_sap_warehouses(
+			from_sap, to_sap,
+			ctx=f"promoter_warehouse={promoter_wh_raw}",
+		)
 
+		# SAP B1 StockTransferLine: WarehouseCode = destination, FromWarehouseCode = source.
 		lines = []
 		for item in request.items:
 			lines.append({
 				"ItemCode": item.item or item.item_name,
 				"Quantity": float(item.quantity_requested or 0),
-				"WarehouseCode": from_sap,
-				"ToWarehouseCode": to_sap,
+				"FromWarehouseCode": from_sap,
+				"WarehouseCode": to_sap,
 			})
 
 		payload = {
@@ -297,14 +302,19 @@ def push_marketing_material_request(request_name):
 	try:
 		from_sap = _resolve_sap_warehouse(request.from_warehouse, settings.sap_default_warehouse)
 		to_sap = _resolve_sap_warehouse(request.to_warehouse, settings.sap_default_warehouse)
+		_assert_distinct_sap_warehouses(
+			from_sap, to_sap,
+			ctx=f"from={request.from_warehouse}, to={request.to_warehouse}",
+		)
 
+		# SAP B1 StockTransferLine: WarehouseCode = destination, FromWarehouseCode = source.
 		lines = []
 		for item in request.items:
 			lines.append({
 				"ItemCode": item.item or item.item_name,
 				"Quantity": float(item.qty or 0),
-				"WarehouseCode": from_sap,
-				"ToWarehouseCode": to_sap,
+				"FromWarehouseCode": from_sap,
+				"WarehouseCode": to_sap,
 			})
 
 		comment = f"Marketing material request — {request.name}"
@@ -433,6 +443,33 @@ def _resolve_sap_warehouse(erp_warehouse, fallback=None):
 	if fallback:
 		return fallback
 	return frappe.db.get_single_value("Agriculture Settings", "sap_default_warehouse") or ""
+
+
+def _assert_distinct_sap_warehouses(from_sap, to_sap, ctx=""):
+	"""Guard against an invalid stock transfer where source == destination, or
+	either side is unresolved. Catches mapping collisions that an ERPNext-level
+	from!=to check misses (two ERPNext warehouses mapped to the same SAP code,
+	or a blank warehouse falling back to the same default code).
+
+	Raises Exception (caught by the push functions and recorded on the document).
+	"""
+	if not from_sap:
+		raise Exception(
+			"Could not resolve a SAP From-Warehouse code. "
+			"Set the SAP B1 Warehouse Code on the source warehouse "
+			"or the Fallback SAP Warehouse Code in Agriculture Settings." + (f" [{ctx}]" if ctx else "")
+		)
+	if not to_sap:
+		raise Exception(
+			"Could not resolve a SAP To-Warehouse code. "
+			"Set the SAP B1 Warehouse Code on the destination warehouse." + (f" [{ctx}]" if ctx else "")
+		)
+	if from_sap == to_sap:
+		raise Exception(
+			f"From and To warehouse resolve to the same SAP code ('{from_sap}'). "
+			"A transfer must move stock between two different warehouses. "
+			"Pick a different To Warehouse, or map distinct SAP B1 Warehouse Codes." + (f" [{ctx}]" if ctx else "")
+		)
 
 
 def _get_user_default_warehouse(user=None):
