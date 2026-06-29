@@ -435,15 +435,9 @@ def _resolve_sap_warehouse(erp_warehouse, fallback=None):
 
 
 def _get_user_default_warehouse(user=None):
-	"""Return the ERPNext Warehouse assigned to this user in Agriculture Settings."""
+	"""Return the ERPNext Warehouse set on the User record (custom field default_warehouse)."""
 	user = user or frappe.session.user
-	rows = frappe.db.get_all(
-		"Agriculture User Warehouse",
-		filters={"parent": "Agriculture Settings", "user": user},
-		fields=["warehouse"],
-		limit=1,
-	)
-	return rows[0].warehouse if rows else None
+	return frappe.db.get_value("User", user, "default_warehouse")
 
 
 @frappe.whitelist()
