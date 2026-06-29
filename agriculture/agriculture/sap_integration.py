@@ -17,7 +17,7 @@ import json
 
 import frappe
 from frappe import _
-from frappe.utils import getdate
+from frappe.utils import getdate, flt, today as _frappe_today
 
 
 # ─── Hook entry points ───────────────────────────────────────────────────────
@@ -326,6 +326,7 @@ def push_marketing_material_request(request_name):
 
 		frappe.db.set_value("Marketing Material Request", request.name, {
 			"sap_transfer_request_number": log.sap_document_number,
+			"sap_transfer_docentry": str(response.get("DocEntry") or ""),
 			"sap_status": "Posted",
 			"sap_error": "",
 		})
@@ -594,6 +595,181 @@ def _build_goods_issue_payload(request, settings, today_fn):
 		"U_CyveTechRef": request.name,
 		"DocumentLines": lines,
 	}
+
+
+# ─── SAP → ERPNext: goods-issue receipt ──────────────────────────────────────
+
+def poll_mmr_receipts():
+	"""Scheduled (hourly): check SAP for closed Inventory Transfer Requests and
+	create Stock Entries in ERPNext when the goods have been issued."""
+	settings = frappe.get_cached_doc("Agriculture Settings")
+	if not settings.sap_b1_enabled:
+		return
+
+	pending = frappe.db.get_all(
+		"Marketing Material Request",
+		filters={"sap_status": "Posted", "receipt_status": "Pending", "docstatus": 1},
+		fields=["name", "sap_transfer_docentry", "to_warehouse", "from_warehouse"],
+	)
+	if not pending:
+		return
+
+	import requests as _req
+	try:
+		base, cookies = _get_session(settings)
+	except Exception as e:
+		frappe.log_error(str(e), "SAP Poll — login failed")
+		return
+
+	for row in pending:
+		docentry = row.get("sap_transfer_docentry")
+		if not docentry:
+			continue
+		try:
+			resp = _req.get(
+				f"{base}/InventoryTransferRequests({docentry})",
+				params={"$select": "DocStatus,DocNum,DocEntry"},
+				cookies=cookies,
+				verify=_verify_ssl(settings),
+				timeout=30,
+			)
+			if resp.status_code != 200:
+				continue
+			data = resp.json()
+			if data.get("DocStatus") != "bost_Close":
+				continue
+
+			# ITR is closed — find the resulting StockTransfers document
+			sap_transfer_num = ""
+			tr_resp = _req.get(
+				f"{base}/StockTransfers",
+				params={
+					"$filter": f"BaseEntry eq {docentry}",
+					"$select": "DocNum",
+					"$top": 1,
+				},
+				cookies=cookies,
+				verify=_verify_ssl(settings),
+				timeout=30,
+			)
+			if tr_resp.status_code == 200:
+				items = tr_resp.json().get("value", [])
+				if items:
+					sap_transfer_num = str(items[0].get("DocNum", ""))
+
+			mmr = frappe.get_doc("Marketing Material Request", row.name)
+			_receive_mmr_materials(mmr, sap_transfer_num)
+			frappe.db.commit()
+
+		except Exception as e:
+			frappe.log_error(
+				f"MMR {row.name}: {e}",
+				"SAP Poll — MMR receipt failed",
+			)
+			continue
+
+
+@frappe.whitelist()
+def check_mmr_receipt(mmr_name):
+	"""Manual trigger: check SAP right now for a single MMR and receive if ready."""
+	mmr = frappe.get_doc("Marketing Material Request", mmr_name)
+	if mmr.receipt_status == "Received":
+		return {"status": "already_received"}
+	if not mmr.sap_transfer_docentry:
+		return {"status": "no_docentry", "message": "No SAP DocEntry stored — re-post to SAP first."}
+
+	settings = frappe.get_cached_doc("Agriculture Settings")
+	if not settings.sap_b1_enabled:
+		return {"status": "disabled"}
+
+	import requests as _req
+	base, cookies = _get_session(settings)
+
+	resp = _req.get(
+		f"{base}/InventoryTransferRequests({mmr.sap_transfer_docentry})",
+		params={"$select": "DocStatus,DocNum"},
+		cookies=cookies,
+		verify=_verify_ssl(settings),
+		timeout=30,
+	)
+	if resp.status_code != 200:
+		return {"status": "sap_error", "message": f"SAP returned {resp.status_code}"}
+
+	data = resp.json()
+	doc_status = data.get("DocStatus")
+	if doc_status != "bost_Close":
+		return {"status": "still_open", "message": f"SAP ITR is still open (status: {doc_status})"}
+
+	sap_transfer_num = ""
+	tr_resp = _req.get(
+		f"{base}/StockTransfers",
+		params={
+			"$filter": f"BaseEntry eq {mmr.sap_transfer_docentry}",
+			"$select": "DocNum",
+			"$top": 1,
+		},
+		cookies=cookies,
+		verify=_verify_ssl(settings),
+		timeout=30,
+	)
+	if tr_resp.status_code == 200:
+		items = tr_resp.json().get("value", [])
+		if items:
+			sap_transfer_num = str(items[0].get("DocNum", ""))
+
+	_receive_mmr_materials(mmr, sap_transfer_num)
+	frappe.db.commit()
+	return {"status": "received", "stock_entry": mmr.erp_stock_entry}
+
+
+def _receive_mmr_materials(mmr, sap_transfer_number=""):
+	"""Create an ERPNext Stock Entry (Material Receipt) at the destination warehouse
+	and mark the MMR as received."""
+	to_wh = mmr.to_warehouse
+	if not to_wh:
+		frappe.log_error(f"MMR {mmr.name} has no to_warehouse", "SAP Receipt")
+		return
+
+	stock_items = []
+	for item in mmr.items:
+		if not item.item or not (item.qty or 0):
+			continue
+		is_stock = frappe.db.get_value("Item", item.item, "is_stock_item")
+		if not is_stock:
+			continue
+		stock_items.append({
+			"item_code": item.item,
+			"qty": flt(item.qty),
+			"uom": item.uom or frappe.db.get_value("Item", item.item, "stock_uom") or "Nos",
+			"t_warehouse": to_wh,
+		})
+
+	se_name = ""
+	if stock_items:
+		try:
+			se = frappe.get_doc({
+				"doctype": "Stock Entry",
+				"stock_entry_type": "Material Receipt",
+				"purpose": "Material Receipt",
+				"remarks": f"SAP B1 goods issued — MMR {mmr.name}"
+				           + (f" (SAP Transfer {sap_transfer_number})" if sap_transfer_number else ""),
+				"items": stock_items,
+			})
+			se.insert(ignore_permissions=True)
+			se.submit()
+			se_name = se.name
+		except Exception as e:
+			frappe.log_error(
+				f"Stock Entry creation failed for MMR {mmr.name}: {e}",
+				"SAP Receipt — Stock Entry",
+			)
+
+	frappe.db.set_value("Marketing Material Request", mmr.name, {
+		"receipt_status": "Received",
+		"received_date": frappe.utils.today(),
+		"sap_goods_transfer_number": sap_transfer_number,
+		"erp_stock_entry": se_name or None,
+	})
 
 
 @frappe.whitelist()

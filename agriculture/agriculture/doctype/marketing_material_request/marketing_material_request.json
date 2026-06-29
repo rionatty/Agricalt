@@ -19,8 +19,15 @@
   "sec_sap",
   "sap_status",
   "sap_transfer_request_number",
+  "sap_transfer_docentry",
   "col_sap1",
   "sap_error",
+  "sec_receipt",
+  "receipt_status",
+  "received_date",
+  "col_receipt1",
+  "sap_goods_transfer_number",
+  "erp_stock_entry",
   "sec_notes",
   "remarks",
   "amended_from"
@@ -107,7 +114,14 @@
    "fieldtype": "Data",
    "label": "SAP Transfer Request No.",
    "read_only": 1,
-   "description": "SAP B1 Stock Transfer Request document number (set on a successful post)."
+   "description": "SAP B1 Inventory Transfer Request document number."
+  },
+  {
+   "fieldname": "sap_transfer_docentry",
+   "fieldtype": "Data",
+   "label": "SAP Transfer DocEntry",
+   "read_only": 1,
+   "hidden": 1
   },
   {
    "fieldname": "col_sap1",
@@ -119,6 +133,47 @@
    "label": "SAP Error",
    "read_only": 1,
    "depends_on": "eval:doc.sap_status=='Failed'"
+  },
+  {
+   "fieldname": "sec_receipt",
+   "fieldtype": "Section Break",
+   "label": "Receipt",
+   "collapsible": 0,
+   "depends_on": "eval:doc.sap_status=='Posted'"
+  },
+  {
+   "fieldname": "receipt_status",
+   "fieldtype": "Select",
+   "label": "Receipt Status",
+   "options": "Pending\nReceived",
+   "default": "Pending",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "received_date",
+   "fieldtype": "Date",
+   "label": "Received Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "col_receipt1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sap_goods_transfer_number",
+   "fieldtype": "Data",
+   "label": "SAP Goods Transfer No.",
+   "read_only": 1,
+   "description": "SAP B1 Stock Transfer document created when goods were issued."
+  },
+  {
+   "fieldname": "erp_stock_entry",
+   "fieldtype": "Link",
+   "label": "Stock Entry",
+   "options": "Stock Entry",
+   "read_only": 1,
+   "description": "ERPNext Stock Entry created on receipt of materials."
   },
   {
    "fieldname": "sec_notes",
