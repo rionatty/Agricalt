@@ -255,6 +255,8 @@ def push_stock_transfer_request(request_name):
 			"DocDate": str(getdate(request.request_date or _today())),
 			"Comments": f"Demo material request — {request.name} for {request.demo_garden} (Promoter: {request.promoter})",
 			"U_CyveTechRef": request.name,
+			"FromWarehouse": settings.sap_default_warehouse or "",
+			"ToWarehouse": promoter_warehouse or "",
 			"StockTransferLines": lines,
 		}
 		log.request_payload = json.dumps(payload, indent=2)
@@ -310,6 +312,8 @@ def push_marketing_material_request(request_name):
 			"DocDate": str(getdate(request.request_date or _today())),
 			"Comments": comment,
 			"U_CyveTechRef": request.name,
+			"FromWarehouse": from_wh or "",
+			"ToWarehouse": to_wh or "",
 			"StockTransferLines": lines,
 		}
 		log.request_payload = json.dumps(payload, indent=2)
@@ -371,7 +375,7 @@ def push_stock_receipt(request_name):
 			"DocumentLines": lines,
 		}
 		log.request_payload = json.dumps(payload, indent=2)
-		response = _post_to_sap(settings, "PurchaseDeliveryNotes", payload)
+		response = _post_to_sap(settings, "InventoryGenEntries", payload)
 		log.response_text = json.dumps(response, indent=2)[:140000]
 		log.status = "Success"
 		log.sap_document_number = str(response.get("DocNum") or response.get("DocEntry") or "")
