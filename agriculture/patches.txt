@@ -16,3 +16,4 @@ agriculture.agriculture.patches.v2_7_user_supplier_mapping
 agriculture.agriculture.patches.v2_8_customer_warehouses
 agriculture.agriculture.patches.v2_9_workspace_channel
 agriculture.agriculture.patches.v2_10_backfill_customer_warehouses
+agriculture.agriculture.patches.v2_11_workspace_reorganise
