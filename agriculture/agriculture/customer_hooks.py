@@ -62,6 +62,13 @@ def ensure_customer_warehouse(doc, method=None):
 	if doc.get("disabled"):
 		return
 
+	# Snapshot the message log so any validation message raised while creating the
+	# warehouse can be rolled back — it must never pop up on the Customer save.
+	try:
+		_msg_len = len(frappe.local.message_log)
+	except Exception:
+		_msg_len = None
+
 	try:
 		company = _default_company()
 		if not company:
@@ -80,20 +87,31 @@ def ensure_customer_warehouse(doc, method=None):
 			frappe.db.set_value("Customer", doc.name, "crm_warehouse", existing)
 			return
 
-		wh = frappe.get_doc({
+		wh_data = {
 			"doctype": "Warehouse",
 			"warehouse_name": doc.customer_name,
 			"parent_warehouse": parent,
 			"company": company,
-			"warehouse_type": "Stores",
 			"is_group": 0,
-		})
+		}
+		# warehouse_type is optional — only set it if this site actually has the
+		# "Stores" Warehouse Type, otherwise the insert fails with
+		# "Could not find Warehouse Type: Stores".
+		if frappe.db.exists("Warehouse Type", "Stores"):
+			wh_data["warehouse_type"] = "Stores"
+		wh = frappe.get_doc(wh_data)
 		wh.flags.ignore_permissions = True
 		wh.insert()
 		frappe.db.set_value("Customer", doc.name, "crm_warehouse", wh.name)
 		frappe.db.commit()
 	except Exception as e:
-		# Non-fatal — saving the Customer must not be blocked by warehouse creation.
+		# Non-fatal — saving the Customer must not be blocked, and the warehouse
+		# error must not surface as a dialog on the Customer form.
+		if _msg_len is not None:
+			try:
+				frappe.local.message_log = frappe.local.message_log[:_msg_len]
+			except Exception:
+				pass
 		frappe.log_error(
 			f"Could not create customer warehouse for {doc.name}: {e}",
 			"Customer Warehouse Creation",
