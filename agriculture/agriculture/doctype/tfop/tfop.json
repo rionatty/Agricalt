@@ -305,8 +305,24 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "istable": 0,
- "links": [],
- "modified": "2026-06-28 00:00:00.000000",
+ "links": [
+  {
+   "group": "Spending",
+   "link_doctype": "Cash Requisition",
+   "link_fieldname": "tfop"
+  },
+  {
+   "group": "Spending",
+   "link_doctype": "Marketing Material Request",
+   "link_fieldname": "tfop"
+  },
+  {
+   "group": "Actuals",
+   "link_doctype": "TFOP Actual",
+   "link_fieldname": "tfop"
+  }
+ ],
+ "modified": "2026-06-30 00:00:00.000000",
  "modified_by": "Administrator",
  "module": "Agriculture",
  "name": "TFOP",

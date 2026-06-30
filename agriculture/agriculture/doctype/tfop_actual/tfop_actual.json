@@ -12,6 +12,8 @@
   "posting_date",
   "col_act1",
   "reference_no",
+  "cash_requisition",
+  "marketing_material_request",
   "total_actual",
   "sec_act_products",
   "product_actuals",
@@ -62,6 +64,20 @@
    "fieldname": "reference_no",
    "fieldtype": "Data",
    "label": "Reference No."
+  },
+  {
+   "fieldname": "cash_requisition",
+   "fieldtype": "Link",
+   "label": "From Cash Requisition",
+   "options": "Cash Requisition",
+   "description": "Optional — the Cash Requisition that funded this actual spend."
+  },
+  {
+   "fieldname": "marketing_material_request",
+   "fieldtype": "Link",
+   "label": "From Material Request",
+   "options": "Marketing Material Request",
+   "description": "Optional — the Marketing Material Request these materials came from."
   },
   {
    "fieldname": "total_actual",

@@ -9,6 +9,10 @@ frappe.ui.form.on("TFOP Actual", {
 			frm.set_value("tfop", frappe.route_options.tfop);
 			frappe.route_options = null;
 		}
+		// Only offer requisitions/requests for the same campaign as a reference.
+		const sameTfop = () => ({ filters: { tfop: frm.doc.tfop || "" } });
+		frm.set_query("cash_requisition", sameTfop);
+		frm.set_query("marketing_material_request", sameTfop);
 	},
 
 	tfop(frm) {
