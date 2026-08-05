@@ -347,12 +347,13 @@ def _upsert_item(code, r, item_group, default_uom):
 	company = _get_default_company()
 
 	if frappe.db.exists("Item", code):
-		doc = frappe.get_doc("Item", code)
-		doc.item_name = name
-		doc.is_sales_item = is_sales
-		_ensure_item_default(doc, company)
-		doc.flags.ignore_permissions = True
-		doc.save()
+		# Use direct DB calls to avoid mandatory validation on existing items.
+		# custom_company lives on Item Default child rows — patch them via SQL.
+		frappe.db.set_value("Item", code, {
+			"item_name": name,
+			"is_sales_item": is_sales,
+		}, update_modified=False)
+		_patch_item_defaults_sql(code, company)
 	else:
 		payload = {
 			"doctype": "Item",
@@ -366,9 +367,34 @@ def _upsert_item(code, r, item_group, default_uom):
 			"sap_synced": 1,
 			"item_defaults": [_build_item_default(company)],
 		}
-		# Also handle any mandatory custom fields directly on the Item doctype
 		payload.update(_mandatory_custom_fields("Item"))
-		frappe.get_doc(payload).insert(ignore_permissions=True)
+		frappe.get_doc(payload).insert(ignore_permissions=True, ignore_mandatory=True)
+
+
+def _patch_item_defaults_sql(code, company):
+	"""
+	Ensure an Item Default row exists for this company with custom_company set.
+	Uses direct SQL so mandatory validation on the child table is bypassed.
+	"""
+	existing = frappe.db.sql(
+		"SELECT name FROM `tabItem Default` WHERE parent=%s AND company=%s LIMIT 1",
+		(code, company), as_dict=True,
+	)
+	if existing:
+		# Set custom_company (and any other company-link custom field) on the row
+		frappe.db.sql(
+			"UPDATE `tabItem Default` SET custom_company=%s WHERE parent=%s AND company=%s",
+			(company, code, company),
+		)
+	else:
+		row_name = frappe.generate_hash(length=10)
+		frappe.db.sql(
+			"""INSERT INTO `tabItem Default`
+			   (name, parent, parenttype, parentfield, company, custom_company,
+			    creation, modified, owner, modified_by, idx)
+			   VALUES (%s,%s,'Item','item_defaults',%s,%s,NOW(),NOW(),'Administrator','Administrator',1)""",
+			(row_name, code, company, company),
+		)
 
 
 def _upsert_item_prices(code, item_prices, price_map, settings):
