@@ -13,7 +13,9 @@
   "quantity_planted",
   "uom",
   "crop_maturity_duration",
-  "expected_harvest_date"
+  "expected_harvest_date",
+  "crop_status",
+  "comments"
  ],
  "fields": [
   {
@@ -73,6 +75,19 @@
    "label": "Exp. Harvest",
    "read_only": 1,
    "in_list_view": 1
+  },
+  {
+   "fieldname": "crop_status",
+   "fieldtype": "Select",
+   "label": "Crop Status",
+   "options": "\nGermination\nVegetative\nFlowering\nFruiting\nMature\nHarvested\nFailed",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "comments",
+   "fieldtype": "Small Text",
+   "label": "Comments / Observations",
+   "in_list_view": 0
   }
  ],
  "istable": 1,

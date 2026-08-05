@@ -10,11 +10,19 @@
   "tab_34",
   "sec_35",
   "demo_garden_name",
+  "season",
+  "project_name",
   "location",
   "col_36",
   "responsible_promoter",
   "responsible_promoter_name",
   "status",
+  "sec_loc",
+  "district",
+  "sub_county",
+  "col_loc",
+  "parish",
+  "area_acres",
   "sec_37",
   "farmer_host",
   "farmer_host_name",
@@ -64,11 +72,60 @@
    "bold": 1
   },
   {
+   "fieldname": "season",
+   "fieldtype": "Data",
+   "label": "Season",
+   "in_list_view": 0,
+   "description": "E.g. Season A 2026, Season B 2026"
+  },
+  {
+   "fieldname": "project_name",
+   "fieldtype": "Data",
+   "label": "Project",
+   "default": "Palladium Project",
+   "in_list_view": 0
+  },
+  {
    "fieldname": "location",
    "fieldtype": "Data",
-   "label": "Village / Location",
+   "label": "Village / LC1",
    "reqd": 1,
    "in_list_view": 1
+  },
+  {
+   "fieldname": "sec_loc",
+   "fieldtype": "Section Break",
+   "label": "Administrative Location",
+   "collapsible": 0
+  },
+  {
+   "fieldname": "district",
+   "fieldtype": "Data",
+   "label": "District",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "sub_county",
+   "fieldtype": "Data",
+   "label": "Sub-County",
+   "in_list_view": 0
+  },
+  {
+   "fieldname": "col_loc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "parish",
+   "fieldtype": "Data",
+   "label": "Parish",
+   "in_list_view": 0
+  },
+  {
+   "fieldname": "area_acres",
+   "fieldtype": "Float",
+   "label": "Area (Acres)",
+   "default": "1",
+   "description": "Standard demo size is 1 acre"
   },
   {
    "fieldname": "col_36",

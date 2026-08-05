@@ -4,5 +4,5 @@
 from frappe.model.document import Document
 
 
-class FarmerTrainingEvent(Document):
+class MaterialReceiptItem(Document):
 	pass

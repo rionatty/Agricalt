@@ -2,12 +2,12 @@ from . import __version__ as app_version
 
 app_name = "agriculture"
 app_title = "Agriculture"
-app_publisher = "Frappe"
-app_description = "Agriculture"
+app_publisher = "AgriTheory"
+app_description = "Agriculture field-operations system for Syova Seeds (CyveTech)"
 app_icon = "🌱"
 app_color = "green"
 app_email = "pandikunta@frappe.io"
-app_license = "MIT"
+app_license = "GNU General Public License v3.0"
 
 required_apps = ["erpnext"]
 
@@ -108,6 +108,8 @@ permission_query_conditions = {
 	"Order Collection": "agriculture.agriculture.permissions.order_collection_query",
 	"Promoter Stock Ledger": "agriculture.agriculture.permissions.stock_ledger_query",
 	"Promoter KPI Target": "agriculture.agriculture.permissions.kpi_target_query",
+	"Promoter Task": "agriculture.agriculture.permissions.promoter_task_query",
+	"Material Receipt": "agriculture.agriculture.permissions.material_receipt_query",
 }
 
 has_permission = {
@@ -123,6 +125,8 @@ has_permission = {
 	"Order Collection": "agriculture.agriculture.permissions.order_collection_perm",
 	"Promoter Stock Ledger": "agriculture.agriculture.permissions.stock_ledger_perm",
 	"Promoter KPI Target": "agriculture.agriculture.permissions.kpi_target_perm",
+	"Promoter Task": "agriculture.agriculture.permissions.promoter_task_perm",
+	"Material Receipt": "agriculture.agriculture.permissions.material_receipt_perm",
 }
 
 # DocType Class
@@ -140,6 +144,9 @@ has_permission = {
 doc_events = {
 	"Order Collection": {
 		"on_update": "agriculture.agriculture.sap_integration.on_order_update",
+	},
+	"Demo Garden Material Request": {
+		"on_update": "agriculture.agriculture.sap_integration.on_material_request_update",
 	},
 }
 

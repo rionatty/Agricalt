@@ -23,23 +23,30 @@ class OrderCollection(Document):
 		if self.status != "Draft":
 			frappe.throw(_("Only Draft orders can be submitted"))
 		frappe.db.set_value("Order Collection", self.name, "status", "Submitted")
+		# Status is changed via db.set_value, which bypasses the on_update
+		# doc-event the SAP auto-push hook is wired to. Reflect the new status
+		# in-memory and invoke the hook explicitly so orders/payments push.
+		self.status = "Submitted"
+		from agriculture.agriculture.sap_integration import on_order_update
+		on_order_update(self)
 		return "Submitted"
 
-	@frappe.whitelist()
-	def get_promoter_orders_summary(promoter, from_date, to_date):
-		"""Return total orders collected by a promoter in a date range."""
-		orders = frappe.get_all(
-			"Order Collection",
-			filters={
-				"promoter": promoter,
-				"collection_date": ["between", [from_date, to_date]],
-				"status": ["in", ["Submitted", "Processed in ERP"]],
-			},
-			fields=["name", "total_order_value", "payment_amount", "stockist"],
-		)
-		return {
-			"total_orders": len(orders),
-			"total_value": sum(o.total_order_value or 0 for o in orders),
-			"total_payments": sum(o.payment_amount or 0 for o in orders),
-			"orders": orders,
-		}
+
+@frappe.whitelist()
+def get_promoter_orders_summary(promoter, from_date, to_date):
+	"""Return total orders collected by a promoter in a date range."""
+	orders = frappe.get_all(
+		"Order Collection",
+		filters={
+			"promoter": promoter,
+			"collection_date": ["between", [from_date, to_date]],
+			"status": ["in", ["Submitted", "Processed in ERP"]],
+		},
+		fields=["name", "total_order_value", "payment_amount", "stockist"],
+	)
+	return {
+		"total_orders": len(orders),
+		"total_value": sum(o.total_order_value or 0 for o in orders),
+		"total_payments": sum(o.payment_amount or 0 for o in orders),
+		"orders": orders,
+	}

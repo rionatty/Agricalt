@@ -6,20 +6,40 @@
  "engine": "InnoDB",
  "editable_grid": 1,
  "field_order": [
+  "day_of_week",
   "planned_date",
   "activity_type",
+  "departure_place",
   "farmer",
   "farmer_name",
   "location",
-  "purpose"
+  "approx_kms",
+  "purpose",
+  "halt_place",
+  "execution_status",
+  "actual_date",
+  "field_activity_log"
  ],
  "fields": [
+  {
+   "fieldname": "day_of_week",
+   "fieldtype": "Select",
+   "label": "Day",
+   "options": "\nMON\nTUE\nWED\nTHU\nFRI\nSAT\nSUN",
+   "in_list_view": 1
+  },
   {
    "fieldname": "planned_date",
    "fieldtype": "Date",
    "label": "Date",
    "reqd": 1,
    "in_list_view": 1
+  },
+  {
+   "fieldname": "departure_place",
+   "fieldtype": "Data",
+   "label": "Departure Place",
+   "in_list_view": 0
   },
   {
    "fieldname": "activity_type",
@@ -46,12 +66,48 @@
   {
    "fieldname": "location",
    "fieldtype": "Data",
-   "label": "Location"
+   "label": "Planned Places to Visit",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "approx_kms",
+   "fieldtype": "Float",
+   "label": "Approx (KMs)",
+   "in_list_view": 0
   },
   {
    "fieldname": "purpose",
    "fieldtype": "Small Text",
-   "label": "Purpose"
+   "label": "Purpose",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "halt_place",
+   "fieldtype": "Data",
+   "label": "Halt Place",
+   "in_list_view": 0
+  },
+  {
+   "fieldname": "execution_status",
+   "fieldtype": "Select",
+   "label": "Execution",
+   "options": "Planned\nDone\nMissed",
+   "default": "Planned",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "actual_date",
+   "fieldtype": "Date",
+   "label": "Actual Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "field_activity_log",
+   "fieldtype": "Link",
+   "label": "Actual Activity Log",
+   "options": "Field Activity Log",
+   "read_only": 1
   }
  ],
  "istable": 1,

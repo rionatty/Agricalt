@@ -1,0 +1,32 @@
+{
+ "creation": "2026-06-07 00:00:00",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2026-06-07 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Agriculture",
+ "name": "agriculture-dashboard",
+ "owner": "Administrator",
+ "page_name": "agriculture-dashboard",
+ "standard": "Yes",
+ "system_page": 0,
+ "title": "Agriculture Dashboard",
+ "roles": [
+  {
+   "role": "Agriculture Manager"
+  },
+  {
+   "role": "Agriculture User"
+  },
+  {
+   "role": "Marketing Manager"
+  },
+  {
+   "role": "Store Manager"
+  },
+  {
+   "role": "System Manager"
+  }
+ ]
+}

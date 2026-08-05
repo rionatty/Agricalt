@@ -23,9 +23,15 @@ def setup_agriculture():
 	if frappe.get_all("Agriculture Analysis Criteria"):
 		# data already seeded; still ensure permissions are in place
 		add_additional_permissions()
+		add_store_manager_permissions()
+		grant_oversight_permissions()
+		grant_system_manager_permissions()
 		return
 	create_agriculture_data()
 	add_additional_permissions()
+	add_store_manager_permissions()
+	grant_oversight_permissions()
+	grant_system_manager_permissions()
 
 
 def create_roles():
@@ -484,34 +490,26 @@ def create_agriculture_data():
 	]
 	insert_record(records)
 
-def add_additional_permissions():
-	frappe.get_doc({
-		"doctype": "Custom DocPerm",
-		"parent": "Location",
-		"role": "Agriculture Manager",
-		"create": 1,
-		"delete": 1,
-		"email": 1,
-		"export": 1,
-		"print": 1,
-		"read": 1,
-		"report": 1,
-		"share": 1,
-		"write": 1
-	}).insert()
+def _ensure_docperm(parent, role, perms):
+	"""Insert a Custom DocPerm for (parent, role) only if one doesn't exist.
 
-	frappe.get_doc({
-		"doctype": "Custom DocPerm",
-		"parent": "Location",
-		"role": "Agriculture User",
-		"email": 1,
-		"export": 1,
-		"print": 1,
-		"read": 1,
-		"report": 1,	
-		"share": 1,
-		"write": 1
-	}).insert()
+	Guards against duplicate permission rows when setup runs more than once
+	(e.g. re-install or a re-run of after_install on an already-seeded site).
+	"""
+	if frappe.db.exists("Custom DocPerm", {"parent": parent, "role": role}):
+		return
+	frappe.get_doc(dict(doctype="Custom DocPerm", parent=parent, role=role, **perms)).insert()
+
+
+def add_additional_permissions():
+	_ensure_docperm("Location", "Agriculture Manager", {
+		"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1,
+		"read": 1, "report": 1, "share": 1, "write": 1,
+	})
+	_ensure_docperm("Location", "Agriculture User", {
+		"email": 1, "export": 1, "print": 1, "read": 1, "report": 1,
+		"share": 1, "write": 1,
+	})
 
 def add_store_manager_permissions():
 	"""Grant Store Manager read + write access to Demo Garden Material Request."""
@@ -523,6 +521,41 @@ def add_store_manager_permissions():
 		"role": "Store Manager",
 		"read": 1, "write": 1, "email": 1, "print": 1,
 	}).insert()
+
+
+OVERSIGHT_ROLES = ["Marketing Manager", "Store Manager"]
+OVERSIGHT_DOCTYPES = [
+	"Field Activity Log", "Activity Plan", "Demo Garden",
+	"Demo Garden Material Request", "Demo Garden Planting Record",
+	"Demo Garden Input Application", "Demo Garden Monitoring Visit",
+	"Demo Garden Field Day", "Farmer Training Event", "Order Collection",
+	"Promoter Stock Ledger", "Promoter KPI Target", "Field Promoter", "Farmer",
+]
+
+
+def grant_oversight_permissions():
+	"""Marketing Manager & Store Manager are treated as see-all roles in
+	permissions.py (FULL_ACCESS_ROLES). Give them read-level DocPerms so that
+	row-level visibility actually resolves to records they can open. Existing
+	stronger perms (e.g. Store Manager write on Material Request) are preserved
+	because _ensure_docperm skips a (doctype, role) that already exists."""
+	read_perms = {"read": 1, "report": 1, "export": 1, "print": 1, "email": 1, "share": 1}
+	for dt in OVERSIGHT_DOCTYPES:
+		for role in OVERSIGHT_ROLES:
+			_ensure_docperm(dt, role, read_perms)
+
+
+def grant_system_manager_permissions():
+	"""System Manager was omitted from the custom doctypes' permissions, so a
+	System-Manager admin who is not the literal Administrator has no create/edit
+	access (the '+ Add' button disappears). Ensure the admin role can fully
+	manage every Agriculture doctype."""
+	full = {
+		"read": 1, "write": 1, "create": 1, "delete": 1,
+		"report": 1, "print": 1, "export": 1, "email": 1, "share": 1,
+	}
+	for dt in OVERSIGHT_DOCTYPES + ["Promoter Task"]:
+		_ensure_docperm(dt, "System Manager", full)
 
 
 def cleanup_role_and_permissions():

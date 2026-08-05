@@ -19,6 +19,8 @@ class DemoGardenMaterialRequest(Document):
 		frappe.db.set_value("Demo Garden Material Request", self.name, "status", "Submitted")
 		frappe.db.set_value("Demo Garden", self.demo_garden, "status", "Material Requested")
 		self._notify_supervisor()
+		self.status = "Submitted"
+		self._trigger_sap_sync()
 		return "Submitted"
 
 	@frappe.whitelist()
@@ -51,6 +53,9 @@ class DemoGardenMaterialRequest(Document):
 			"issue_date": today(),
 		})
 		frappe.db.commit()
+		self.status = "Issued"
+		self.issue_date = today()
+		self._trigger_sap_sync()
 		return "Issued"
 
 	@frappe.whitelist()
@@ -65,6 +70,9 @@ class DemoGardenMaterialRequest(Document):
 		frappe.db.set_value("Demo Garden", self.demo_garden, "status", "Material Received")
 		frappe.db.commit()
 		self._post_receipt_to_ledger()
+		self.status = "Received"
+		self.promoter_receipt_date = today()
+		self._trigger_sap_sync()
 		return "Received"
 
 	def _post_receipt_to_ledger(self):
@@ -90,6 +98,18 @@ class DemoGardenMaterialRequest(Document):
 				reference_doctype="Demo Garden Material Request",
 				reference_name=self.name,
 			)
+
+	def _trigger_sap_sync(self):
+		"""Invoke the SAP B1 auto-push hook explicitly.
+
+		Status transitions in this controller use frappe.db.set_value, which
+		bypasses the on_update doc-event the SAP hook is wired to in hooks.py.
+		Calling it directly (with self.status already updated in-memory) ensures
+		the Stock Transfer Request / Goods Issue / Goods Receipt push fires.
+		The hook itself no-ops when SAP B1 is disabled and is idempotent.
+		"""
+		from agriculture.agriculture.sap_integration import on_material_request_update
+		on_material_request_update(self)
 
 	def _notify_supervisor(self):
 		promoter = frappe.get_doc("Field Promoter", self.promoter)

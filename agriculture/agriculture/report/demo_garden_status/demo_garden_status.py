@@ -23,6 +23,8 @@ def get_columns():
 		{"label": _("Planting Date"), "fieldname": "planting_date", "fieldtype": "Date", "width": 110},
 		{"label": _("Exp. Harvest"), "fieldname": "expected_harvest_date", "fieldtype": "Date", "width": 110},
 		{"label": _("Days to Harvest"), "fieldname": "days_to_harvest", "fieldtype": "Int", "width": 120},
+		{"label": _("Field Day"), "fieldname": "field_day_date", "fieldtype": "Date", "width": 105},
+		{"label": _("Cycle Complete?"), "fieldname": "cycle_complete", "fieldtype": "Data", "width": 120},
 		{"label": _("Flag"), "fieldname": "flag", "fieldtype": "Data", "width": 220},
 	]
 
@@ -39,9 +41,30 @@ def get_data(filters):
 		"location", "status", "planting_date", "expected_harvest_date",
 	], order_by="expected_harvest_date asc")
 
+	# Build a lookup: demo_garden → earliest field day date
+	field_days = frappe.get_all(
+		"Demo Garden Field Day",
+		filters={"demo_garden": ["in", [g.name for g in gardens]]},
+		fields=["demo_garden", "field_day_date"],
+	)
+	field_day_map = {}
+	for fd in field_days:
+		existing = field_day_map.get(fd.demo_garden)
+		if not existing or fd.field_day_date < existing:
+			field_day_map[fd.demo_garden] = fd.field_day_date
+
 	rows = []
 	for g in gardens:
 		days = date_diff(g.expected_harvest_date, today()) if g.expected_harvest_date else None
+		fd_date = field_day_map.get(g.name)
+
+		# Cycle complete = garden is registered AND a field day has been recorded
+		if g.status in ("Field Day Done", "Completed"):
+			cycle_complete = "✔ Complete"
+		elif fd_date:
+			cycle_complete = "✔ Field day recorded"
+		else:
+			cycle_complete = "✗ Incomplete"
 
 		flag = ""
 		# Materials received but not planted
@@ -62,8 +85,14 @@ def get_data(filters):
 			                             {"demo_garden": g.name, "status": "Submitted"})
 			if not has_input and not flag:
 				flag = "⚠ Planted, no inputs applied"
+		# Registered garden with no field day and past expected harvest
+		if not fd_date and g.status not in ("Field Day Done", "Completed") and days is not None and days < 0:
+			if not flag:
+				flag = "🔴 No field day — cycle incomplete"
 
 		g["days_to_harvest"] = days
+		g["field_day_date"] = fd_date
+		g["cycle_complete"] = cycle_complete
 		g["flag"] = flag
 		rows.append(g)
 

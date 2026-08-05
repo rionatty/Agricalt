@@ -26,5 +26,11 @@ frappe.ui.form.on("Activity Plan", {
 				);
 			}, __("Actions"));
 		}
+
+		if (status === "Rejected") {
+			frm.add_custom_button(__("Revise"), () => {
+				frm.call("revise").then(() => frm.reload_doc());
+			}).addClass("btn-primary agri-btn-main");
+		}
 	},
 });

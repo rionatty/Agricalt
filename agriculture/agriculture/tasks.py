@@ -120,38 +120,82 @@ def alert_unapplied_inputs():
 
 
 # ─── 4. Planned activity not executed (NEW) ──────────────────────────────────
+def _find_actual_log(promoter, item, window_start, check_date):
+	"""Find an unlinked Field Activity Log that fulfils a planned item.
+
+	A planned visit to a specific Farmer is fulfilled by an actual visit to that
+	same farmer any day from the plan start up to the check date (so a visit done
+	off the planned day still counts); otherwise match by activity type on the
+	planned day.
+	"""
+	common = {"promoter": promoter, "activity_plan": ["is", "not set"]}
+	if item.get("farmer"):
+		rows = frappe.get_all("Field Activity Log", filters=dict(common,
+			farmer=item.farmer, activity_type=item.activity_type,
+			activity_date=["between", [window_start, check_date]]), pluck="name", limit=1)
+	else:
+		rows = frappe.get_all("Field Activity Log", filters=dict(common,
+			activity_type=item.activity_type, activity_date=check_date), pluck="name", limit=1)
+	return rows[0] if rows else None
+
+
 def alert_planned_not_executed():
 	if not _settings().plan_vs_actual_check:
 		return
-	# Look at yesterday's planned activities and check for a matching log
+	# Reconcile yesterday's planned activities against the actual activity logs.
 	check_date = add_days(today(), -1)
 
 	plans = frappe.get_all(
 		"Activity Plan",
 		filters={"status": "Approved", "from_date": ["<=", check_date], "to_date": [">=", check_date]},
-		fields=["name", "promoter"],
+		fields=["name", "promoter", "from_date"],
 	)
 	for plan in plans:
 		planned_items = frappe.get_all(
 			"Activity Plan Item",
 			filters={"parent": plan.name, "planned_date": check_date},
-			fields=["activity_type"],
+			fields=["name", "activity_type", "farmer", "execution_status"],
 		)
-		if not planned_items:
-			continue
-		actual = frappe.db.count(
-			"Field Activity Log",
-			{"promoter": plan.promoter, "activity_date": check_date},
-		)
-		if actual >= len(planned_items):
-			continue
-		_notify(
-			[_supervisor_email(plan.promoter)],
-			_("Planned Activities Not Fully Executed — {0}").format(check_date),
-			_("Promoter logged {0} of {1} planned activities for {2} (plan {3}).").format(
-				actual, len(planned_items), check_date, plan.name),
-			"Activity Plan", plan.name,
-		)
+		missed = []
+		for item in planned_items:
+			if item.execution_status == "Done":
+				continue
+			log = _find_actual_log(plan.promoter, item, plan.from_date, check_date)
+			if log:
+				frappe.db.set_value("Activity Plan Item", item.name, {
+					"execution_status": "Done",
+					"actual_date": check_date,
+					"field_activity_log": log,
+				})
+				frappe.db.set_value("Field Activity Log", log,
+					{"activity_plan": plan.name, "is_planned": 1})
+				from agriculture.agriculture.doctype.activity_plan.activity_plan import (
+					complete_linked_task,
+				)
+				complete_linked_task(item.name, check_date)
+			else:
+				frappe.db.set_value("Activity Plan Item", item.name, "execution_status", "Missed")
+				missed.append(item.activity_type)
+
+		# Ad-hoc visits done that day that were not part of any plan ("off-plan")
+		off_plan = frappe.db.count("Field Activity Log", {
+			"promoter": plan.promoter,
+			"activity_date": check_date,
+			"activity_plan": ["is", "not set"],
+		})
+
+		if missed or off_plan:
+			parts = []
+			if missed:
+				parts.append(_("missed {0} planned ({1})").format(len(missed), ", ".join(missed)))
+			if off_plan:
+				parts.append(_("{0} off-plan visit(s)").format(off_plan))
+			_notify(
+				[_supervisor_email(plan.promoter), _promoter_email(plan.promoter)],
+				_("Plan vs Actual — {0}").format(check_date),
+				_("Promoter on {0} (plan {1}): {2}.").format(check_date, plan.name, "; ".join(parts)),
+				"Activity Plan", plan.name,
+			)
 
 
 # ─── 5. Weekly plan not submitted ────────────────────────────────────────────
@@ -172,12 +216,17 @@ def alert_missing_weekly_plans():
 	                        fields=["name", "promoter_name", "email_id"]):
 		exists = frappe.get_all("Activity Plan", filters={
 			"promoter": p.name, "from_date": [">=", week_start],
+			"plan_type": "Weekly",
 			"status": ["in", ["Submitted", "Approved"]],
 		})
-		if exists or not p.email_id:
+		if exists:
+			continue
+		sup_email = _supervisor_email(p.name)
+		recipients = [r for r in [p.email_id, sup_email] if r]
+		if not recipients:
 			continue
 		_notify(
-			[p.email_id],
+			recipients,
 			_("Reminder: Submit Your Weekly Activity Plan"),
 			_("Dear {0}, you have not submitted an activity plan for {1} to {2}. "
 			  "Please submit it as soon as possible.").format(p.promoter_name, week_start, week_end),

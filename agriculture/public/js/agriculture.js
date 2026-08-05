@@ -12,6 +12,8 @@ const STATUS_COLORS = {
 	"Rejected":           "red",
 	"Cancelled":          "red",
 	"Completed":          "green",
+	"Open":               "orange",
+	"In Progress":        "blue",
 	// Material / dispatch
 	"Issued":             "orange",
 	"Received":           "green",
@@ -43,7 +45,7 @@ const AGRI_DOCTYPES = [
 	"Demo Garden Input Application", "Demo Garden Monitoring Visit",
 	"Demo Garden Field Day", "Farmer Training Event",
 	"Order Collection", "Promoter Stock Ledger", "Promoter KPI Target",
-	"Field Promoter", "SAP B1 Sync Log",
+	"Promoter Task", "Field Promoter", "SAP B1 Sync Log",
 ];
 
 AGRI_DOCTYPES.forEach((dt) => {

@@ -98,6 +98,17 @@
    "type": "Link"
   },
   {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Tasks",
+   "link_count": 0,
+   "link_to": "Promoter Task",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
    "hidden": 0,
    "is_query_report": 0,
    "label": "Orders & Payments",
@@ -145,6 +156,18 @@
    "link_type": "DocType",
    "onboard": 1,
    "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Material Receipt",
+   "link_count": 0,
+   "link_to": "Material Receipt",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link",
+   "description": "Stock received by promoter — posts to Promoter Stock Ledger"
   },
   {
    "dependencies": "",
@@ -548,7 +571,7 @@
    "type": "Link"
   }
  ],
- "modified": "2026-05-31 12:00:00.000000",
+ "modified": "2026-06-09 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "Agriculture",
  "name": "Agriculture",
