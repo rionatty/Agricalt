@@ -1,174 +1,235 @@
 /* ============================================================
-   Agriculture App — Syova Seeds Theme
-   Deep teal primary with harvest-gold accents
+   Agriculture App — Syova Seeds
+   SAP Business One navy theme
+
+   Every custom property referenced below is defined in :root.
+   Do not introduce a var() without adding it there — a
+   declaration that references an undefined custom property is
+   silently discarded by the browser and the rule renders as
+   nothing. That is what broke the previous revision.
    ============================================================ */
 
-/* ── Palette ────────────────────────────────────────────────── */
 :root {
-  --agri-primary:      #00695C;   /* deep teal — primary */
-  --agri-primary-mid:  #00897B;   /* mid teal */
-  --agri-primary-light:#26A69A;   /* vivid teal */
-  --agri-pale:         #E0F2F1;   /* pale teal wash — section backgrounds */
-  --agri-border:       #B2DFDB;   /* soft teal border */
-  --agri-gold:         #F57F17;   /* harvest gold — accents / warnings */
-  --agri-gold-light:   #FFB300;   /* bright gold */
-  --agri-earth:        #4E342E;   /* earth brown */
-  --agri-sky:          #E3F2FD;   /* sky blue — read-only fields */
-  --agri-radius:       10px;
-  --agri-shadow:       0 2px 8px rgba(0,105,92,.12);
+  /* Chrome — window title bar, module sidebar */
+  --agri-primary-dark:   #0A2540;
+  --agri-primary:        #14395E;
+  --agri-primary-mid:    #2A5A8C;
+  --agri-primary-light:  #3B78B5;
+
+  /* Surfaces */
+  --agri-surface:        #FFFFFF;
+  --agri-pale:           #EEF3F9;
+  --agri-grid-header:    #DCE4EF;
+  --agri-readonly:       #EDF1F7;
+  --agri-selected:       #D6E4F7;
+
+  /* Borders */
+  --agri-border:         #C3D0E0;
+  --agri-border-strong:  #7E93AD;
+
+  /* Interactive */
+  --agri-accent:         #0A6ED1;
+  --agri-link:           #0B5CAD;
+  --agri-focus-on-dark:  #7FB3F0;
+
+  /* Highlight — text-legible amber for warning states */
+  --agri-amber-text:     #B45309;
+
+  /* Text */
+  --agri-ink:            #1A2733;
+  --agri-ink-muted:      #546678;
+  --agri-on-primary:     #FFFFFF;
+  --agri-on-primary-dim: #B6C9E0;
+
+  /* Status */
+  --agri-success:        #256F3A;
+  --agri-danger:         #A62B25;
+
+  /* Geometry — B1 is dense and square, not rounded */
+  --agri-radius:         4px;
+  --agri-radius-sm:      3px;
+  --agri-shadow:         0 1px 3px rgba(10,37,64,.14);
+  --agri-shadow-lg:      0 6px 16px rgba(10,37,64,.22);
 }
 
-/* ── Main action buttons — teal with gold hover ─────────────── */
+/* ── Main action buttons ─────────────────────────────────────
+   Client scripts tag primary buttons with `btn-success
+   agri-btn-main`, so the btn-success selector must be beaten. */
 .agri-btn-main,
-.agri-btn-main:hover,
 .agri-btn-main:focus,
 .btn-success.agri-btn-main {
-  background: linear-gradient(135deg, var(--agri-primary) 0%, var(--agri-primary-mid) 100%) !important;
-  border-color: var(--agri-primary) !important;
-  color: #fff !important;
+  background: var(--agri-primary) !important;
+  border: 1px solid var(--agri-primary-dark) !important;
+  color: var(--agri-on-primary) !important;
   font-weight: 600 !important;
   border-radius: var(--agri-radius-sm) !important;
-  letter-spacing: .3px;
-  box-shadow: 0 2px 6px rgba(0,105,92,.35) !important;
-  transition: all .2s ease !important;
+  letter-spacing: .2px;
+  box-shadow: var(--agri-shadow) !important;
+  transition: background .15s ease, box-shadow .15s ease !important;
 }
-.agri-btn-main:hover {
-  background: linear-gradient(135deg, var(--agri-gold) 0%, var(--agri-gold-light) 100%) !important;
-  border-color: var(--agri-gold) !important;
-  color: #fff !important;
-  box-shadow: 0 4px 14px rgba(245,127,23,.45) !important;
-  transform: translateY(-1px) !important;
+.agri-btn-main:hover,
+.btn-success.agri-btn-main:hover {
+  background: var(--agri-primary-mid) !important;
+  border-color: var(--agri-primary-dark) !important;
+  color: var(--agri-on-primary) !important;
+  box-shadow: var(--agri-shadow-lg) !important;
 }
-
-/* ── Section breaks ─────────────────────────────────────────── */
-.form-section > .section-head {
-  color: var(--agri-primary) !important;
-  font-weight: 700 !important;
-  font-size: 13px !important;
-  text-transform: uppercase;
-  letter-spacing: .6px;
-  border-left: 4px solid var(--agri-gold) !important;
-  padding-left: 10px !important;
-  margin-bottom: 8px;
+.agri-btn-main:focus-visible {
+  outline: 2px solid var(--agri-accent) !important;
+  outline-offset: 1px;
 }
 
+/* ── Page / form header banner ───────────────────────────────
+   The B1 window title bar: flat dark navy, white text. */
+.page-head {
+  background: var(--agri-primary-dark) !important;
+  border-bottom: 2px solid var(--agri-primary-mid) !important;
+}
+.page-title .title-text,
+.page-head .title-text {
+  color: var(--agri-on-primary) !important;
+  font-weight: 600 !important;
+}
+.page-head .breadcrumb-container a,
+.page-head .breadcrumb-container .breadcrumb-item {
+  color: var(--agri-on-primary-dim) !important;
+}
+.page-head .breadcrumb-container a:hover {
+  color: var(--agri-on-primary) !important;
+}
+.page-head .btn-default,
+.page-head .btn-secondary {
+  background: transparent !important;
+  border: 1px solid var(--agri-primary-light) !important;
+  color: var(--agri-on-primary) !important;
+}
+.page-head .btn-default:hover,
+.page-head .btn-secondary:hover {
+  background: var(--agri-primary-mid) !important;
+}
+.page-head a:focus-visible,
+.page-head .btn:focus-visible {
+  outline: 2px solid var(--agri-focus-on-dark) !important;
+  outline-offset: 1px;
+}
+
+/* ── Section breaks — the B1 form title bar ──────────────────── */
 .form-section {
   border: 1px solid var(--agri-border) !important;
   border-radius: var(--agri-radius) !important;
-  padding: 16px 18px 10px !important;
-  margin-bottom: 18px !important;
-  background: #fff !important;
+  padding: 14px 16px 8px !important;
+  margin-bottom: 14px !important;
+  background: var(--agri-surface) !important;
   box-shadow: var(--agri-shadow) !important;
 }
-.form-section .section-head,
-.form-section > .section-head {
-  color: var(--agri-green-dark) !important;
+.form-section > .section-head,
+.form-section .section-head {
+  color: var(--agri-primary) !important;
   font-weight: 700 !important;
   font-size: 12.5px !important;
   text-transform: uppercase;
-  letter-spacing: .7px;
-  border-left: 4px solid var(--agri-green-light) !important;
-  padding-left: 10px !important;
-  margin-bottom: 10px;
+  letter-spacing: .6px;
+  border-left: 3px solid var(--agri-primary-mid) !important;
+  padding-left: 9px !important;
+  margin-bottom: 9px;
 }
 
 /* ── Tab strip ───────────────────────────────────────────────── */
 .form-tabs .nav-tabs .nav-link.active {
   color: var(--agri-primary) !important;
-  border-bottom: 3px solid var(--agri-gold) !important;
+  border-bottom: 3px solid var(--agri-accent) !important;
   font-weight: 700 !important;
 }
 .form-tabs .nav-tabs .nav-link:hover {
   color: var(--agri-primary-mid) !important;
 }
 
-/* ── Mandatory field star ────────────────────────────────────── */
+/* ── Fields ──────────────────────────────────────────────────── */
 .reqd .label-area::after,
 .reqd.control-label::after {
-  color: var(--agri-gold) !important;
+  color: var(--agri-danger) !important;
 }
-
-/* Read-only fields — subtle sky wash */
 .control-input.read-only-input,
 .form-control[readonly]:not([disabled]),
 .like-disabled-input.read-only-value {
-  background: var(--agri-sky) !important;
-  border-color: #BBDEFB !important;
-  color: #1565C0 !important;
+  background: var(--agri-readonly) !important;
+  border-color: var(--agri-border-strong) !important;
+  color: var(--agri-ink) !important;
+}
+.form-control:focus {
+  border-color: var(--agri-accent) !important;
+  box-shadow: 0 0 0 3px rgba(10,110,209,.18) !important;
 }
 
-/* ── Page / form header banner ───────────────────────────────── */
-.page-head {
-  background: linear-gradient(135deg, #004D40 0%, var(--agri-primary) 55%, var(--agri-primary-mid) 100%) !important;
-}
-.page-title .title-text,
-.page-head .title-text {
-  color: #fff !important;
-  text-shadow: 0 1px 3px rgba(0,0,0,.25);
-}
-.page-head .breadcrumb-container a,
-.page-head .breadcrumb-container .breadcrumb-item {
-  color: rgba(255,255,255,.85) !important;
-}
-
-/* ── Status badges ──────────────────────────────────────────── */
+/* ── Status badges ───────────────────────────────────────────── */
 .indicator-pill.gray, .indicator-pill.grey,
 .indicator-pill[data-color="gray"], .indicator-pill[data-color="grey"] {
-  background: #f0f0f0 !important; color: #555 !important;
+  background: #EEF1F4 !important; color: var(--agri-ink-muted) !important;
 }
 .indicator-pill.green, .indicator-pill[data-color="green"] {
+  background: #E3F1E7 !important; color: var(--agri-success) !important;
+}
+.indicator-pill.blue, .indicator-pill[data-color="blue"] {
   background: var(--agri-pale) !important;
   color: var(--agri-primary) !important;
   border: 1px solid var(--agri-border) !important;
 }
-.indicator-pill.blue, .indicator-pill[data-color="blue"] {
-  background: #E3F2FD !important; color: #1565C0 !important;
-}
 .indicator-pill.red, .indicator-pill[data-color="red"] {
-  background: #FFEBEE !important; color: #C62828 !important;
+  background: #FBEAE9 !important; color: var(--agri-danger) !important;
 }
 .indicator-pill.orange, .indicator-pill[data-color="orange"] {
-  background: #FFF3E0 !important; color: #E65100 !important;
+  background: #FDF2DC !important; color: var(--agri-amber-text) !important;
 }
 .indicator-pill.yellow, .indicator-pill[data-color="yellow"] {
-  background: #FFFDE7 !important; color: #F57F17 !important;
+  background: #FDF6E3 !important; color: var(--agri-amber-text) !important;
 }
 .indicator-pill.purple, .indicator-pill[data-color="purple"] {
-  background: #F3E5F5 !important; color: #6A1B9A !important;
+  background: #EFE7F6 !important; color: #5B3A8E !important;
 }
 .indicator-pill.cyan, .indicator-pill[data-color="cyan"] {
-  background: var(--agri-pale) !important; color: var(--agri-primary) !important;
+  background: var(--agri-pale) !important; color: var(--agri-primary-mid) !important;
 }
 
-/* ── Child table (grid) ─────────────────────────────────────── */
+/* ── Child table (grid) — B1 grid: light header, dark ink ────── */
 .grid-heading-row .grid-row-head {
-  background: linear-gradient(90deg, #004D40 0%, var(--agri-primary-mid) 100%) !important;
-  color: #fff !important;
+  background: var(--agri-grid-header) !important;
+  color: var(--agri-ink) !important;
   font-weight: 700 !important;
+  border-bottom: 1px solid var(--agri-border-strong) !important;
   border-radius: var(--agri-radius-sm) var(--agri-radius-sm) 0 0 !important;
 }
 .grid-heading-row .col.grid-col,
 .grid-heading-row .static-area {
-  color: #fff !important;
-  border-right: 1px solid rgba(255,255,255,.18) !important;
+  color: var(--agri-ink) !important;
+  border-right: 1px solid var(--agri-border) !important;
 }
 .grid-body .rows .grid-row:nth-child(even) .data-row {
   background: var(--agri-pale) !important;
 }
 .grid-body .rows .grid-row:hover .data-row {
-  background: var(--agri-border) !important;
+  background: var(--agri-selected) !important;
 }
 .btn.grid-add-row {
   background: var(--agri-pale) !important;
-  color: var(--agri-primary) !important;
-  border: 1px dashed var(--agri-primary-light) !important;
+  color: var(--agri-link) !important;
+  border: 1px dashed var(--agri-border-strong) !important;
   font-weight: 600 !important;
   border-radius: var(--agri-radius-sm) !important;
 }
 .btn.grid-add-row:hover {
-  background: var(--agri-border) !important;
-  border-color: var(--agri-gold) !important;
-  color: var(--agri-gold) !important;
+  background: var(--agri-selected) !important;
+  border-color: var(--agri-accent) !important;
+  color: var(--agri-accent) !important;
+}
+
+/* ── List view rows ──────────────────────────────────────────── */
+.list-row-head {
+  background: var(--agri-grid-header) !important;
+  color: var(--agri-ink) !important;
+  border-bottom: 1px solid var(--agri-border-strong) !important;
+}
+.list-row-container:hover {
+  background: var(--agri-pale) !important;
 }
 
 /* ── Sidebar ─────────────────────────────────────────────────── */
@@ -179,40 +240,48 @@
 .sidebar-item:hover > .sidebar-item-label {
   color: var(--agri-primary-mid) !important;
 }
+.standard-sidebar-item.selected {
+  background: var(--agri-selected) !important;
+  border-left: 3px solid var(--agri-primary) !important;
+  border-radius: var(--agri-radius-sm);
+}
+.standard-sidebar-item.selected a,
+.standard-sidebar-item.selected .sidebar-item-label {
+  color: var(--agri-primary) !important;
+  font-weight: 600 !important;
+}
 
 /* ── Workspace number cards ──────────────────────────────────── */
 .widget.number-widget-box {
-  border-top: 4px solid var(--agri-gold) !important;
+  border: 1px solid var(--agri-border) !important;
+  border-top: 3px solid var(--agri-primary-mid) !important;
   border-radius: var(--agri-radius) !important;
   box-shadow: var(--agri-shadow) !important;
   transition: transform .15s ease, box-shadow .15s ease !important;
 }
 .widget.number-widget-box:hover {
-  transform: translateY(-3px) !important;
+  transform: translateY(-2px) !important;
   box-shadow: var(--agri-shadow-lg) !important;
 }
 .widget.number-widget-box .widget-head .widget-label .widget-title {
-  color: var(--agri-primary) !important;
+  color: var(--agri-ink-muted) !important;
   font-weight: 700 !important;
   text-transform: uppercase;
   letter-spacing: .4px;
   font-size: 11.5px !important;
 }
 .widget.number-widget-box .number-card-number,
-.widget.number-widget-box .widget-content .number {
-  color: var(--agri-green) !important;
-  font-weight: 800 !important;
-}
+.widget.number-widget-box .widget-content .number,
 .widget.number-widget-box .number {
   color: var(--agri-primary) !important;
   font-weight: 800 !important;
 }
 
-/* ── Workspace section headers ──────────────────────────────── */
+/* ── Workspace section headers ───────────────────────────────── */
 .widget.section-widget .section-header {
-  background: linear-gradient(90deg, var(--agri-pale), #fff) !important;
-  border-left: 4px solid var(--agri-gold) !important;
-  border-radius: 6px !important;
+  background: var(--agri-pale) !important;
+  border-left: 3px solid var(--agri-primary-mid) !important;
+  border-radius: var(--agri-radius-sm) !important;
   padding: 6px 12px !important;
 }
 .widget.section-widget .section-header .section-title {
@@ -220,28 +289,28 @@
   font-weight: 700 !important;
 }
 
-/* ── Workspace shortcut cards ───────────────────────────────── */
+/* ── Workspace shortcut cards ────────────────────────────────── */
 .widget.shortcut-widget-box {
   border: 1px solid var(--agri-border) !important;
-  border-bottom: 3px solid var(--agri-gold) !important;
+  border-bottom: 3px solid var(--agri-primary-mid) !important;
   border-radius: var(--agri-radius) !important;
   box-shadow: var(--agri-shadow) !important;
   transition: transform .15s ease, box-shadow .15s ease !important;
 }
 .widget.shortcut-widget-box:hover {
-  transform: translateY(-3px) !important;
-  box-shadow: 0 8px 20px rgba(0,105,92,.20) !important;
-  border-bottom-color: var(--agri-primary) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: var(--agri-shadow-lg) !important;
+  border-bottom-color: var(--agri-accent) !important;
 }
 .widget.shortcut-widget-box .widget-head .widget-label {
   color: var(--agri-primary) !important;
   font-weight: 600 !important;
 }
 
-/* ── Links card items ───────────────────────────────────────── */
+/* ── Links cards ─────────────────────────────────────────────── */
 .widget.links-widget-box {
   border: 1px solid var(--agri-border) !important;
-  border-top: 3px solid var(--agri-primary-light) !important;
+  border-top: 3px solid var(--agri-primary) !important;
   border-radius: var(--agri-radius) !important;
   box-shadow: var(--agri-shadow) !important;
 }
@@ -254,48 +323,85 @@
 }
 .link-item:hover {
   background: var(--agri-pale) !important;
-  border-radius: 4px !important;
+  border-radius: var(--agri-radius-sm) !important;
 }
-.link-item .link-content {
-  color: var(--agri-primary-mid) !important;
-}
-.link-item:hover { background: var(--agri-green-pale) !important; border-radius: 6px !important; }
 .link-item .link-content,
-.widget .link-item a { color: var(--agri-green-mid) !important; }
-.link-item a:hover { color: var(--agri-green-dark) !important; }
+.widget .link-item a {
+  color: var(--agri-link) !important;
+}
+.link-item a:hover {
+  color: var(--agri-accent) !important;
+  text-decoration: underline;
+}
 
-/* ── Primary / Save button override ─────────────────────────── */
+/* ── Generic buttons ─────────────────────────────────────────── */
 .btn-primary {
   background: var(--agri-primary) !important;
-  border-color: #004D40 !important;
+  border-color: var(--agri-primary-dark) !important;
+  color: var(--agri-on-primary) !important;
 }
 .btn-primary:hover {
-  background: var(--agri-gold) !important;
-  border-color: var(--agri-gold) !important;
+  background: var(--agri-primary-mid) !important;
+  border-color: var(--agri-primary-dark) !important;
 }
-.standard-sidebar-item.selected { background: var(--agri-green-pale) !important; border-radius: 6px; }
-.sidebar-item:hover > .sidebar-item-label { color: var(--agri-green-mid) !important; }
-
-/* ── btn-success (generic) ───────────────────────────────────── */
 .btn-success:not(.agri-btn-main) {
   background: var(--agri-primary-mid) !important;
   border-color: var(--agri-primary) !important;
+  color: var(--agri-on-primary) !important;
+}
+.btn-success:not(.agri-btn-main):hover {
+  background: var(--agri-primary) !important;
 }
 
-/* ── Gold focus ring on inputs ───────────────────────────────── */
-.form-control:focus {
-  border-color: var(--agri-gold-light) !important;
-  box-shadow: 0 0 0 3px rgba(255,179,0,.20) !important;
+/* ── Modals ──────────────────────────────────────────────────── */
+.modal-header {
+  background: var(--agri-primary-dark) !important;
+  border-bottom: 2px solid var(--agri-primary-mid) !important;
+}
+.modal-header .modal-title,
+.modal-header .indicator-pill {
+  color: var(--agri-on-primary) !important;
+}
+.modal-header .btn-modal-close {
+  color: var(--agri-on-primary-dim) !important;
+}
+.modal-header .btn-modal-close:hover {
+  color: var(--agri-on-primary) !important;
 }
 
-/* ── Subtle watermark ────────────────────────────────────────── */
-.form-page::before {
-  content: "🌿";
-  position: fixed;
-  bottom: 24px;
-  right: 28px;
-  font-size: 64px;
-  opacity: .06;
-  pointer-events: none;
-  z-index: 0;
+/* ── Dark theme: drop the light-surface overrides ─────────────
+   Frappe sets data-theme="dark" on <html>. Forcing white
+   backgrounds there would wreck it, so unset the surface
+   rules and keep only the navy chrome. */
+html[data-theme="dark"] .form-section,
+html[data-theme="dark"] .widget.number-widget-box,
+html[data-theme="dark"] .widget.shortcut-widget-box,
+html[data-theme="dark"] .widget.links-widget-box {
+  background: revert !important;
+  border-color: var(--agri-primary-mid) !important;
+}
+html[data-theme="dark"] .grid-heading-row .grid-row-head,
+html[data-theme="dark"] .list-row-head {
+  background: var(--agri-primary) !important;
+  color: var(--agri-on-primary) !important;
+}
+html[data-theme="dark"] .grid-heading-row .col.grid-col,
+html[data-theme="dark"] .grid-heading-row .static-area {
+  color: var(--agri-on-primary) !important;
+}
+html[data-theme="dark"] .grid-body .rows .grid-row:nth-child(even) .data-row,
+html[data-theme="dark"] .grid-body .rows .grid-row:hover .data-row,
+html[data-theme="dark"] .link-item:hover,
+html[data-theme="dark"] .list-row-container:hover,
+html[data-theme="dark"] .standard-sidebar-item.selected {
+  background: rgba(58,120,181,.18) !important;
+}
+html[data-theme="dark"] .form-section > .section-head,
+html[data-theme="dark"] .form-section .section-head,
+html[data-theme="dark"] .widget .widget-title,
+html[data-theme="dark"] .widget.number-widget-box .number,
+html[data-theme="dark"] .link-item .link-content,
+html[data-theme="dark"] .widget .link-item a,
+html[data-theme="dark"] .standard-sidebar-item.selected a {
+  color: var(--agri-focus-on-dark) !important;
 }
