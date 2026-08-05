@@ -126,21 +126,32 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--agri-accent); 
   color: var(--agri-primary) !important;
 }
 
-/* ── Page header banner — flat navy, the B1 title bar ───────── */
-.page-head {
-  background: var(--agri-primary-dark) !important;
+/* ── Page header banner ─────────────────────────────────────────
+   Deliberately LIGHT, not navy. The shell bar above it is already
+   dark; stacking a second dark band reads as heavy, and Fiori's
+   own object-page header is a light bar under a dark shell. It
+   also sidesteps the failure mode that bit the sidebar — painting
+   a container dark and missing a descendant that keeps dark text.
+   Weight comes from the navy title and the accent rule beneath.
+   ─────────────────────────────────────────────────────────────── */
+html:not([data-theme="dark"]) .page-head {
+  background: #FFFFFF !important;
   border-bottom: 2px solid var(--agri-primary-mid) !important;
-  box-shadow: 0 1px 6px rgba(10,37,64,.25) !important;
+  box-shadow: 0 1px 4px rgba(10,37,64,.10) !important;
 }
-.page-head .page-title .title-text,
-.page-head .title-text,
-.page-head .indicator-pill { color: #fff !important; }
-.page-head .breadcrumb-container a,
-.page-head .breadcrumb-container .breadcrumb-item,
-.page-head .breadcrumb-container { color: rgba(255,255,255,.85) !important; }
-.page-head .breadcrumb-container a:hover { color: #fff !important; }
-/* "Not Saved" / status chip stays legible on the navy bar */
-.page-head .indicator-pill { background: rgba(255,255,255,.18) !important; }
+html:not([data-theme="dark"]) .page-head .page-title .title-text,
+html:not([data-theme="dark"]) .page-head .title-text {
+  color: var(--agri-primary) !important;
+  font-weight: 700 !important;
+}
+html:not([data-theme="dark"]) .page-head .breadcrumb-container a,
+html:not([data-theme="dark"]) .page-head .breadcrumb-container .breadcrumb-item,
+html:not([data-theme="dark"]) .page-head .breadcrumb-container {
+  color: var(--agri-ink-muted) !important;
+}
+html:not([data-theme="dark"]) .page-head .breadcrumb-container a:hover {
+  color: var(--agri-link) !important;
+}
 
 /* ── Form layout: section cards ─────────────────────────────── */
 html:not([data-theme="dark"]) .form-page,
@@ -156,17 +167,24 @@ html:not([data-theme="dark"]) .layout-main-section {
   background: #fff !important;
   box-shadow: var(--agri-shadow) !important;
 }
+/* Section heads as filled title bars — B1 labels every block of a form
+   this way, and it gives collapsed sections an obvious hit area. */
 .form-section .section-head,
 .form-section > .section-head {
   color: var(--agri-primary) !important;
   font-weight: 700 !important;
-  font-size: 12.5px !important;
+  font-size: 12px !important;
   text-transform: uppercase;
   letter-spacing: .6px;
+  background: linear-gradient(90deg, var(--agri-pale), transparent) !important;
   border-left: 3px solid var(--agri-primary-mid) !important;
-  padding-left: 9px !important;
-  margin-bottom: 9px;
+  padding: 6px 10px 6px 9px !important;
+  border-radius: 0 var(--agri-radius-sm) var(--agri-radius-sm) 0;
+  margin-bottom: 8px;
 }
+.form-section .section-head:hover { background: var(--agri-pale) !important; }
+/* Unlabelled sections must not render as a stray empty title bar. */
+.form-section .section-head:empty { display: none !important; }
 
 /* ── Tab strip ──────────────────────────────────────────────── */
 .form-tabs .nav-tabs .nav-link {
@@ -180,33 +198,57 @@ html:not([data-theme="dark"]) .layout-main-section {
 }
 .form-tabs .nav-tabs .nav-link:hover { color: var(--agri-primary-mid) !important; }
 
-/* ── Inputs: clean white with a blue focus ring ─────────────── */
+/* ── Inputs: editable vs locked ─────────────────────────────────
+   The biggest readability problem on stock Frappe forms: every
+   input is painted the same grey, so a field you can type in and
+   one you cannot look identical. B1's convention — and the reason
+   its dense forms stay usable — is white means editable, grey
+   means locked. The two rules below are the whole point of this
+   section; keep them adjacent and keep the locked one SECOND so
+   it wins at equal specificity.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Editable */
 html:not([data-theme="dark"]) .form-control,
 html:not([data-theme="dark"]) .input-with-feedback,
-html:not([data-theme="dark"]) .like-disabled-input {
+html:not([data-theme="dark"]) select.form-control,
+html:not([data-theme="dark"]) textarea.form-control,
+html:not([data-theme="dark"]) .awesomplete input {
+  background-color: #FFFFFF !important;
+  border: 1px solid var(--agri-border-strong) !important;
   border-radius: var(--agri-radius-sm) !important;
-  border: 1px solid var(--agri-border) !important;
   transition: border-color .15s ease, box-shadow .15s ease !important;
 }
+
+/* Locked */
+html:not([data-theme="dark"]) .form-control[readonly]:not([disabled]),
+html:not([data-theme="dark"]) .form-control[disabled],
+html:not([data-theme="dark"]) .control-input.read-only-input,
+html:not([data-theme="dark"]) .like-disabled-input,
+html:not([data-theme="dark"]) .like-disabled-input.read-only-value {
+  background-color: var(--agri-readonly) !important;
+  border: 1px solid var(--agri-border) !important;
+  color: var(--agri-ink-muted) !important;
+  cursor: default;
+}
+
 .form-control:focus,
 .input-with-feedback:focus {
   border-color: var(--agri-accent) !important;
   box-shadow: 0 0 0 3px rgba(10,110,209,.18) !important;
 }
-/* Field labels */
-.control-label { color: var(--agri-ink-muted) !important; font-weight: 600 !important; }
+
+/* Field labels — small and quiet so the values carry the eye */
+.control-label {
+  color: var(--agri-ink-muted) !important;
+  font-weight: 600 !important;
+  font-size: 11.5px !important;
+  letter-spacing: .2px;
+  margin-bottom: 3px !important;
+}
 /* Mandatory star */
 .reqd .label-area::after,
 .reqd.control-label::after { color: var(--agri-danger) !important; }
-
-/* Read-only fields — flat grey-blue tint, the B1 locked-field look */
-.control-input.read-only-input,
-.form-control[readonly]:not([disabled]),
-.like-disabled-input.read-only-value {
-  background: var(--agri-readonly) !important;
-  border-color: var(--agri-border-strong) !important;
-  color: var(--agri-ink) !important;
-}
 
 /* ── Child table (grid) header ──
    RULE 3: text colour ONLY. No background, no layout overrides —
@@ -376,6 +418,34 @@ html:not([data-theme="dark"]) .list-row-container:hover {
 .navbar .navbar-home img { filter: drop-shadow(0 0 4px rgba(59,120,181,.5)); }
 a { color: var(--agri-link); }
 a:hover { color: var(--agri-accent); }
+
+/* ============================================================
+   FORM DENSITY
+   ------------------------------------------------------------
+   Field-state colouring lives up in the Inputs section. This
+   block is purely vertical rhythm: B1 fits roughly a third more
+   on a screen than stock Frappe, and most of that difference is
+   section and control padding rather than font size.
+   ============================================================ */
+.form-section {
+  padding: 12px 14px 6px !important;
+  margin-bottom: 10px !important;
+}
+.form-column .frappe-control { margin-bottom: 9px !important; }
+.form-section .section-body { padding-top: 2px !important; }
+
+/* Grid rows: shave the padding, keep the hit area usable. */
+.grid-body .rows .grid-row .data-row .col {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+.grid-body .rows .grid-row .data-row { min-height: 0 !important; }
+
+/* Checkbox rows read as one unit rather than floating text. */
+.frappe-control[data-fieldtype="Check"] .checkbox .label-area {
+  font-weight: 500 !important;
+  color: var(--agri-ink) !important;
+}
 
 /* ============================================================
    B1 SHELL — dark navy sidebar + navbar
