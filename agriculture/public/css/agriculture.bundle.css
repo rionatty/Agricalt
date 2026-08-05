@@ -368,6 +368,118 @@ html:not([data-theme="dark"]) .list-row-container:hover {
 a { color: var(--agri-link); }
 a:hover { color: var(--agri-accent); }
 
+/* ============================================================
+   B1 SHELL — dark navy sidebar + navbar
+   ------------------------------------------------------------
+   This is the block that makes it read as Business One rather
+   than Fiori: B1's signature is the dark module sidebar.
+
+   RULE 3 applies with force here. Forcing a dark background is
+   only safe if EVERY descendant's text and icon colour is set
+   too, or you get the dark-on-dark that bit us on list headers
+   (5ac19bb). Hence the deliberately broad descendant selectors
+   and the --icon-stroke / --icon-fill overrides — Frappe draws
+   sidebar icons as <svg><use>, which ignores `color`.
+
+   Scoped to light mode: dark mode is already dark.
+   To revert, delete this block. Nothing else depends on it.
+   ============================================================ */
+html:not([data-theme="dark"]) .body-sidebar,
+html:not([data-theme="dark"]) .body-sidebar-container,
+html:not([data-theme="dark"]) .desk-sidebar {
+  background: var(--agri-primary) !important;
+  border-right: 1px solid var(--agri-primary-dark) !important;
+}
+
+/* Text: catch every descendant, then re-specialise below. */
+html:not([data-theme="dark"]) .body-sidebar,
+html:not([data-theme="dark"]) .body-sidebar *,
+html:not([data-theme="dark"]) .desk-sidebar,
+html:not([data-theme="dark"]) .desk-sidebar * {
+  color: #E4ECF7 !important;
+  border-color: rgba(255,255,255,.10) !important;
+}
+
+/* Icons are <use> elements — `color` does nothing, these vars do. */
+html:not([data-theme="dark"]) .body-sidebar,
+html:not([data-theme="dark"]) .desk-sidebar {
+  --icon-stroke: #E4ECF7;
+  --icon-fill: transparent;
+}
+html:not([data-theme="dark"]) .body-sidebar .icon use,
+html:not([data-theme="dark"]) .desk-sidebar .icon use {
+  stroke: #E4ECF7 !important;
+}
+
+/* Section captions sit back; item labels come forward. */
+html:not([data-theme="dark"]) .body-sidebar .standard-sidebar-label,
+html:not([data-theme="dark"]) .body-sidebar .sidebar-group-title {
+  color: #9FB6D4 !important;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  font-size: 10.5px !important;
+}
+
+/* Hover + selected — the amber marker bar is straight off B1. */
+html:not([data-theme="dark"]) .body-sidebar .standard-sidebar-item:hover,
+html:not([data-theme="dark"]) .body-sidebar .sidebar-item-container:hover {
+  background: rgba(255,255,255,.08) !important;
+  border-radius: var(--agri-radius-sm);
+}
+html:not([data-theme="dark"]) .body-sidebar .standard-sidebar-item.selected,
+html:not([data-theme="dark"]) .body-sidebar .sidebar-item-container.selected {
+  background: rgba(255,255,255,.14) !important;
+  border-left: 3px solid #F0AB00 !important;
+  border-radius: 0 var(--agri-radius-sm) var(--agri-radius-sm) 0;
+}
+html:not([data-theme="dark"]) .body-sidebar .standard-sidebar-item.selected *,
+html:not([data-theme="dark"]) .body-sidebar .sidebar-item-container.selected * {
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+}
+
+/* Search / inputs inside the navy panel */
+html:not([data-theme="dark"]) .body-sidebar input,
+html:not([data-theme="dark"]) .body-sidebar .form-control {
+  background: rgba(255,255,255,.10) !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  color: #FFFFFF !important;
+}
+html:not([data-theme="dark"]) .body-sidebar input::placeholder {
+  color: #9FB6D4 !important;
+}
+
+/* Keyboard focus must stay visible against navy. */
+html:not([data-theme="dark"]) .body-sidebar a:focus-visible,
+html:not([data-theme="dark"]) .body-sidebar button:focus-visible {
+  outline: 2px solid #7FB3F0 !important;
+  outline-offset: 1px;
+}
+
+/* Top navbar — the B1 window title bar. */
+html:not([data-theme="dark"]) .navbar {
+  background: var(--agri-primary-dark) !important;
+  border-bottom: 1px solid rgba(255,255,255,.12) !important;
+}
+html:not([data-theme="dark"]) .navbar .nav-link,
+html:not([data-theme="dark"]) .navbar .navbar-brand,
+html:not([data-theme="dark"]) .navbar .dropdown-toggle {
+  color: #E4ECF7 !important;
+}
+html:not([data-theme="dark"]) .navbar { --icon-stroke: #E4ECF7; }
+html:not([data-theme="dark"]) .navbar .icon use { stroke: #E4ECF7 !important; }
+/* Dropdown panels hang off the navbar but render on white — reset them
+   so they do not inherit the light-on-dark treatment above. */
+html:not([data-theme="dark"]) .navbar .dropdown-menu,
+html:not([data-theme="dark"]) .navbar .dropdown-menu * {
+  color: var(--agri-ink) !important;
+  --icon-stroke: var(--agri-ink);
+}
+html:not([data-theme="dark"]) .navbar .dropdown-menu {
+  background: #FFFFFF !important;
+  border: 1px solid var(--agri-border) !important;
+}
+
 /* Subtle leaf watermark on the form canvas — the one nod to agriculture */
 .form-page::before {
   content: "🌱";
