@@ -54,6 +54,15 @@
   --agri-danger:         #A62B25;   /* error / overdue              */
   --agri-success:        #256F3A;   /* success status only          */
 
+  /* Shell — sidebar + navbar. Lighter than the chrome navy on purpose:
+     a near-black slab down the left edge reads as heavy. Contrast with
+     --agri-shell-text is 6.6:1, with --agri-shell-muted 4.5:1. */
+  --agri-shell:          #3A5F86;   /* sidebar base — soft steel blue */
+  --agri-shell-dark:     #33547A;   /* navbar — a step down for depth */
+  --agri-shell-text:     #EAF1FA;   /* labels on the shell            */
+  --agri-shell-muted:    #C5D6EC;   /* section captions on the shell  */
+  --agri-shell-marker:   #F0AB00;   /* selected-item bar, B1 amber    */
+
   /* Geometry — B1 is dense and square, not rounded */
   --agri-radius:         4px;
   --agri-radius-sm:      3px;
@@ -387,97 +396,129 @@ a:hover { color: var(--agri-accent); }
 html:not([data-theme="dark"]) .body-sidebar,
 html:not([data-theme="dark"]) .body-sidebar-container,
 html:not([data-theme="dark"]) .desk-sidebar {
-  background: var(--agri-primary) !important;
-  border-right: 1px solid var(--agri-primary-dark) !important;
+  background: var(--agri-shell) !important;
+  border-right: 1px solid var(--agri-shell-dark) !important;
 }
 
-/* Text: catch every descendant, then re-specialise below. */
+/* Neutralise light panel backgrounds Frappe paints INSIDE the sidebar —
+   the workspace-switcher block, the search row, the user footer. Those
+   panels kept their own pale background while the text around them went
+   light, which is the dark-on-dark you saw. Interactive states and
+   dropdowns get their backgrounds restored below, on higher specificity. */
+html:not([data-theme="dark"]) .body-sidebar-container * {
+  background-color: transparent !important;
+}
+
+/* Text: the container, not just .body-sidebar. Missing the container was
+   the bug — its direct children got the navy fill but never the light ink. */
+html:not([data-theme="dark"]) .body-sidebar-container,
+html:not([data-theme="dark"]) .body-sidebar-container *,
 html:not([data-theme="dark"]) .body-sidebar,
 html:not([data-theme="dark"]) .body-sidebar *,
 html:not([data-theme="dark"]) .desk-sidebar,
 html:not([data-theme="dark"]) .desk-sidebar * {
-  color: #E4ECF7 !important;
-  border-color: rgba(255,255,255,.10) !important;
+  color: var(--agri-shell-text) !important;
+  border-color: rgba(255,255,255,.12) !important;
 }
 
 /* Icons are <use> elements — `color` does nothing, these vars do. */
+html:not([data-theme="dark"]) .body-sidebar-container,
 html:not([data-theme="dark"]) .body-sidebar,
 html:not([data-theme="dark"]) .desk-sidebar {
-  --icon-stroke: #E4ECF7;
+  --icon-stroke: var(--agri-shell-text);
   --icon-fill: transparent;
 }
-html:not([data-theme="dark"]) .body-sidebar .icon use,
+html:not([data-theme="dark"]) .body-sidebar-container .icon use,
 html:not([data-theme="dark"]) .desk-sidebar .icon use {
-  stroke: #E4ECF7 !important;
+  stroke: var(--agri-shell-text) !important;
 }
 
 /* Section captions sit back; item labels come forward. */
-html:not([data-theme="dark"]) .body-sidebar .standard-sidebar-label,
-html:not([data-theme="dark"]) .body-sidebar .sidebar-group-title {
-  color: #9FB6D4 !important;
-  text-transform: uppercase;
-  letter-spacing: .6px;
-  font-size: 10.5px !important;
+html:not([data-theme="dark"]) .body-sidebar-container .standard-sidebar-label,
+html:not([data-theme="dark"]) .body-sidebar-container .sidebar-group-title,
+html:not([data-theme="dark"]) .body-sidebar-container .text-muted,
+html:not([data-theme="dark"]) .body-sidebar-container small {
+  color: var(--agri-shell-muted) !important;
+  letter-spacing: .4px;
 }
 
 /* Hover + selected — the amber marker bar is straight off B1. */
-html:not([data-theme="dark"]) .body-sidebar .standard-sidebar-item:hover,
-html:not([data-theme="dark"]) .body-sidebar .sidebar-item-container:hover {
-  background: rgba(255,255,255,.08) !important;
+html:not([data-theme="dark"]) .body-sidebar-container .standard-sidebar-item:hover,
+html:not([data-theme="dark"]) .body-sidebar-container .sidebar-item-container:hover {
+  background-color: rgba(255,255,255,.10) !important;
   border-radius: var(--agri-radius-sm);
 }
-html:not([data-theme="dark"]) .body-sidebar .standard-sidebar-item.selected,
-html:not([data-theme="dark"]) .body-sidebar .sidebar-item-container.selected {
-  background: rgba(255,255,255,.14) !important;
-  border-left: 3px solid #F0AB00 !important;
+html:not([data-theme="dark"]) .body-sidebar-container .standard-sidebar-item.selected,
+html:not([data-theme="dark"]) .body-sidebar-container .sidebar-item-container.selected {
+  background-color: rgba(255,255,255,.17) !important;
+  border-left: 3px solid var(--agri-shell-marker) !important;
   border-radius: 0 var(--agri-radius-sm) var(--agri-radius-sm) 0;
 }
-html:not([data-theme="dark"]) .body-sidebar .standard-sidebar-item.selected *,
-html:not([data-theme="dark"]) .body-sidebar .sidebar-item-container.selected * {
+html:not([data-theme="dark"]) .body-sidebar-container .standard-sidebar-item.selected *,
+html:not([data-theme="dark"]) .body-sidebar-container .sidebar-item-container.selected * {
   color: #FFFFFF !important;
   font-weight: 600 !important;
 }
 
-/* Search / inputs inside the navy panel */
-html:not([data-theme="dark"]) .body-sidebar input,
-html:not([data-theme="dark"]) .body-sidebar .form-control {
-  background: rgba(255,255,255,.10) !important;
-  border: 1px solid rgba(255,255,255,.18) !important;
+/* Search / inputs inside the shell */
+html:not([data-theme="dark"]) .body-sidebar-container input,
+html:not([data-theme="dark"]) .body-sidebar-container .form-control {
+  background-color: rgba(255,255,255,.12) !important;
+  border: 1px solid rgba(255,255,255,.22) !important;
   color: #FFFFFF !important;
 }
-html:not([data-theme="dark"]) .body-sidebar input::placeholder {
-  color: #9FB6D4 !important;
+html:not([data-theme="dark"]) .body-sidebar-container input::placeholder {
+  color: var(--agri-shell-muted) !important;
 }
 
-/* Keyboard focus must stay visible against navy. */
-html:not([data-theme="dark"]) .body-sidebar a:focus-visible,
-html:not([data-theme="dark"]) .body-sidebar button:focus-visible {
+/* Keyboard focus must stay visible against the shell. */
+html:not([data-theme="dark"]) .body-sidebar-container a:focus-visible,
+html:not([data-theme="dark"]) .body-sidebar-container button:focus-visible {
   outline: 2px solid #7FB3F0 !important;
   outline-offset: 1px;
 }
 
+/* Dropdowns opened FROM the sidebar (workspace switcher, user menu)
+   render as white panels — send their ink back to dark or they inherit
+   the light-on-dark above and vanish. Higher specificity than the
+   blanket transparent rule, so their background survives. */
+html:not([data-theme="dark"]) .body-sidebar-container .dropdown-menu,
+html:not([data-theme="dark"]) .body-sidebar-container .dropdown-menu * {
+  color: var(--agri-ink) !important;
+  --icon-stroke: var(--agri-ink);
+}
+html:not([data-theme="dark"]) .body-sidebar-container .dropdown-menu {
+  background-color: #FFFFFF !important;
+  border: 1px solid var(--agri-border) !important;
+}
+html:not([data-theme="dark"]) .body-sidebar-container .dropdown-menu .icon use {
+  stroke: var(--agri-ink) !important;
+}
+
 /* Top navbar — the B1 window title bar. */
 html:not([data-theme="dark"]) .navbar {
-  background: var(--agri-primary-dark) !important;
+  background: var(--agri-shell-dark) !important;
   border-bottom: 1px solid rgba(255,255,255,.12) !important;
 }
 html:not([data-theme="dark"]) .navbar .nav-link,
 html:not([data-theme="dark"]) .navbar .navbar-brand,
 html:not([data-theme="dark"]) .navbar .dropdown-toggle {
-  color: #E4ECF7 !important;
+  color: var(--agri-shell-text) !important;
 }
-html:not([data-theme="dark"]) .navbar { --icon-stroke: #E4ECF7; }
-html:not([data-theme="dark"]) .navbar .icon use { stroke: #E4ECF7 !important; }
-/* Dropdown panels hang off the navbar but render on white — reset them
-   so they do not inherit the light-on-dark treatment above. */
+html:not([data-theme="dark"]) .navbar { --icon-stroke: var(--agri-shell-text); }
+html:not([data-theme="dark"]) .navbar .icon use { stroke: var(--agri-shell-text) !important; }
+/* Same reset for navbar dropdowns. */
 html:not([data-theme="dark"]) .navbar .dropdown-menu,
 html:not([data-theme="dark"]) .navbar .dropdown-menu * {
   color: var(--agri-ink) !important;
   --icon-stroke: var(--agri-ink);
 }
 html:not([data-theme="dark"]) .navbar .dropdown-menu {
-  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
   border: 1px solid var(--agri-border) !important;
+}
+html:not([data-theme="dark"]) .navbar .dropdown-menu .icon use {
+  stroke: var(--agri-ink) !important;
 }
 
 /* Subtle leaf watermark on the form canvas — the one nod to agriculture */
