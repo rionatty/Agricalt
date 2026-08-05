@@ -14,6 +14,7 @@ DocDueDate, DocumentLines[].ItemCode/Quantity/UnitPrice).
 """
 
 import json
+import re
 
 import frappe
 from frappe import _
@@ -1352,25 +1353,91 @@ def _build_item_default(company):
 
 def _ensure_item_default(doc, company):
 	"""
-	Ensure the Item document has an item_defaults row for the given company
-	with all mandatory custom fields populated. Works for both new and existing docs.
+	Populate mandatory custom fields on EVERY item_defaults row, not just the
+	one matching `company`.
+
+	This distinction is the whole bug. doc.save() validates every child row,
+	including rows this sync never created — rows with another company, a
+	NULL company, or rows written by a different integration. Patching only
+	the matching row leaves those stale rows blank and the save aborts with
+	MandatoryError: custom_company.
 	"""
 	row_data = _build_item_default(company)
 
-	# Check if a row already exists for this company
-	existing_row = None
-	for d in doc.get("item_defaults", []):
-		if d.get("company") == company:
-			existing_row = d
-			break
-
-	if existing_row:
-		# Update the existing row with mandatory field values
+	rows = doc.get("item_defaults", [])
+	for d in rows:
 		for k, v in row_data.items():
-			setattr(existing_row, k, v)
-	else:
-		# Append a fresh row
+			# Never clobber a real company value on someone else's row —
+			# only fill what is empty.
+			if k == "company" and d.get("company"):
+				continue
+			if not d.get(k):
+				setattr(d, k, v)
+
+	if not any(d.get("company") == company for d in rows):
 		doc.append("item_defaults", row_data)
+
+
+def _item_default_company_columns():
+	"""
+	Company-ish columns that physically exist on `tabItem Default`.
+
+	Discovered from the DB schema rather than the Custom Field table:
+	mandatory-ness can also come from property setters or
+	mandatory_depends_on, which Custom Field introspection misses.
+	"""
+	try:
+		cols = set(frappe.db.get_table_columns("Item Default"))
+	except Exception:
+		return []
+	# Identifier-safe only — these are interpolated into SQL below.
+	return sorted(
+		c for c in cols
+		if "company" in c.lower() and re.fullmatch(r"[A-Za-z0-9_]+", c or "")
+	)
+
+
+def _patch_item_defaults_sql(code, company):
+	"""
+	Write the item_defaults row with direct SQL, bypassing validation.
+
+	Deliberate bypass: this is an unattended system integration job pulling
+	master data from SAP B1, not user input. doc.save() gives a stale child
+	row veto power over the entire catalogue import — one bad row and the
+	item is skipped. SQL touches exactly the columns we need and cannot be
+	vetoed.
+	"""
+	cols = _item_default_company_columns()
+	if not cols:
+		return
+
+	# Fill every row for this item, not just the matching-company one — but
+	# only where the value is blank. COALESCE/NULLIF means an item that
+	# legitimately has defaults for a second company keeps them; we are
+	# repairing empty cells, not asserting ownership of the row.
+	assignments = ", ".join(
+		"`{0}`=COALESCE(NULLIF(`{0}`, ''), %s)".format(c) for c in cols
+	)
+	frappe.db.sql(
+		"UPDATE `tabItem Default` SET {0} WHERE parent=%s".format(assignments),
+		tuple([company] * len(cols)) + (code,),
+	)
+
+	if frappe.db.sql("SELECT name FROM `tabItem Default` WHERE parent=%s LIMIT 1", (code,)):
+		return
+
+	collist = ", ".join("`{0}`".format(c) for c in cols)
+	placeholders = ", ".join(["%s"] * len(cols))
+	frappe.db.sql(
+		"""INSERT INTO `tabItem Default`
+		   (name, parent, parenttype, parentfield, idx,
+		    creation, modified, owner, modified_by, {0})
+		   VALUES (%s, %s, 'Item', 'item_defaults', 1,
+		           NOW(), NOW(), 'Administrator', 'Administrator', {1})""".format(
+			collist, placeholders
+		),
+		(frappe.generate_hash(length=10), code) + tuple([company] * len(cols)),
+	)
 
 
 def _upsert_item(code, r, item_group, default_uom):
@@ -1380,15 +1447,13 @@ def _upsert_item(code, r, item_group, default_uom):
 	company = _get_default_company()
 
 	if frappe.db.exists("Item", code):
-		doc = frappe.get_doc("Item", code)
-		doc.item_name = name
-		doc.is_sales_item = is_sales
-		_ensure_item_default(doc, company)
-		for fieldname, value in _mandatory_custom_fields("Item").items():
-			if not doc.get(fieldname):
-				setattr(doc, fieldname, value)
-		doc.flags.ignore_permissions = True
-		doc.save()
+		# No doc.save() here on purpose — see _patch_item_defaults_sql.
+		frappe.db.set_value(
+			"Item", code,
+			{"item_name": name, "is_sales_item": is_sales, "sap_synced": 1},
+			update_modified=False,
+		)
+		_patch_item_defaults_sql(code, company)
 	else:
 		payload = {
 			"doctype": "Item",
@@ -1404,7 +1469,9 @@ def _upsert_item(code, r, item_group, default_uom):
 		}
 		# Also handle any mandatory custom fields directly on the Item doctype
 		payload.update(_mandatory_custom_fields("Item"))
-		frappe.get_doc(payload).insert(ignore_permissions=True)
+		frappe.get_doc(payload).insert(ignore_permissions=True, ignore_mandatory=True)
+		# ignore_mandatory can let a blank custom_company through — backfill it.
+		_patch_item_defaults_sql(code, company)
 
 
 def _upsert_item_prices(code, item_prices, price_map, settings):

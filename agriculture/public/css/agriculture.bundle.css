@@ -1,57 +1,92 @@
 /* ============================================================
-   Agriculture App — Syova Seeds Theme  (v2)
-   Modern, card-based green design. Loaded app-wide via
-   app_include_css in hooks.py.
-   Heavy background overrides are scoped to light mode with
-   html:not([data-theme="dark"]) so dark mode stays intact.
+   Agriculture App — Syova Seeds Theme  (v3 — SAP Business One navy)
+   Loaded app-wide via app_include_css = "agriculture.bundle.css".
+
+   THREE RULES, each learned the hard way:
+
+   1. This file must stay SELF-CONTAINED. esbuild silently drops
+      @import here (see 449ec9d), so the theme is inlined, not
+      imported. Do not split it out.
+
+   2. Define EVERY custom property you reference. A declaration
+      that references an undefined var() is silently discarded by
+      the browser and the rule renders as nothing — no error, no
+      warning. Verify with:
+        grep -o 'var(--[a-z-]*)' this-file | sort -u
+      and check each one appears in :root.
+
+   3. Do NOT set a background or layout on child-table grid
+      headers. It broke every child table on v16 twice already
+      (81015b8, 5ac19bb). Text colour only. The list-row-head
+      below IS safe to background — that one is proven.
+
+   Heavy background overrides stay scoped to light mode with
+   html:not([data-theme="dark"]) so dark mode survives.
    ============================================================ */
 
-/* ── Palette ────────────────────────────────────────────────── */
+/* ── Palette — SAP Business One ─────────────────────────────── */
 :root {
-  --agri-green:        #2E7D32;   /* deep forest green — primary   */
-  --agri-green-dark:   #1B5E20;   /* darkest green                 */
-  --agri-green-mid:    #388E3C;   /* mid green                     */
-  --agri-green-light:  #4CAF50;   /* vivid leaf green              */
-  --agri-green-soft:   #66BB6A;   /* soft leaf                     */
-  --agri-green-pale:   #E8F5E9;   /* mint wash                     */
-  --agri-green-wash:   #F4FBF4;   /* faint page wash               */
-  --agri-green-border: #C8E6C9;   /* soft green border             */
-  --agri-gold:         #F9A825;   /* harvest gold — accents        */
-  --agri-earth:        #6D4C41;   /* earth brown                   */
-  --agri-sky:          #E3F2FD;   /* sky blue — read-only          */
-  --agri-radius:       12px;
-  --agri-radius-sm:    8px;
-  --agri-shadow:       0 2px 10px rgba(46,125,50,.08);
-  --agri-shadow-lg:    0 10px 26px rgba(46,125,50,.16);
+  /* Chrome: window title bar, headers */
+  --agri-primary:        #14395E;   /* main navy — primary          */
+  --agri-primary-dark:   #0A2540;   /* darkest navy — title bars    */
+  --agri-primary-mid:    #2A5A8C;   /* steel blue — section heads   */
+  --agri-primary-light:  #3B78B5;   /* accent blue — borders/hover  */
+  --agri-primary-soft:   #5B8FC7;   /* soft blue — decorative only  */
+
+  /* Surfaces */
+  --agri-pale:           #EEF3F9;   /* pale blue wash — zebra rows  */
+  --agri-wash:           #F5F8FC;   /* faint page canvas            */
+  --agri-border:         #C3D0E0;   /* blue-grey hairline           */
+  --agri-border-strong:  #7E93AD;   /* control outlines             */
+  --agri-readonly:       #EDF1F7;   /* read-only field tint         */
+  --agri-selected:       #D6E4F7;   /* selected row                 */
+
+  /* Interactive */
+  --agri-accent:         #0A6ED1;   /* SAP Fiori blue — focus ring  */
+  --agri-link:           #0B5CAD;   /* hyperlink text               */
+
+  /* Text */
+  --agri-ink:            #1A2733;   /* body text                    */
+  --agri-ink-muted:      #546678;   /* labels, placeholders         */
+
+  /* Status */
+  --agri-amber-text:     #B45309;   /* warning text — legible amber */
+  --agri-danger:         #A62B25;   /* error / overdue              */
+  --agri-success:        #256F3A;   /* success status only          */
+
+  /* Geometry — B1 is dense and square, not rounded */
+  --agri-radius:         4px;
+  --agri-radius-sm:      3px;
+  --agri-shadow:         0 1px 3px rgba(10,37,64,.14);
+  --agri-shadow-lg:      0 6px 16px rgba(10,37,64,.22);
 }
 
 /* Global accent for native controls (checkbox / radio / range) */
-input[type="checkbox"], input[type="radio"] { accent-color: var(--agri-green-light); }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--agri-accent); }
 
 /* Themed scrollbars */
-* { scrollbar-color: var(--agri-green-soft) transparent; }
+* { scrollbar-color: var(--agri-primary-soft) transparent; }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb { background: var(--agri-green-border); border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: var(--agri-green-soft); }
+::-webkit-scrollbar-thumb { background: var(--agri-border); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--agri-primary-soft); }
 
 /* ── Primary / main action buttons ──────────────────────────── */
 .agri-btn-main,
-.agri-btn-main:hover,
 .agri-btn-main:focus,
 .btn-success.agri-btn-main {
-  background: linear-gradient(135deg, var(--agri-green-mid) 0%, var(--agri-green-light) 100%) !important;
-  border-color: var(--agri-green) !important;
+  background: var(--agri-primary) !important;
+  border: 1px solid var(--agri-primary-dark) !important;
   color: #fff !important;
   font-weight: 600 !important;
   border-radius: var(--agri-radius-sm) !important;
-  letter-spacing: .3px;
-  box-shadow: 0 2px 6px rgba(46,125,50,.30) !important;
-  transition: all .18s ease !important;
+  letter-spacing: .2px;
+  box-shadow: 0 1px 3px rgba(10,37,64,.30) !important;
+  transition: background .15s ease, box-shadow .15s ease !important;
 }
-.agri-btn-main:hover {
-  background: linear-gradient(135deg, var(--agri-green) 0%, var(--agri-green-mid) 100%) !important;
-  box-shadow: 0 6px 14px rgba(46,125,50,.40) !important;
-  transform: translateY(-1px) !important;
+.agri-btn-main:hover,
+.btn-success.agri-btn-main:hover {
+  background: var(--agri-primary-mid) !important;
+  box-shadow: 0 3px 8px rgba(10,37,64,.40) !important;
 }
 
 /* Standard primary actions: Save, list "Add", modal primary */
@@ -61,32 +96,32 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--agri-green-lig
 .standard-actions .btn-primary,
 .modal .btn-modal-primary,
 .btn-modal-primary {
-  background: linear-gradient(135deg, var(--agri-green-mid), var(--agri-green-light)) !important;
-  border-color: var(--agri-green) !important;
+  background: var(--agri-primary) !important;
+  border: 1px solid var(--agri-primary-dark) !important;
   color: #fff !important;
   font-weight: 600 !important;
   border-radius: var(--agri-radius-sm) !important;
-  box-shadow: 0 2px 6px rgba(46,125,50,.25) !important;
-  transition: all .18s ease !important;
+  box-shadow: 0 1px 3px rgba(10,37,64,.25) !important;
+  transition: background .15s ease, box-shadow .15s ease !important;
 }
 .btn-primary:hover,
 .primary-action:hover,
 .btn-modal-primary:hover {
-  background: linear-gradient(135deg, var(--agri-green), var(--agri-green-mid)) !important;
-  box-shadow: 0 6px 14px rgba(46,125,50,.35) !important;
-  transform: translateY(-1px) !important;
+  background: var(--agri-primary-mid) !important;
+  box-shadow: 0 3px 8px rgba(10,37,64,.35) !important;
 }
 
-/* Secondary / default buttons get a quiet green tint */
+/* Secondary / default buttons get a quiet blue tint */
 .btn-default:not(.grid-add-row):hover {
-  border-color: var(--agri-green-light) !important;
-  color: var(--agri-green) !important;
+  border-color: var(--agri-primary-light) !important;
+  color: var(--agri-primary) !important;
 }
 
-/* ── Page header banner ─────────────────────────────────────── */
+/* ── Page header banner — flat navy, the B1 title bar ───────── */
 .page-head {
-  background: linear-gradient(135deg, var(--agri-green-dark) 0%, var(--agri-green) 55%, var(--agri-green-soft) 100%) !important;
-  box-shadow: 0 2px 12px rgba(27,94,32,.25) !important;
+  background: var(--agri-primary-dark) !important;
+  border-bottom: 2px solid var(--agri-primary-mid) !important;
+  box-shadow: 0 1px 6px rgba(10,37,64,.25) !important;
 }
 .page-head .page-title .title-text,
 .page-head .title-text,
@@ -95,166 +130,169 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--agri-green-lig
 .page-head .breadcrumb-container .breadcrumb-item,
 .page-head .breadcrumb-container { color: rgba(255,255,255,.85) !important; }
 .page-head .breadcrumb-container a:hover { color: #fff !important; }
-/* "Not Saved" / status chip stays legible on the green bar */
+/* "Not Saved" / status chip stays legible on the navy bar */
 .page-head .indicator-pill { background: rgba(255,255,255,.18) !important; }
 
 /* ── Form layout: section cards ─────────────────────────────── */
 html:not([data-theme="dark"]) .form-page,
 html:not([data-theme="dark"]) .layout-main-section {
-  background: var(--agri-green-wash) !important;
+  background: var(--agri-wash) !important;
 }
 
 .form-section {
-  border: 1px solid var(--agri-green-border) !important;
+  border: 1px solid var(--agri-border) !important;
   border-radius: var(--agri-radius) !important;
-  padding: 16px 18px 10px !important;
-  margin-bottom: 18px !important;
+  padding: 14px 16px 8px !important;
+  margin-bottom: 14px !important;
   background: #fff !important;
   box-shadow: var(--agri-shadow) !important;
 }
 .form-section .section-head,
 .form-section > .section-head {
-  color: var(--agri-green-dark) !important;
+  color: var(--agri-primary) !important;
   font-weight: 700 !important;
   font-size: 12.5px !important;
   text-transform: uppercase;
-  letter-spacing: .7px;
-  border-left: 4px solid var(--agri-green-light) !important;
-  padding-left: 10px !important;
-  margin-bottom: 10px;
+  letter-spacing: .6px;
+  border-left: 3px solid var(--agri-primary-mid) !important;
+  padding-left: 9px !important;
+  margin-bottom: 9px;
 }
 
 /* ── Tab strip ──────────────────────────────────────────────── */
 .form-tabs .nav-tabs .nav-link {
   font-weight: 600 !important;
-  color: #6b7a6e !important;
+  color: var(--agri-ink-muted) !important;
 }
 .form-tabs .nav-tabs .nav-link.active {
-  color: var(--agri-green) !important;
-  border-bottom: 3px solid var(--agri-green-light) !important;
+  color: var(--agri-primary) !important;
+  border-bottom: 3px solid var(--agri-accent) !important;
   font-weight: 700 !important;
 }
-.form-tabs .nav-tabs .nav-link:hover { color: var(--agri-green-mid) !important; }
+.form-tabs .nav-tabs .nav-link:hover { color: var(--agri-primary-mid) !important; }
 
-/* ── Inputs: clean white with a green focus ring ────────────── */
+/* ── Inputs: clean white with a blue focus ring ─────────────── */
 html:not([data-theme="dark"]) .form-control,
 html:not([data-theme="dark"]) .input-with-feedback,
 html:not([data-theme="dark"]) .like-disabled-input {
   border-radius: var(--agri-radius-sm) !important;
-  border: 1px solid #e0e6e0 !important;
+  border: 1px solid var(--agri-border) !important;
   transition: border-color .15s ease, box-shadow .15s ease !important;
 }
 .form-control:focus,
 .input-with-feedback:focus {
-  border-color: var(--agri-green-light) !important;
-  box-shadow: 0 0 0 3px rgba(76,175,80,.16) !important;
+  border-color: var(--agri-accent) !important;
+  box-shadow: 0 0 0 3px rgba(10,110,209,.18) !important;
 }
 /* Field labels */
-.control-label { color: #46554a !important; font-weight: 600 !important; }
-/* Mandatory star in green */
+.control-label { color: var(--agri-ink-muted) !important; font-weight: 600 !important; }
+/* Mandatory star */
 .reqd .label-area::after,
-.reqd.control-label::after { color: var(--agri-green) !important; }
+.reqd.control-label::after { color: var(--agri-danger) !important; }
 
-/* Read-only fields — subtle sky wash */
+/* Read-only fields — flat grey-blue tint, the B1 locked-field look */
 .control-input.read-only-input,
 .form-control[readonly]:not([disabled]),
 .like-disabled-input.read-only-value {
-  background: var(--agri-sky) !important;
-  border-color: #BBDEFB !important;
-  color: #1565C0 !important;
+  background: var(--agri-readonly) !important;
+  border-color: var(--agri-border-strong) !important;
+  color: var(--agri-ink) !important;
 }
 
 /* ── Child table (grid) header ──
-   Text-colour ONLY (no background, no layout overrides) so it cannot break the
-   grid on any version. Dark-green bold labels are legible on the default light
-   header. Broad selectors also catch the Frappe v16 header class. */
+   RULE 3: text colour ONLY. No background, no layout overrides —
+   setting either one broke every child table on v16 (81015b8).
+   Dark navy bold labels are legible on the default light header. */
 .form-grid .grid-heading-row,
 .form-grid .grid-heading-row *,
 .form-grid [class*="heading"],
 .form-grid [class*="heading"] * {
-  color: var(--agri-green-dark) !important;
+  color: var(--agri-primary-dark) !important;
   font-weight: 600 !important;
 }
 .form-grid {
-  border: 1px solid var(--agri-green-border) !important;
+  border: 1px solid var(--agri-border) !important;
   border-radius: var(--agri-radius-sm) !important;
   overflow: hidden;
 }
-.grid-body .rows .grid-row:nth-child(even) .data-row { background: var(--agri-green-pale) !important; }
-.grid-body .rows .grid-row:hover .data-row { background: var(--agri-green-border) !important; }
+.grid-body .rows .grid-row:nth-child(even) .data-row { background: var(--agri-pale) !important; }
+.grid-body .rows .grid-row:hover .data-row { background: var(--agri-selected) !important; }
 .btn.grid-add-row,
 .grid-footer .btn-xs {
-  background: var(--agri-green-pale) !important;
-  color: var(--agri-green-dark) !important;
-  border: 1px dashed var(--agri-green-light) !important;
+  background: var(--agri-pale) !important;
+  color: var(--agri-link) !important;
+  border: 1px dashed var(--agri-border-strong) !important;
   font-weight: 600 !important;
   border-radius: var(--agri-radius-sm) !important;
 }
-.btn.grid-add-row:hover { background: var(--agri-green-border) !important; }
+.btn.grid-add-row:hover { background: var(--agri-selected) !important; }
 
 /* ── List view ──────────────────────────────────────────────── */
 .list-row-container { border-radius: var(--agri-radius-sm); transition: background .12s ease; }
 html:not([data-theme="dark"]) .list-row-container:hover {
-  background: var(--agri-green-wash) !important;
+  background: var(--agri-pale) !important;
 }
-/* List header — force a light background AND dark text together so the column
-   labels stay legible (v16 was rendering it dark-on-dark). */
+/* List header — light background AND dark text set together so the
+   column labels stay legible (v16 rendered this dark-on-dark). This
+   one IS safe to background; the child-table grid header is not. */
 .list-row-head {
-  background-color: var(--agri-green-pale) !important;
-  border-bottom: 2px solid var(--agri-green-border) !important;
+  background-color: #DCE4EF !important;
+  border-bottom: 2px solid var(--agri-border-strong) !important;
 }
 .list-row-head,
 .list-row-head *,
 .list-row-head .list-row-col,
 .list-row-head .list-subject {
-  color: var(--agri-green-dark) !important;
+  color: var(--agri-ink) !important;
   font-weight: 600 !important;
 }
 .list-row-col.list-subject .level-item { font-weight: 600; }
-.list-row .list-subject a:hover { color: var(--agri-green) !important; }
-/* Filter / sort pills */
-.filter-button.btn, .sort-selector .btn { border-radius: 20px !important; }
+.list-row .list-subject a:hover { color: var(--agri-accent) !important; }
+/* Filter / sort pills — squared off, B1 style */
+.filter-button.btn, .sort-selector .btn { border-radius: var(--agri-radius) !important; }
 
 /* ── Status badges / indicators ─────────────────────────────── */
-.indicator-pill { font-weight: 600 !important; border-radius: 20px !important; }
+.indicator-pill { font-weight: 600 !important; border-radius: var(--agri-radius) !important; }
 .indicator-pill.gray, .indicator-pill.grey,
 .indicator-pill[data-color="gray"], .indicator-pill[data-color="grey"] {
-  background: #eef0ee !important; color: #5a655c !important;
+  background: #EEF1F4 !important; color: var(--agri-ink-muted) !important;
 }
 .indicator-pill.green, .indicator-pill[data-color="green"] {
-  background: var(--agri-green-pale) !important;
-  color: var(--agri-green-dark) !important;
-  border: 1px solid var(--agri-green-border) !important;
+  background: #E3F1E7 !important;
+  color: var(--agri-success) !important;
+  border: 1px solid #BFDCC8 !important;
 }
 .indicator-pill.blue, .indicator-pill[data-color="blue"],
 .indicator-pill.cyan, .indicator-pill[data-color="cyan"] {
-  background: #E3F2FD !important; color: #1565C0 !important;
+  background: var(--agri-pale) !important;
+  color: var(--agri-primary) !important;
+  border: 1px solid var(--agri-border) !important;
 }
 .indicator-pill.orange, .indicator-pill[data-color="orange"],
 .indicator-pill.yellow, .indicator-pill[data-color="yellow"] {
-  background: #FFF3E0 !important; color: #E65100 !important;
+  background: #FDF2DC !important; color: var(--agri-amber-text) !important;
 }
 .indicator-pill.red, .indicator-pill[data-color="red"] {
-  background: #FFEBEE !important; color: #C62828 !important;
+  background: #FBEAE9 !important; color: var(--agri-danger) !important;
 }
 .indicator-pill.purple, .indicator-pill[data-color="purple"] {
-  background: #EDE7F6 !important; color: #5E35B1 !important;
+  background: #EFE7F6 !important; color: #5B3A8E !important;
 }
 
 /* ── Workspace: number cards ────────────────────────────────── */
 .widget.number-widget-box {
-  border: 1px solid var(--agri-green-border) !important;
-  border-top: 4px solid var(--agri-green-light) !important;
+  border: 1px solid var(--agri-border) !important;
+  border-top: 3px solid var(--agri-primary-mid) !important;
   border-radius: var(--agri-radius) !important;
   box-shadow: var(--agri-shadow) !important;
   transition: transform .15s ease, box-shadow .15s ease !important;
 }
 .widget.number-widget-box:hover {
-  transform: translateY(-3px) !important;
+  transform: translateY(-2px) !important;
   box-shadow: var(--agri-shadow-lg) !important;
 }
 .widget.number-widget-box .widget-head .widget-label .widget-title {
-  color: var(--agri-green-dark) !important;
+  color: var(--agri-ink-muted) !important;
   font-weight: 700 !important;
   text-transform: uppercase;
   letter-spacing: .4px;
@@ -262,7 +300,7 @@ html:not([data-theme="dark"]) .list-row-container:hover {
 }
 .widget.number-widget-box .number-card-number,
 .widget.number-widget-box .widget-content .number {
-  color: var(--agri-green) !important;
+  color: var(--agri-primary) !important;
   font-weight: 800 !important;
 }
 
@@ -270,70 +308,74 @@ html:not([data-theme="dark"]) .list-row-container:hover {
 .widget.section-widget .section-header,
 .ce-block .widget-group-title,
 .widget-group .widget-group-head {
-  background: linear-gradient(90deg, var(--agri-green-pale), transparent) !important;
-  border-left: 4px solid var(--agri-green-light) !important;
+  background: linear-gradient(90deg, var(--agri-pale), transparent) !important;
+  border-left: 3px solid var(--agri-primary-mid) !important;
   border-radius: var(--agri-radius-sm) !important;
   padding: 6px 12px !important;
 }
 .widget.section-widget .section-header .section-title,
-.widget-group-title { color: var(--agri-green-dark) !important; font-weight: 700 !important; }
+.widget-group-title { color: var(--agri-primary) !important; font-weight: 700 !important; }
 
 /* ── Workspace: shortcut + links cards ──────────────────────── */
 .widget.shortcut-widget-box,
 .widget.links-widget-box,
 .widget.chart-widget-box {
-  border: 1px solid var(--agri-green-border) !important;
+  border: 1px solid var(--agri-border) !important;
   border-radius: var(--agri-radius) !important;
   box-shadow: var(--agri-shadow) !important;
   transition: transform .15s ease, box-shadow .15s ease !important;
 }
 .widget.shortcut-widget-box:hover {
-  transform: translateY(-3px) !important;
+  transform: translateY(-2px) !important;
   box-shadow: var(--agri-shadow-lg) !important;
-  border-color: var(--agri-green-light) !important;
+  border-color: var(--agri-primary-light) !important;
 }
 .widget.shortcut-widget-box .widget-head .widget-label,
 .widget.links-widget-box .widget-head .widget-label .widget-title {
-  color: var(--agri-green-dark) !important;
+  color: var(--agri-primary) !important;
   font-weight: 700 !important;
 }
 .widget.links-widget-box .widget-head .widget-label .widget-title {
   text-transform: uppercase; letter-spacing: .5px; font-size: 12px !important;
 }
-.link-item:hover { background: var(--agri-green-pale) !important; border-radius: 6px !important; }
+.link-item:hover { background: var(--agri-pale) !important; border-radius: var(--agri-radius-sm) !important; }
 .link-item .link-content,
-.widget .link-item a { color: var(--agri-green-mid) !important; }
-.link-item a:hover { color: var(--agri-green-dark) !important; }
+.widget .link-item a { color: var(--agri-link) !important; }
+.link-item a:hover { color: var(--agri-accent) !important; }
 
 /* ── Sidebar / workspace nav ────────────────────────────────── */
 .sidebar-item.active > .sidebar-item-label,
 .standard-sidebar-item.selected .sidebar-item-label {
-  color: var(--agri-green) !important; font-weight: 700 !important;
+  color: var(--agri-primary) !important; font-weight: 700 !important;
 }
-.standard-sidebar-item.selected { background: var(--agri-green-pale) !important; border-radius: 6px; }
-.sidebar-item:hover > .sidebar-item-label { color: var(--agri-green-mid) !important; }
+.standard-sidebar-item.selected {
+  background: var(--agri-selected) !important;
+  border-left: 3px solid var(--agri-primary) !important;
+  border-radius: var(--agri-radius-sm);
+}
+.sidebar-item:hover > .sidebar-item-label { color: var(--agri-primary-mid) !important; }
 
 /* ── Form dashboard headline (counts/connections) ───────────── */
 .form-dashboard .form-dashboard-section { border-radius: var(--agri-radius-sm) !important; }
-.form-dashboard-section .section-head { color: var(--agri-green-dark) !important; }
+.form-dashboard-section .section-head { color: var(--agri-primary) !important; }
 
 /* ── Alerts / msgprint ──────────────────────────────────────── */
-.msgprint .msgprint-content { border-left: 4px solid var(--agri-green-light) !important; }
-.desk-alert .alert-message-container { border-left: 4px solid var(--agri-green-light); }
+.msgprint .msgprint-content { border-left: 4px solid var(--agri-primary-mid) !important; }
+.desk-alert .alert-message-container { border-left: 4px solid var(--agri-primary-mid); }
 
 /* ── Misc polish ────────────────────────────────────────────── */
-.navbar .navbar-home img { filter: drop-shadow(0 0 4px rgba(76,175,80,.5)); }
-a { color: var(--agri-green-mid); }
-a:hover { color: var(--agri-green-dark); }
+.navbar .navbar-home img { filter: drop-shadow(0 0 4px rgba(59,120,181,.5)); }
+a { color: var(--agri-link); }
+a:hover { color: var(--agri-accent); }
 
-/* Subtle leaf watermark on the form canvas */
+/* Subtle leaf watermark on the form canvas — the one nod to agriculture */
 .form-page::before {
   content: "🌱";
   position: fixed;
   bottom: 22px;
   right: 26px;
   font-size: 60px;
-  opacity: .045;
+  opacity: .04;
   pointer-events: none;
   z-index: 0;
 }
