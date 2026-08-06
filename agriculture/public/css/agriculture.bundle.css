@@ -61,7 +61,8 @@
   --agri-shell-dark:     #33547A;   /* navbar — a step down for depth */
   --agri-shell-text:     #EAF1FA;   /* labels on the shell            */
   --agri-shell-muted:    #C5D6EC;   /* section captions on the shell  */
-  --agri-shell-marker:   #F0AB00;   /* selected-item bar, B1 amber    */
+  --agri-shell-marker:   #F0AB00;   /* selected-item gold highlight   */
+  --agri-shell-marker-deep: #B37D00;/* its darker edge                */
 
   /* Geometry — B1 is dense and square, not rounded */
   --agri-radius:         4px;
@@ -518,16 +519,37 @@ html:not([data-theme="dark"]) .body-sidebar-container .sidebar-item-container:ho
   background-color: rgba(255,255,255,.10) !important;
   border-radius: var(--agri-radius-sm);
 }
+/* Selected item is a solid gold highlighter with navy ink.
+   Solid, not translucent, on purpose: gold at any alpha over the navy
+   shell composites to olive (#F0AB00 @ 22% lands on #627069), which
+   reads as dirty green rather than gold. Solid keeps the colour and
+   buys far better contrast too — navy on gold is 7.79:1, where white
+   on the old translucent fill was 5.20:1. */
 html:not([data-theme="dark"]) .body-sidebar-container .standard-sidebar-item.selected,
 html:not([data-theme="dark"]) .body-sidebar-container .sidebar-item-container.selected {
-  background-color: rgba(255,255,255,.17) !important;
-  border-left: 3px solid var(--agri-shell-marker) !important;
+  background-color: var(--agri-shell-marker) !important;
+  border-left: 3px solid var(--agri-shell-marker-deep) !important;
   border-radius: 0 var(--agri-radius-sm) var(--agri-radius-sm) 0;
 }
+/* Overrides the shell-wide light-ink rule, which would otherwise leave
+   near-white text on gold at 1.9:1. */
+html:not([data-theme="dark"]) .body-sidebar-container .standard-sidebar-item.selected,
 html:not([data-theme="dark"]) .body-sidebar-container .standard-sidebar-item.selected *,
+html:not([data-theme="dark"]) .body-sidebar-container .sidebar-item-container.selected,
 html:not([data-theme="dark"]) .body-sidebar-container .sidebar-item-container.selected * {
-  color: #FFFFFF !important;
-  font-weight: 600 !important;
+  color: var(--agri-primary-dark) !important;   /* 7.79:1 on gold */
+  font-weight: 700 !important;
+}
+/* Icons are <use> elements — `color` never reaches them, so the stroke
+   has to be flipped separately or the selected row keeps pale icons. */
+html:not([data-theme="dark"]) .body-sidebar-container .standard-sidebar-item.selected,
+html:not([data-theme="dark"]) .body-sidebar-container .sidebar-item-container.selected {
+  --icon-stroke: var(--agri-primary-dark);
+  --icon-fill: transparent;
+}
+html:not([data-theme="dark"]) .body-sidebar-container .standard-sidebar-item.selected .icon use,
+html:not([data-theme="dark"]) .body-sidebar-container .sidebar-item-container.selected .icon use {
+  stroke: var(--agri-primary-dark) !important;
 }
 
 /* Search / inputs inside the shell */
