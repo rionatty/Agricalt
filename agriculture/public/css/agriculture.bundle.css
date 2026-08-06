@@ -602,3 +602,209 @@ html:not([data-theme="dark"]) .navbar .dropdown-menu .icon use {
   pointer-events: none;
   z-index: 0;
 }
+
+/* ============================================================
+   B1 COCKPIT — navy workspace canvas, white floating tiles
+   ------------------------------------------------------------
+   Second self-contained, deletable block. To revert the landing
+   page, delete from here to EOF. Nothing above depends on it.
+
+   Everything here was checked against the real frappe v16 source
+   (frappe/public/scss/desk/desktop.scss + page.scss). Four facts
+   drove the shape of this block:
+
+   a) SCOPE. Frappe nests its entire workspace stylesheet inside a
+      bare [data-page-route="Workspaces"]. Reusing that hook scopes
+      the navy to the landing page AND raises specificity above the
+      .layout-main-section wash set earlier in this file, which is
+      !important and would otherwise win.
+
+   b) NEVER override --fg-color to darken the canvas. In light mode
+      --card-bg is an ALIAS of --fg-color, so darkening it turns the
+      cards navy too, and every card title and KPI figure (all
+      #14395E) goes navy-on-navy. Paint the container, force the
+      cards white.
+
+   c) NEVER use bare .widget for the white card. EditorJS text
+      blocks and spacers also carry it — paragraph.js does
+      classList.add(wrapper, block, "widget") and spacer.js does
+      classList.add("widget", "spacer"). Bare .widget paints white
+      plates behind headings and spacers. Enumerate the real card
+      variants instead. Note the chart card is dashboard-widget-box,
+      NOT chart-widget-box; the rule earlier in this file that names
+      chart-widget-box has never matched anything.
+
+   d) Workspace section headings are .ce-header .h4/.h5, which
+      hard-set their own colour. The .widget-group-title rule
+      earlier in this file belongs to dashboards and the loading
+      skeleton — on a workspace it matches nothing.
+
+   Every foreground/background pair below was checked with WCAG 2.x
+   relative luminance. Body text clears 4.5:1, graphics clear 3:1.
+   ============================================================ */
+
+:root {
+  /* Canvas gradient, read off the B1 cockpit: darker at top-left. */
+  --agri-canvas-top: #1D3D5C;
+  --agri-canvas-bottom: #2C5175;
+  /* Hairline that reads on navy without becoming a stripe. */
+  --agri-canvas-rule: rgba(255,255,255,.16);
+  /* Chart bar. The reference sky blue (#5BC8F5) is only 1.90:1 on a
+     white card — below the 3:1 a graphical object needs — so this is
+     the nearest blue that clears it (3.04:1). */
+  --agri-chart-bar: #4A9BD1;
+}
+
+/* ── The canvas ─────────────────────────────────────────────── */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .layout-main-section {
+  background: linear-gradient(160deg, var(--agri-canvas-top), var(--agri-canvas-bottom)) !important;
+  border: none !important;
+}
+/* The editor mount is min-height:calc(100vh - 165px); leaving these
+   transparent lets the gradient show through the full height. */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .editor-js-container,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] #editorjs,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .codex-editor,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .codex-editor__redactor,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .ce-block,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .ce-block__content {
+  background: transparent !important;
+}
+
+/* ── Title bar joins the canvas ─────────────────────────────── */
+/* Deliberately separate from the global .page-head rule above: that
+   one keeps forms light, this one only fires on workspaces. */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .page-head,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .page-head-content {
+  background: var(--agri-canvas-top) !important;
+  border-bottom: 1px solid var(--agri-canvas-rule) !important;
+  box-shadow: none !important;
+}
+/* The workspace name renders as a BREADCRUMB in v16, not .title-text.
+   Note frappe misspells the class 'worksapce' — spelling it correctly
+   gives dead CSS. Both spellings listed so this survives an upstream fix. */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .page-head .title-text,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .page-head .title-area,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .navbar-breadcrumbs,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .navbar-breadcrumbs li,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .navbar-breadcrumbs a,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .navbar-breadcrumbs a.worksapce-breadcrumb,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .navbar-breadcrumbs a.workspace-breadcrumb {
+  color: var(--agri-shell-text) !important;
+}
+/* Frappe draws these as <svg><use>, which ignores `color` entirely —
+   only --icon-stroke/--icon-fill reach them. Same trap as the sidebar. */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .page-head {
+  --icon-stroke: var(--agri-shell-text);
+  --icon-fill: none;
+}
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .page-head .btn:not(.btn-primary) {
+  background: rgba(255,255,255,.14) !important;
+  border: 1px solid rgba(255,255,255,.45) !important;
+  color: var(--agri-shell-text) !important;
+}
+
+/* ── Section headings sit ON the canvas, not in a card ──────── */
+/* .h4/.h5 hard-set color: var(--text-light) on themselves, so this
+   needs !important. Without it the headings are dark-on-navy — the
+   exact bug that shipped on the sidebar. */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .ce-header,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .ce-header .h4,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .ce-header .h5,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .ce-paragraph,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .ce-block__content > p {
+  color: var(--agri-shell-text) !important;
+  background: transparent !important;
+}
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .ce-header .h4 {
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  font-weight: 700 !important;
+  border-bottom: 1px solid var(--agri-canvas-rule);
+  padding-bottom: 6px;
+}
+
+/* ── The tiles ──────────────────────────────────────────────── */
+/* Enumerated, never bare .widget — see (c) in the header above.
+   links-widget-box and onboarding-widget-box force-paint themselves
+   var(--bg-color) rather than --card-bg, so they need the override
+   just as much as the others do. */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.number-widget-box,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.shortcut-widget-box,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.links-widget-box,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.dashboard-widget-box,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.quick-list-widget-box,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.onboarding-widget-box {
+  background-color: #FFFFFF !important;
+  border: none !important;
+  border-radius: var(--agri-radius) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,.28) !important;
+}
+/* The lift shadow from the light theme is navy-on-navy here and reads
+   as nothing. Brighten the edge instead of deepening the shadow. */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.number-widget-box:hover,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.shortcut-widget-box:hover,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.links-widget-box:hover,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.dashboard-widget-box:hover {
+  box-shadow: 0 4px 14px rgba(0,0,0,.36), 0 0 0 1px rgba(255,255,255,.55) !important;
+}
+
+/* Card interiors stay on the light palette — they are white plates. */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget .widget-title,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget .widget-title > span {
+  color: var(--agri-ink) !important;
+  font-weight: 700 !important;
+}
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget .widget-subtitle,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget .quick-list-item .timestamp {
+  color: var(--agri-ink-muted) !important;   /* 5.92:1 on white */
+}
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget .link-item,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget .link-item .link-content {
+  color: var(--agri-link) !important;
+}
+
+/* ── KPI figure — the cockpit signature ─────────────────────── */
+/* Large and light-weight, the way B1 sets it. Frappe writes an inline
+   style="color:…" onto .number when the card has a colour configured,
+   and inline beats everything short of !important, so this carries it. */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.number-widget-box .widget-content .number {
+  font-size: clamp(30px, 3.2vw, 46px) !important;
+  font-weight: 300 !important;
+  line-height: 1.1 !important;
+  color: var(--agri-primary) !important;
+}
+/* Delta row. --agri-success/--agri-danger clear 4.5:1 on white where
+   the brighter B1 green and red do not. Colour is never the only
+   signal: frappe renders a directional arrow glyph in the pill, and
+   that glyph is what carries the meaning under red/green colour
+   blindness — do not remove it. */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .card-stats.green-stat,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .card-stats.green-stat .percentage-stat-area {
+  color: var(--agri-success) !important;     /* 6.15:1 */
+}
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .card-stats.red-stat,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .card-stats.red-stat .percentage-stat-area {
+  color: var(--agri-danger) !important;      /* 7.01:1 */
+}
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .card-stats.grey-stat,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .card-stats.grey-stat .percentage-stat-area {
+  color: var(--agri-ink-muted) !important;   /* 5.92:1 */
+}
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .card-stats.green-stat use { stroke: var(--agri-success) !important; }
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .card-stats.red-stat use { stroke: var(--agri-danger) !important; }
+
+/* ── Chart tile ─────────────────────────────────────────────── */
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .widget.dashboard-widget-box .chart-container rect.bar {
+  fill: var(--agri-chart-bar) !important;    /* 3.04:1 on white */
+}
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .graph-svg-tip.comparison {
+  background: #FFFFFF !important;
+  color: var(--agri-ink) !important;
+  border: 1px solid var(--agri-border-strong) !important;
+  box-shadow: var(--agri-shadow-lg) !important;
+}
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .graph-svg-tip.comparison .title,
+html:not([data-theme="dark"]) .page-container[data-page-route="Workspaces"] .graph-svg-tip .data-point-list li {
+  color: var(--agri-ink) !important;
+}
